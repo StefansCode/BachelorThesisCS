@@ -4,7 +4,7 @@ led_strip_handle_t led_strip;
 
 void RgbLed::init() {
   led_strip_config_t strip_config = {
-      .strip_gpio_num = BUILDIN_RGB_LED,
+      .strip_gpio_num = PIN_ONBOARD_RGB_LED,
       .max_leds = 1, // at least one LED on board
   };
   led_strip_rmt_config_t rmt_config = {};

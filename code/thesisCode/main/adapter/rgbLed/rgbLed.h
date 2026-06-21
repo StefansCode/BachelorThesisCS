@@ -1,10 +1,9 @@
 #ifndef RGB_LED_H
 #define RGB_LED_H
 #include <stdint.h>
+#include "../pinDefines.h"
 #include "esp_log.h"
 #include "led_strip.h"
-
-#define BUILDIN_RGB_LED 48
 
 class RgbLed {
 public:
