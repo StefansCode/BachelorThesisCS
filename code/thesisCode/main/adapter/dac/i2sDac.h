@@ -1,0 +1,16 @@
+#ifndef I2S_DAC_H
+#define I2S_DAC_H
+#include "driver/i2s_std.h"
+#include <stdint.h>
+
+class I2sDac {
+public:
+  esp_err_t init(unsigned int sampleRate);
+  size_t sendBuffer(const void *buffer, unsigned int len);
+  esp_err_t getError();
+
+private:
+  esp_err_t error = ESP_OK;
+};
+
+#endif // I2S_DAC_H
