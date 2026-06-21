@@ -1,9 +1,12 @@
 #ifndef PIN_DEFINES_H
 #define PIN_DEFINES_H
+#include "driver/gpio.h"
 // ======================================================
 // GPIO Assignment 
 // https://docs.espressif.com/projects/esp-idf/en/v6.0.1/esp32s3/api-reference/peripherals/gpio.html
 // ======================================================
+
+// clang-format off
 
 // -------------------- LEDs ----------------------------
 #define PIN_ONBOARD_LED        GPIO_NUM_44
@@ -60,5 +63,7 @@
 
 // #define PIN_JTAG_DEBUG_1       GPIO_NUM_19
 // #define PIN_JTAG_DEBUG_2       GPIO_NUM_20
+
+// clang-format on
 
 #endif // PIN_DEFINES_H

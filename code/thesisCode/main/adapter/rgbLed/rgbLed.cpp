@@ -3,13 +3,14 @@
 led_strip_handle_t led_strip;
 
 void RgbLed::init() {
-  led_strip_config_t strip_config = {
-      .strip_gpio_num = PIN_ONBOARD_RGB_LED,
-      .max_leds = 1, // at least one LED on board
-  };
+  led_strip_config_t strip_config = {};
+  strip_config.strip_gpio_num = PIN_ONBOARD_RGB_LED;
+  strip_config.max_leds = 1;
+
   led_strip_rmt_config_t rmt_config = {};
   rmt_config.resolution_hz = 10 * 1000 * 1000; // 10MHz
   rmt_config.flags.with_dma = false;
+
   ESP_ERROR_CHECK(
       led_strip_new_rmt_device(&strip_config, &rmt_config, &led_strip));
 }
@@ -45,9 +46,9 @@ void RgbLed::blink(uint32_t delayMs) {
 
 void RgbLed::pulse(uint32_t delayMs) {
   for (int i = 0; i < 20; i++) {
-    led_strip_set_pixel(led_strip, 0, 
+    led_strip_set_pixel(led_strip, 0,
                         (abs(i - 10) * RState) / 10,
-                        (abs(i - 10) * GState) / 10, 
+                        (abs(i - 10) * GState) / 10,
                         (abs(i - 10) * BState) / 10);
     led_strip_refresh(led_strip);
     vTaskDelay(pdMS_TO_TICKS(delayMs));
