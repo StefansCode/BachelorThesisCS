@@ -1,11 +1,49 @@
 \section{Die Hardware}
 
-Das Herzstück der Hardware ist der ESP32-S3-N8P2. Dem entsprechend wird zur 
-Entwicklung die ESP-IDF und die dazugehörigen APIs von Espressif Systems 
-\cite{espidf2026api} in VsCode genutzt.
+The heart of the Hardware is the ESP32-S3-N8P2. Therefore, the development 
+will happen in VsCode using the ESP-IDF-Extension and other APIs from 
+Espressif Systems \cite{espidf2026api}. The Components below are implemented and integrated as ports and adapter as
+described in the Ports-and-adapter-architecture.
 
-\subsection{Digital Analog Converter}
+\subsection{Digital-to-Analog Converter}
+A MAX98357A-DAC (Digital-to-Analog Converter) is used to turn the digital 
+Signal into a listenable analog audio signal. The communication between the
+DAC and the ESP32 happens via the I2S-protocol in standard, TX and mono mode
+as described in the ESP-IDF-Documentation \cite{espidf2026api}. A signal can
+be sent to the DAC by updating a buffer and calling the sendBuffer function 
+with this buffer.
 
+%blocking funktion
 
-\cite{voidloop2026ssd1306}
+%tread save
+
+%code example
+
+%pictures
+
+\subsection{User input}
+The button Input can be read be calling button.getState\(Pin\) with the 
+Pin-macro of the desired Pin. This returns weather or not the given pin is 
+pulled low by pressing the button. The function readQueue will read from a
+queue that contains the last 10 button presses. If it is used it should be
+read accordingly often to avoid overfilling it. The debounstime for the 
+buttons is 200ms.
+% das ist sehr hoch vlt sollte ich da nochmal drüberschauen
+
+A rotary encoder is used to edit numerical value. The encoder 
+software-interface is implemented using the pulse-control-API as in
+the ESP-IDF encoder example and contains two functions to interact with it. 
+These are getValue and resetValue. getValue returns the current encoder value 
+which can be incremented or decremented by turning the encoder. It goes to 
+zero when reaching 256 or -256 or when calling resetValue.
+
+\subsection{RGB-LED and LED}
+An RGB-LED is used for...
+%TODO
+
+\subsection{Screen}
+An I2C OLED-screen is integrated by using a library from voidlooprobotechs
+github \cite{voidloop2026ssd1306}.
+% schreiben falls ich die bib erweitere
+
 \cite{espidf2026api}
