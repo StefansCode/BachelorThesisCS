@@ -8,7 +8,12 @@ idf_component_register(
           "adapter/rgbLed/rgbLed.cpp"
           "adapter/rotaryEncoder/rotaryEncoder.cpp"
           "adapter/button/button.cpp"
+
+          "core/config.h"
+          "core/signal/signal.cpp"
+          "core/sound/sound.cpp"
      
      INCLUDE_DIRS 
           "."
+          "./core"
 )
