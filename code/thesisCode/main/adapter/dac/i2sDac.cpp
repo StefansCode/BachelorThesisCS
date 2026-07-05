@@ -6,6 +6,8 @@
 #include "../pinDefines.h"
 #include <portmacro.h> // for portMAX_DELAY
 
+I2sDac dac;
+
 i2s_chan_handle_t i2s_tx_handle;
 
 esp_err_t I2sDac::init(unsigned int sampleRate) {

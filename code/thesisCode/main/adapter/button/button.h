@@ -13,4 +13,6 @@ public:
   uint32_t getStateAll();
 };
 
+extern Buttons buttons;
+
 #endif // BUTTON_H

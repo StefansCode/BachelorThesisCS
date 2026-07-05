@@ -1,5 +1,7 @@
 #include "button.h"
 
+Buttons buttons;
+
 #define PIN_MSK (1ULL << PIN_BTN_11) | (1ULL << PIN_BTN_12) | (1ULL << PIN_BTN_13) | (1ULL << PIN_BTN_14) |     \
                     (1ULL << PIN_BTN_21) | (1ULL << PIN_BTN_22) | (1ULL << PIN_BTN_23) | (1ULL << PIN_BTN_24) | \
                     (1ULL << PIN_BTN_A) | (1ULL << PIN_BTN_B) | (1ULL << PIN_ENCODER_SW)

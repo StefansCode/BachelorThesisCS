@@ -1,5 +1,7 @@
 #include "rgbLed.h"
 
+RgbLed rgbLed;
+
 led_strip_handle_t led_strip;
 
 void RgbLed::init() {

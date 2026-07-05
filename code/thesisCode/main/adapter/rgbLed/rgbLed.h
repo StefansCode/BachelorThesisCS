@@ -23,4 +23,6 @@ private:
   uint8_t BState = 0;
 };
 
+extern RgbLed rgbLed;
+
 #endif // RGB_LED_H

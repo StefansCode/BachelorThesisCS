@@ -1,5 +1,7 @@
 #include "rotaryEncoder.h"
 
+RotaryEncoder encoder;
+
 #define FILTER_VALUE 1000
 
 #define MAX_ENCODER_VALUE 255

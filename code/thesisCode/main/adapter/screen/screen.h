@@ -15,4 +15,6 @@ public:
   void drawPixel(int x, int y, bool fill);
 };
 
+extern Screen screen;
+
 #endif // SCREEN_H

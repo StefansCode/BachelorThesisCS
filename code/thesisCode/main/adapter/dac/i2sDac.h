@@ -13,4 +13,6 @@ private:
   esp_err_t error = ESP_OK;
 };
 
+extern I2sDac dac;
+
 #endif // I2S_DAC_H

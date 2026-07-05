@@ -13,4 +13,6 @@ public:
   void resetvalue();
 };
 
+extern RotaryEncoder encoder;
+
 #endif // ROTARY_ENCODER_H

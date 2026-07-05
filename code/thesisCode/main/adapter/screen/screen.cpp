@@ -1,5 +1,7 @@
 #include "screen.h"
 
+Screen screen;
+
 static i2c_ssd1306_handle_t i2c_ssd1306;
 static i2c_master_bus_handle_t i2c_master_bus;
 
