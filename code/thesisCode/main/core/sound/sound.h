@@ -1,5 +1,5 @@
-#ifndef GENERATOR_H
-#define GENERATOR_H
+#ifndef SOUND_H
+#define SOUND_H
 #include <math.h>
 
 #include "config.h"
@@ -17,6 +17,7 @@ public:
   Sound& fromTriangle(unsigned int frequency);
 
   Sound& amplify(float value);
+  Sound& add(Sound other);
 
   void toFunction(void (*output)(sample data, void *param), void *param);
   void toFunction(void (*output)(sample *data, void *param), void *param);
@@ -25,4 +26,4 @@ private:
   int calculateSaw(unsigned int frequency);
 };
 
-#endif // GENERATOR_H
+#endif // SOUND_H

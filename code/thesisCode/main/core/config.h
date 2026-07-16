@@ -2,7 +2,8 @@
 #define CONFIG_H
 #include <stdint.h>
 
-#define SAMPLE_RATE 44100
+// possible sample rates: 44100, 22050, 11025 
+#define SAMPLE_RATE 11025
 #define BUFFER_SIZE 256
 typedef int16_t sample;
 
