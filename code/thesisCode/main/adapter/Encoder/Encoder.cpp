@@ -1,6 +1,6 @@
-#include "rotaryEncoder.h"
+#include "Encoder.h"
 
-RotaryEncoder encoder;
+Encoder encoder;
 
 #define FILTER_VALUE 1000
 
@@ -9,9 +9,9 @@ RotaryEncoder encoder;
 
 pcnt_unit_handle_t pcnt_unit = NULL;
 
-RotaryEncoder::RotaryEncoder() {}
+Encoder::Encoder() {}
 
-void RotaryEncoder::init() {
+void Encoder::init() {
   /* set min and max values */
   pcnt_unit_config_t unit_config = {};
   unit_config.high_limit = MAX_ENCODER_VALUE * 4;
@@ -49,12 +49,25 @@ void RotaryEncoder::init() {
   ESP_ERROR_CHECK(pcnt_unit_start(pcnt_unit));
 }
 
-int RotaryEncoder::getvalue() {
+int Encoder::getvalue() {
   int pulse_count;
   ESP_ERROR_CHECK(pcnt_unit_get_count(pcnt_unit, &pulse_count));
   return pulse_count / 4;
 }
 
-void RotaryEncoder::resetvalue() {
+void Encoder::resetvalue() {
   ESP_ERROR_CHECK(pcnt_unit_clear_count(pcnt_unit));
+}
+
+void Encoder::changeExternalValue(int &value, int min, int max, int step) {
+
+  int encoderValue = getvalue();
+
+  if (encoderValue > lastEncoderValue && value < max && (encoderValue - lastEncoderValue) < 128) {
+    value = value + step;
+  } else if (encoderValue < lastEncoderValue && value > min && (lastEncoderValue - encoderValue) < 128) {
+    value = value - step;
+  }
+
+  lastEncoderValue = encoderValue;
 }
