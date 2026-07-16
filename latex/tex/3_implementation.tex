@@ -1,0 +1,15 @@
+\section{Implementation}
+
+Ein digitales Signal wird in seiner simpelsten Form als eine sich ständig
+ändernde Variable dargestellt. Diese Variable kann zum Beispiel als 
+Gleitkommazahlen dargestellt werden, wird aber der wegen der arithmetischen
+Komplexität oft als Ganzzahl implementiert. I2S funktioniert mit 
+Pulse-Code-Modulation (PCM) Daten. Das ist ein unkomprimiertes Audio format mit
+meistens 16,24 oder 32 Bit unsigned Integern.  In dem config Header ist ein 
+Datentyp mit dem Namen sample definiert, welcher genau so ein unsigned Int ist.
+Hier kann man die Auflösung global einstellen.
+% todo finde Quellen zu PCM.
+
+Da viele Funktionen, zum 
+Beispiel das Mitteln der letzten Werte, auf vorherige Werte zu greifen muss
+lohnt es

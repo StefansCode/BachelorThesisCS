@@ -1,2 +1,66 @@
 \section{Einleitung}
 
+% todo: schreibe irgendwas mit digitale Signalverarbeitung (dsv)
+
+Das Ziel der Arbeit ist die Entwicklung einer dsv-Bibliothek für 
+Mikrocontroller. Insbesondere für den ESP32-S3, da die Entwicklung der
+Bibliothek auf diesem stattfindet. Der Vorteil und Fokus dieser Bibliothek
+liegt auf der Erweiterbarkeit und Nutzerfreundlichkeit. Im bezug auf
+Nutzerfreundlichkeit ist Java Streams \cite{java2026stream} ein 
+sehr gutes Vorbild. Java Streams setzt als fluent API die Mentalität 
+\glqq Signal geht rein, Signal geht raus\grqq  (oder im fall von Java Streams
+Collection) perfekt um. Als zentrale Komponente der dsv-Bibliothek soll es 
+also eine Klasse geben, welche ein Signal von einem Eingang nimmt, es mit 
+verschiedenen Funktionen bearbeitet und danach an einen Ausgang abgibt.
+Die Erweiterbarkeit soll dabei durch Signalfunktionen wie applyFunction,
+welche selbst definierte Funktionen ausführen, gegeben sein. Außerdem soll die
+Signalklasse nicht zu komplex werden und somit leicht erweiterbar sein.
+
+\begin{minipage}[h]{0.48\textwidth}
+    \begin{lstlisting}[language=Java, 
+                       frame=single, 
+                       caption={Java Streams},
+                       captionpos=b]
+Stream.of(1,2,3,4)
+      .map(x -> x*x)
+      .filter(x -> x<10)
+      .toArray();
+    \end{lstlisting}
+\end{minipage}
+\hfill
+\begin{minipage}[h]{0.48\textwidth}
+    \begin{lstlisting}[language=C++, 
+                       frame=single,
+                       caption={dsv-Bibliothek},
+                       captionpos=b]
+Signal.fromInput(ADC)
+      .multiply(2)
+      .filter(20,5000)
+      .applyFunction(coolFkt)
+      .toOutput(DAC);
+    \end{lstlisting}
+\end{minipage}
+
+\begin{figure}[ht]
+    \centering
+    \begin{lstlisting}[language=Java, 
+                       frame=single, 
+                       caption={Java Streams},
+                       captionpos=b]
+Stream.of(1,2,3,4)
+      .map(x -> x*x)
+      .filter(x -> x<10)
+      .toArray();
+    \end{lstlisting}
+    \hfill
+    \begin{lstlisting}[language=C++, 
+                       frame=single,
+                       caption={dsv-Bibliothek},
+                       captionpos=b]
+Signal.fromInput(ADC)
+      .multiplyWithValue(2)
+      .filterFrequencyRange(20,20000)
+      .applyFunction(coolFkt)
+      .toOutput(DAC);
+    \end{lstlisting}
+\end{figure}
