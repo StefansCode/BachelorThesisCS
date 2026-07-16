@@ -26,6 +26,7 @@ void Screen::init() {
   i2c_new_master_bus(&i2c_master_bus_config, &i2c_master_bus);
   i2c_ssd1306_init(i2c_master_bus, i2c_ssd1306_config, &i2c_ssd1306);
   i2c_ssd1306_buffer_clear(&i2c_ssd1306);
+  i2c_ssd1306_buffer_to_ram(&i2c_ssd1306);
 }
 
 void Screen::clear() {
