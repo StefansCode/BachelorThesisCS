@@ -1,6 +1,8 @@
 idf_component_register(
      SRCS 
           "main.cpp" 
+
+          "debug/taskAnalyser/taskAnalyser.cpp"
                             
           "adapter/dac/i2sDac.cpp"
           "adapter/screen/screen.cpp"

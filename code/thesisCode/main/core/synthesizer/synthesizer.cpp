@@ -1,4 +1,7 @@
 #include "synthesizer.h"
+#include "debug/taskAnalyser/taskAnalyser.h"
+
+TaskAnalyser taskAnalyser;
 
 Synthesizer synth;
 
@@ -67,7 +70,13 @@ uint8_t time = 0;
 void Synthesizer::synthTask(void *param) {
   while (1) {
 
+    // taskAnalyser.startTimerWithId(1);
+
     bass.fromSine(NOTES[root - 12]);
+
+    // taskAnalyser.stopTimerWithId(1);
+
+    // taskAnalyser.startTimerWithId(2);
 
     scale = scales[scaleCounter.get()];
 
@@ -76,6 +85,10 @@ void Synthesizer::synthTask(void *param) {
     } else {
       bass.amplify(0.1);
     }
+
+    // taskAnalyser.stopTimerWithId(2);
+
+    // taskAnalyser.startTimerWithId(3);
 
     if (buttons.getState(PIN_BTN_11)) {
       lead1.fromSine(NOTES[root + scale[0]]).amplify(0.1);
@@ -110,6 +123,13 @@ void Synthesizer::synthTask(void *param) {
       bass.add(lead8);
     }
 
+    // taskAnalyser.stopTimerWithId(3);
+
+    taskAnalyser.startTimerWithId(4);
+
     bass.amplify(0.3).toFunction(sendData, NULL);
+
+    taskAnalyser.stopTimerWithId(4);
+
   }
 }

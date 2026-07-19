@@ -4,7 +4,7 @@
  */
 #include "i2sDac.h"
 #include "../pinDefines.h"
-#include <portmacro.h> // for portMAX_DELAY
+#include "freertos/FreeRTOS.h" // for portMAX_DELAY
 
 I2sDac dac;
 

@@ -1,3 +1,4 @@
+#include "sdkconfig.h"
 #include "adapter/button/button.h"
 #include "adapter/dac/i2sDac.h"
 #include "adapter/Encoder/Encoder.h"
