@@ -8,6 +8,7 @@
 class Util {
 public:
     unsigned long millis();
+    unsigned long micros();
     void delay(unsigned long ms);
 };
 
