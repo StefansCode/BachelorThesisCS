@@ -6,9 +6,14 @@
 #include "adapter/screen/screen.h"
 #include "adapter/dac/i2sDac.h"
 #include "adapter/threadSaveVariable/threadSaveVariable.h"
+#include "adapter/util/util.h"
+
+#include "sound/sound.h"
+
 #include "config.h"
 #include "notes/notes.h"
-#include "core/sound/sound.h"
+#include "menu/menu.h"
+#include "envelope/envelope.h"
 
 class Synthesizer {
 public:
@@ -42,6 +47,27 @@ private:
   Sound lead6;
   Sound lead7;
   Sound lead8;
+
+  Timer timer;
+
+  Envelope envelope1;
+  ThreadSaveInt envelopeValue1;
+  Envelope envelope2;
+  ThreadSaveInt envelopeValue2;
+  Envelope envelope3;
+  ThreadSaveInt envelopeValue3;
+  Envelope envelope4;
+  ThreadSaveInt envelopeValue4;
+  Envelope envelope5;
+  ThreadSaveInt envelopeValue5;
+  Envelope envelope6;
+  ThreadSaveInt envelopeValue6;
+  Envelope envelope7;
+  ThreadSaveInt envelopeValue7;
+  Envelope envelope8;
+  ThreadSaveInt envelopeValue8;
+
+  Menu menu;
 
   uint16_t root = A4;
   uint8_t *scale = scales[0];

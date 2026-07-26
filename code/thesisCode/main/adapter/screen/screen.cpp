@@ -45,3 +45,8 @@ void Screen::drawBitmap(const uint8_t *bitmap, int x, int y, int width, int heig
 void Screen::drawPixel(int x, int y, bool fill) {
   i2c_ssd1306_buffer_fill_pixel(&i2c_ssd1306, x, y, fill);
 }
+
+void Screen::drawString(const char* string, int x, int y, bool invert) {
+  i2c_ssd1306_buffer_text(&i2c_ssd1306, x, y, string, invert);
+}
+
