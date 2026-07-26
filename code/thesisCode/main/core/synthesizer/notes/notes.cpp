@@ -1,13 +1,52 @@
 #include "notes.h"
 
+uint8_t lydian[8] =     {0, 2, 4, 6, 7, 9, 11, 12};
+uint8_t ionian[8] =     {0, 2, 4, 5, 7, 9, 11, 12};    // major scale or Dur
+uint8_t mixolydian[8] = {0, 2, 4, 5, 7, 9, 10, 12};
+uint8_t dorian[8] =     {0, 2, 3, 5, 7, 9, 10, 12}; 
+uint8_t aolian[8] =     {0, 2, 3, 5, 7, 8, 10, 12};    // minor scale or Moll
+uint8_t phrygian[8] =   {0, 1, 3, 5, 7, 8, 10, 12};
+uint8_t locrian[8] =    {0, 1, 3, 5, 6, 8, 10, 12};  
 
-uint8_t majorScale[8] =  {0, 2, 4, 5, 7, 9, 11, 12};
-uint8_t minorScale[8] =  {0, 2, 3, 5, 7, 8, 10, 12};
-uint8_t desertScale[8] = {0, 1, 4, 5, 7, 8, 11, 12};
+uint8_t doubleHarmonic[8] = {0, 1, 4, 5, 7, 8, 11, 12};
 
-uint8_t *scales[3] = {majorScale, minorScale, desertScale};
-uint8_t NUMBER_OF_SCALES = 3;
+const uint8_t NUMBER_OF_SCALES = 8;
+uint8_t *scales[8] = {
+lydian,
+ionian,
+mixolydian,
+dorian,
+aolian,
+phrygian,
+locrian,
+doubleHarmonic
+};
 
+const char *scaleNames[8] = {
+"LYDIAN",
+"IONIAN",
+"MIXOLYDIAN",
+"DORIAN",
+"AOLIAN",
+"PHRYGIAN",
+"LOCRIAN",
+"DOUBLE HARMONIC"
+};
+
+const char * NoteNames[12] = {
+"A",
+"A#",
+"B",
+"C",
+"C#",
+"D",
+"D#",
+"E",
+"F",
+"F#",
+"G",
+"G#"
+};
 
 const uint16_t NOTES[] = {
 16,
