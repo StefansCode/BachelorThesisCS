@@ -6,6 +6,7 @@ Menu::Menu() {
   addChild(&root, &lead);
   addChild(&root, &settings);
 
+  addChild(&bass, &bass_onOff);
   addChild(&bass, &bass_note);
   addChild(&bass, &bass_waveform);
   addChild(&bass, &bass_LFO);
@@ -47,7 +48,7 @@ bool Menu::moveForward() {
 }
 
 bool Menu::moveUp() {
-  if(index > 0) {
+  if (index > 0) {
     index--;
     return true;
   } else {
@@ -56,7 +57,7 @@ bool Menu::moveUp() {
 }
 
 bool Menu::moveDown() {
-  if(index + 1 < current->numberOfChildren) {
+  if (index + 1 < current->numberOfChildren) {
     index++;
     return true;
   } else {
@@ -72,16 +73,34 @@ const char *Menu::getName() {
 }
 
 /** @todo maybe move into seperat class/komponent */
+#define VALUE_X 80
 void Menu::draw() {
-  screen.drawString(current->name, 16, 4, false);
+  screen.drawString(current->name, 16, 2, false);
 
   if (index > 0) {
     screen.drawString(current->children[index - 1]->name, 16, 16, false);
+    if (current->children[index - 1]->value != NULL) {
+      screen.drawString(current->children[index - 1]->value, VALUE_X, 16, false);
+    }
   }
+
+  /** @todo maybe 5 tight lines 
+   * screen.drawString("LALLOOL", 16, 24, false);
+   * */
+  
   screen.drawString("->", 0, 32, false);
   screen.drawString(current->children[index]->name, 16, 32, false);
+  if (current->children[index]->value == NULL) {
+    screen.drawString("->", 112, 32, false);
+  } else {
+    screen.drawString(current->children[index]->value, VALUE_X, 32, false);
+  }
+
   if (index + 1 < current->numberOfChildren) {
     screen.drawString(current->children[index + 1]->name, 16, 48, false);
+    if (current->children[index + 1]->value != NULL) {
+      screen.drawString(current->children[index + 1]->value, VALUE_X, 48, false);
+    }
   }
 }
 
