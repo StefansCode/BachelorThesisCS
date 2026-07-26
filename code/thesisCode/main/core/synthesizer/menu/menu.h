@@ -29,7 +29,7 @@ private:
   /** bass -> */
   entry_t bass_onOff = {&root, {NULL}, 0, 0x0012, "SWITCH", "OFF"};
   entry_t bass_note = {&root, {NULL}, 0, 0x0022, "NOTE", "A"};
-  entry_t bass_waveform = {&root, {NULL}, 0, 0x0032, "WAVEF", "SAW"};
+  entry_t bass_waveform = {&root, {NULL}, 0, 0x0032, "WAVE", "SAW"};
   entry_t bass_LFO = {&root, {NULL}, 0, 0x0042, "LFO", "TODO"};
 
   /** lead -> */
