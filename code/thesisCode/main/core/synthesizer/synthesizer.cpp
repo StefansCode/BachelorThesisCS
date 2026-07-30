@@ -24,7 +24,8 @@ Synthesizer::Synthesizer()
       envelope8(timer),
       envelopeValue8(0),
       scaleCounter(0),
-      playBass(false) {}
+      playBass(false),
+      root(A4) {}
 
 /** @todo mit der static methode machen  */
 void IOTaskWrapper(void *param) {
@@ -113,10 +114,13 @@ void sendData(sample *data, void *param) {
 uint8_t time = 0;
 void Synthesizer::synthTask(void *param) {
   while (1) {
+    int local_root = root.get();
+    int local_waveform = waveform.get();
 
     // taskAnalyser.startTimerWithId(1);
 
-    bass.fromSaw(NOTES[root - 12]);
+    
+    bass.fromSaw(NOTES[local_root - 12]);
 
     // taskAnalyser.stopTimerWithId(1);
 
@@ -135,49 +139,49 @@ void Synthesizer::synthTask(void *param) {
     // taskAnalyser.startTimerWithId(3);
 
     if (envelopeValue1.get() != 0) {
-      lead1.fromSaw(NOTES[root + scale[0]])
+      lead1.fromSaw(NOTES[local_root + scale[0]])
            .amplify(0.1)
            .amplify(((float)envelopeValue1.get())/255.0f);
       bass.add(lead1);
     }
     if (envelopeValue2.get() != 0) {
-      lead2.fromSaw(NOTES[root + scale[1]])
+      lead2.fromSaw(NOTES[local_root + scale[1]])
            .amplify(0.1)
            .amplify(((float)envelopeValue2.get())/255.0f);
       bass.add(lead2);
     }
     if (envelopeValue3.get() != 0) {
-      lead3.fromSaw(NOTES[root + scale[2]])
+      lead3.fromSaw(NOTES[local_root + scale[2]])
            .amplify(0.1)
            .amplify(((float)envelopeValue3.get())/255.0f);
       bass.add(lead3);
     }
     if (envelopeValue4.get() != 0) {
-      lead4.fromSaw(NOTES[root + scale[3]])
+      lead4.fromSaw(NOTES[local_root + scale[3]])
            .amplify(0.1)
            .amplify(((float)envelopeValue4.get())/255.0f);
       bass.add(lead4);
     }
     if (envelopeValue5.get() != 0) {
-      lead5.fromSaw(NOTES[root + scale[4]])
+      lead5.fromSaw(NOTES[local_root + scale[4]])
            .amplify(0.1)
            .amplify(((float)envelopeValue5.get())/255.0f);
       bass.add(lead5);
     }
     if (envelopeValue6.get() != 0) {
-      lead6.fromSaw(NOTES[root + scale[5]])
+      lead6.fromSaw(NOTES[local_root + scale[5]])
            .amplify(0.1)
            .amplify(((float)envelopeValue6.get())/255.0f);
       bass.add(lead6);
     }
     if (envelopeValue7.get() != 0) {
-      lead7.fromSaw(NOTES[root + scale[6]])
+      lead7.fromSaw(NOTES[local_root + scale[6]])
            .amplify(0.1)
            .amplify(((float)envelopeValue7.get())/255.0f);
       bass.add(lead7);
     }
     if (envelopeValue8.get() != 0) {
-      lead8.fromSaw(NOTES[root + scale[7]])
+      lead8.fromSaw(NOTES[local_root + scale[7]])
            .amplify(0.1)
            .amplify(((float)envelopeValue8.get())/255.0f);
       bass.add(lead8);

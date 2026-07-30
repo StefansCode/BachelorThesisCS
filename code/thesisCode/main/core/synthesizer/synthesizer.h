@@ -15,6 +15,8 @@
 #include "menu/menu.h"
 #include "envelope/envelope.h"
 
+#define WAVEFORM:SAW
+
 class Synthesizer {
 public:
   Synthesizer();
@@ -68,12 +70,24 @@ private:
   ThreadSaveInt envelopeValue8;
 
   Menu menu;
+  int lastEncoderValue = 0;
+  bool navigateMenuWithEncoder(int encoderValue);
+  void handelValueChange();
 
-  uint16_t root = A4;
+  /** Bass variables and handler */
+  ThreadSaveBool playBass;
+  ThreadSaveInt root;
+  /** - 0 = saw
+   *  - 1 = square
+   *  - 2 = triangle
+   *  - 3 = sine
+   */
+  ThreadSaveInt waveform;
+  void handleBassVariables();
+
   uint8_t *scale = scales[0];
 
   ThreadSaveInt scaleCounter;
-  ThreadSaveBool playBass;
 };
 
 extern Synthesizer synth;
