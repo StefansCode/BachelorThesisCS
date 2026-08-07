@@ -3,14 +3,16 @@
 
 #include "../pinDefines.h"
 #include "driver/pulse_cnt.h"
+#include "adapter/threadSaveVariable/threadSaveVariable.h"
 
 class Encoder {
 public:
   Encoder();
   void init();
   int getvalue();
+  int getLastValue();
   void resetvalue();
-  void changeExternalValue(int &value, int min, int max, int step);
+  void changeExternalValue(ThreadSaveInt &value, int min, int max, int step);
 
 private:
   int lastEncoderValue = 0;

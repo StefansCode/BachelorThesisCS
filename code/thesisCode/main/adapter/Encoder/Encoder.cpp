@@ -55,18 +55,23 @@ int Encoder::getvalue() {
   return pulse_count / 4;
 }
 
-void Encoder::resetvalue() {
-  ESP_ERROR_CHECK(pcnt_unit_clear_count(pcnt_unit));
+int Encoder::getLastValue() {
+  return lastEncoderValue;
 }
 
-void Encoder::changeExternalValue(int &value, int min, int max, int step) {
+void Encoder::resetvalue() {
+  ESP_ERROR_CHECK(pcnt_unit_clear_count(pcnt_unit));
+  lastEncoderValue = 0;
+}
+
+void Encoder::changeExternalValue(ThreadSaveInt &value, int min, int max, int step) {
 
   int encoderValue = getvalue();
 
-  if (encoderValue > lastEncoderValue && value < max && (encoderValue - lastEncoderValue) < 128) {
-    value = value + step;
-  } else if (encoderValue < lastEncoderValue && value > min && (lastEncoderValue - encoderValue) < 128) {
-    value = value - step;
+  if (encoderValue > lastEncoderValue && value.get() < max && (encoderValue - lastEncoderValue) < 128) {
+    value.set(value.get() + step);
+  } else if (encoderValue < lastEncoderValue && value.get() > min && (lastEncoderValue - encoderValue) < 128) {
+    value.set(value.get() - step);
   }
 
   lastEncoderValue = encoderValue;
