@@ -17,6 +17,11 @@ Menu::Menu() {
   addChild(&lead, &lead_filter);
   addChild(&lead, &lead_fx);
 
+  addChild(&lead_envelope, &bass_envelope_attack);
+  addChild(&lead_envelope, &bass_envelope_decay);
+  addChild(&lead_envelope, &bass_envelope_sustain);
+  addChild(&lead_envelope, &bass_envelope_release);
+
   addChild(&settings, &settings_sampleRate);
 }
 
@@ -26,6 +31,24 @@ void Menu::addChild(entry_t *target, entry_t *child) {
     target->children[freeIndex] = child;
     target->numberOfChildren++;
   }
+}
+
+const char * Menu::getValue(entry_t *entry) {
+  if (entry->values == NULL) {
+    return NULL;
+  }
+  return entry->values[entry->indexOfValue];
+}
+
+void Menu::setValueIndex(entry_t *entry, int index) {
+  if (entry->values == NULL) {
+    entry->indexOfValue = index;
+    return;
+  }
+  if (index < 0 || index >= entry->numberOfValues) {
+    return;
+  }
+  entry->indexOfValue = index;
 }
 
 bool Menu::moveBack() {
@@ -72,17 +95,27 @@ bool Menu::moveDown() {
   }
 }
 
-unsigned int Menu::getID() {
-  return current->id;
-}
 const char *Menu::getName() {
   return current->name;
 }
-void Menu::setValue(const char *newValue) {
-  current->value = newValue;
+const char *Menu::getSelectedName() {
+  return current->children[index]->name;
 }
 
-/** @todo maybe move into seperat class/komponent and or use more variables for position*/
+int Menu::getSelectedValueIndex() {
+  return current->children[index]->indexOfValue;
+}
+void Menu::setSelectedValueIndex(int index) {
+  setValueIndex(current->children[this->index], index);
+}
+
+int Menu::getValuesLength() {
+  return current->children[index]->numberOfValues;
+}
+
+/** @todo maybe move into seperat class/komponent and or use more variables for position
+ * and better variable use
+*/
 #define VALUE_X 80
 void Menu::drawUnselected() {
   /** draw Headline */
@@ -94,8 +127,10 @@ void Menu::drawUnselected() {
   /* draw index - 1*/
   if (index > 0) {
     screen.drawString(current->children[index - 1]->name, 16, 16, false);
-    if (current->children[index - 1]->value != NULL) {
-      screen.drawString(current->children[index - 1]->value, VALUE_X, 16, false);
+    if (getValue(current->children[index - 1]) != NULL) {
+      screen.drawString(getValue(current->children[index - 1]), VALUE_X, 16, false);
+    } else if(current->children[index - 1]->numberOfValues != 0) {
+      screen.drawNumber(current->children[index - 1]->indexOfValue, VALUE_X, 16, false);
     }
   }
 
@@ -103,39 +138,67 @@ void Menu::drawUnselected() {
   screen.drawString("->", 0, 32, false);
   screen.drawString(current->children[index]->name, 16, 32, false);
 
-  if (current->children[index]->value == NULL) {
+  if (getValue(current->children[index]) != NULL) {
+    screen.drawString(getValue(current->children[index]), VALUE_X, 32, false);
+  } else if (current->children[index]->numberOfValues != 0) {
+    screen.drawNumber(current->children[index]->indexOfValue, VALUE_X, 32, false);
+  }else {
     screen.drawString("->", 112, 32, false);
-  } else {
-    screen.drawString(current->children[index]->value, VALUE_X, 32, false);
   }
 
   /** draw index + 1 */
   if (index + 1 < current->numberOfChildren) {
     screen.drawString(current->children[index + 1]->name, 16, 48, false);
-    if (current->children[index + 1]->value != NULL) {
-      screen.drawString(current->children[index + 1]->value, VALUE_X, 48, false);
+    if (getValue(current->children[index + 1]) != NULL) {
+      screen.drawString(getValue(current->children[index + 1]), VALUE_X, 48, false);
+    } else if(current->children[index + 1]->numberOfValues != 0) {
+      screen.drawNumber(current->children[index + 1]->indexOfValue, VALUE_X, 48, false);
     }
   }
 }
 
-void Menu::drawSelected(const char *lastValue, const char *currentValue, const char *nextValue) {
+void Menu::drawSelected(int valueIndex) {
+  if (current->children[index]->numberOfValues != 0 && current->children[index]->values != NULL) {
+    drawSelectedString(valueIndex);
+  } else if (current->children[index]->numberOfValues != 0 && current->children[index]->values == NULL) {
+    drawSelectedNumeric(valueIndex);
+  } else {
+    return; // the rest is handled externaly;
+  }
+}
+
+void Menu::drawSelectedString(int valueIndex) {
 
   screen.drawString(current->name, 16, 2, false);
 
-  if (current->children[index]->value == NULL) {
-    screen.drawString("->", VALUE_X - 16, 2, false);
-    screen.drawString(current->children[index]->name, VALUE_X, 2, false);
-    return;// the rest is handled externaly
+  if(valueIndex < 0 || valueIndex >= current->children[index]->numberOfValues) {
+    return; // invalid valueIndex
   }
 
   screen.drawString(current->children[index]->name, 16, 32, false);
   screen.drawString("->", VALUE_X - 16, 32, false);
-  if(lastValue != NULL) {
-    screen.drawString(lastValue, VALUE_X, 16, false);
+  screen.drawString(current->children[index]->values[valueIndex], VALUE_X, 32, false);
+
+  if(valueIndex > 0) {
+    screen.drawString(current->children[index]->values[valueIndex - 1], VALUE_X, 16, false);
   }
-  screen.drawString(currentValue, VALUE_X, 32, false);
-  if(nextValue != NULL) {
-    screen.drawString(nextValue, VALUE_X, 48, false);
+  if(valueIndex + 1 < current->children[index]->numberOfValues) {
+    screen.drawString(current->children[index]->values[valueIndex + 1], VALUE_X, 48, false);
+  }
+}
+
+void Menu::drawSelectedNumeric(int valueIndex) {
+  screen.drawString(current->name, 16, 2, false);
+
+  screen.drawString(current->children[index]->name, 16, 32, false);
+  screen.drawString("->", VALUE_X - 16, 32, false);
+  screen.drawNumber(valueIndex, VALUE_X, 32, false);
+
+  if(valueIndex > 0) {
+    screen.drawNumber(valueIndex - 1, VALUE_X, 16, false);
+  }
+  if(valueIndex + 1 < current->children[index]->numberOfValues) {
+    screen.drawNumber(valueIndex + 1, VALUE_X, 48, false);
   }
 }
 
