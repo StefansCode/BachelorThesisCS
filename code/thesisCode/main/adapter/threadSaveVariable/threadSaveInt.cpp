@@ -1,19 +1,12 @@
 #include "threadSaveInt.h"
 
-ThreadSaveInt::ThreadSaveInt(int initialValue) {
-  mutex = xSemaphoreCreateMutex();
-  variable = initialValue;
+ThreadSaveInt::ThreadSaveInt(int initialValue) : variable(initialValue) {
 }
 
 void ThreadSaveInt::set(int value) {
-  xSemaphoreTake(mutex, portMAX_DELAY);
-  variable = value;
-  xSemaphoreGive(mutex);
+  variable.store(value);
 }
 
 int ThreadSaveInt::get() {
-  xSemaphoreTake(mutex, portMAX_DELAY);
-  int value = variable;
-  xSemaphoreGive(mutex);
-  return value;
+  return variable.load();
 }

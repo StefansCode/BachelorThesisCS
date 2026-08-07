@@ -1,7 +1,6 @@
 #ifndef THREAD_SAVE_INT_H
 #define THREAD_SAVE_INT_H
-#include "freertos/FreeRTOS.h"
-#include "freertos/semphr.h"
+#include <atomic>
 
 class ThreadSaveInt {
 public:
@@ -10,8 +9,7 @@ public:
   int get();
 
 private:
-  SemaphoreHandle_t mutex;
-  int variable;
+  std::atomic<int> variable;
 };
 
 #endif // THREAD_SAVE_INT_H
