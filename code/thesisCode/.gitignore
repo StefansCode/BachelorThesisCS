@@ -1,6 +1,7 @@
 # custom
 .vscode/
 .devcontainer/
+notizen.md
 
 # macOS
 .DS_Store
