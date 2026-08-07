@@ -9,10 +9,10 @@
 
 #include "core/synthesizer/synthesizer.h"
 
-//#include "../test/onHardwareTest/core/sound/soundInputTest.h"
-//#include "../test/onHardwareTest/core/sound/soundOutputTest.h"
+#include "../test/onHardwareTest/core/sound/soundInputTest.h"
+// #include "../test/onHardwareTest/core/sound/soundOutputTest.h"
 // #include "../test/onHardwareTest/core/envelope/envelopetestWithPrints.h"
-#include "../test/onHardwareTest/adapter/screenFortTest.h"
+// #include "../test/onHardwareTest/adapter/screenFortTest.h"
 
 extern "C" void app_main(void) {
 
@@ -22,16 +22,16 @@ extern "C" void app_main(void) {
   rgbLed.init();
   screen.init();
 
-  //runSoundInputTest_allWaveforms();
-  //runSoundInputTest_switchWaveforms();
-  //runSoundInputTest_waveformCalulationSpeed();
+  // runSoundInputTest_allWaveforms();
+  // runSoundInputTest_switchWaveforms();
+  // runSoundInputTest_calulationSpeeds();
 
-  //runSoundOutputTest();
-  //runSoundOutputTest_unsigned();
+  // runSoundOutputTest();
+  // runSoundOutputTest_unsigned();
 
   // runEnvelopeTestWithPrints();
 
-  //runScreenFontTest();
+  // runScreenFontTest();
 
   synth.run();
 
