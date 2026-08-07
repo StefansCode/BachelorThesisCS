@@ -6,7 +6,8 @@ Envelope::Envelope(Timer &timer_)
       returnValueAtrelease(0),
       timeAtpress(0),
       lastTimerValue(0),
-      lastPressValue(false) {
+      lastPressValue(false),
+      envelopeValue(0) {
 }
 
 void Envelope::set(uint8_t attack_, uint8_t decay_, uint8_t sustain_, uint8_t release_) {
@@ -32,7 +33,12 @@ uint8_t Envelope::apply(bool pressed) {
     lastPressValue = pressed;
     lastTimerValue = currentTime;
   }
+  envelopeValue.set(returnValue);
   return returnValue;
+}
+
+int Envelope::getValue() {
+  return envelopeValue.get();
 }
 
 void Envelope::calculateValue(bool pressed, uint64_t currentTime) {

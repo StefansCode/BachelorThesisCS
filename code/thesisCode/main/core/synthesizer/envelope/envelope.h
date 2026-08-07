@@ -35,12 +35,15 @@ private:
   uint64_t timeAtpress;
   uint64_t lastTimerValue;
   bool lastPressValue;
+
+  ThreadSaveInt envelopeValue;
+  void calculateValue(bool pressed, uint64_t currentTime);
 public:
   Envelope(Timer &timer);
   void set(uint8_t attack_, uint8_t decay_, uint8_t sustain_, uint8_t release_);
   void get(uint8_t *attack_, uint8_t *decay_, uint8_t *sustain_, uint8_t *release_);
-  void calculateValue(bool pressed, uint64_t currentTime);
   uint8_t apply(bool pressedInput);
+  int getValue();
 };
 
 #endif // ENVELOPE_H
