@@ -15,11 +15,12 @@ extern uint8_t locrian[8];
 extern uint8_t doubleHarmonic[8];
 
 extern const uint8_t NUMBER_OF_SCALES;
-extern uint8_t *scales[8];
+extern uint8_t * scales[8];
 
-extern const char *scaleNames[8];
-
-extern const char * NoteNames[12];
+extern const char * scaleNames[8];
+extern const char * noteNames[12];
+extern const char * waveformNames[4];
+extern const char * sampleRateNames[3];
 
 extern const uint16_t NOTES[];
 

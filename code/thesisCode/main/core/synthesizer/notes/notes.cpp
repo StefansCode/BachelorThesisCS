@@ -23,17 +23,17 @@ doubleHarmonic
 };
 
 const char *scaleNames[8] = {
-"LYDIAN",
-"IONIAN",
-"MIXOLYDIAN",
-"DORIAN",
-"AOLIAN",
-"PHRYGIAN",
-"LOCRIAN",
-"DOUBLE HARMONIC"
+"LYDIAN",   // lydian
+"IONIAN",   // major scale
+"MXOLYN",   // mixolydian
+"DORIAN",   // dorian
+"AOLIAN",   // minor scale
+"PHRYG",    // phrygian
+"LOCR",     // locrian
+"2HARMO"    // double harmonic
 };
 
-const char * NoteNames[12] = {
+const char * noteNames[12] = {
 "A",
 "A#",
 "B",
@@ -46,6 +46,19 @@ const char * NoteNames[12] = {
 "F#",
 "G",
 "G#"
+};
+
+const char * waveformNames[4] = {
+"SAW",      // sawtooth
+"SQUARE",   // square
+"TRINGL",   // triangle
+"SINE"      // sine
+};
+
+const char * sampleRateNames[3] = {
+"11025",
+"22050",
+"44100"
 };
 
 const uint16_t NOTES[] = {
