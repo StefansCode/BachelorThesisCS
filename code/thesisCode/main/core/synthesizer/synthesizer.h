@@ -15,7 +15,10 @@
 #include "menu/menu.h"
 #include "envelope/envelope.h"
 
-#define WAVEFORM:SAW
+#define WAVEFORM_SAW 0
+#define WAVEFORM_SQUARE 1
+#define WAVEFORM_TRIANGLE 2
+#define WAVEFORM_SINE 3
 
 class Synthesizer {
 public:
@@ -50,44 +53,45 @@ private:
   Sound lead7;
   Sound lead8;
 
+  void generateSound(Sound &lead, float amplification, int frequency, int waveform);
+
   Timer timer;
 
   Envelope envelope1;
-  ThreadSaveInt envelopeValue1;
   Envelope envelope2;
-  ThreadSaveInt envelopeValue2;
   Envelope envelope3;
-  ThreadSaveInt envelopeValue3;
   Envelope envelope4;
-  ThreadSaveInt envelopeValue4;
   Envelope envelope5;
-  ThreadSaveInt envelopeValue5;
   Envelope envelope6;
-  ThreadSaveInt envelopeValue6;
   Envelope envelope7;
-  ThreadSaveInt envelopeValue7;
   Envelope envelope8;
-  ThreadSaveInt envelopeValue8;
+
+  ThreadSaveInt envelopeAttack;
+  ThreadSaveInt envelopeDecay;
+  ThreadSaveInt envelopeSustain;
+  ThreadSaveInt envelopeRelease;
 
   Menu menu;
   int lastEncoderValue = 0;
   bool navigateMenuWithEncoder(int encoderValue);
-  void handelValueChange();
+  bool handelValueChange(uint8_t queue);
+  bool handleVariableChange(uint8_t queue, ThreadSaveInt &variable);
+  bool handleTODO(uint8_t queue);
 
   /** Bass variables and handler */
-  ThreadSaveBool playBass;
-  ThreadSaveInt root;
+  ThreadSaveInt bassPlay;
+  ThreadSaveInt bassNote;
   /** - 0 = saw
    *  - 1 = square
    *  - 2 = triangle
    *  - 3 = sine
    */
-  ThreadSaveInt waveform;
-  void handleBassVariables();
+  ThreadSaveInt bassWaveform;
 
   uint8_t *scale = scales[0];
 
-  ThreadSaveInt scaleCounter;
+  ThreadSaveInt leadScale;
+  ThreadSaveInt leadWaveform;
 };
 
 extern Synthesizer synth;

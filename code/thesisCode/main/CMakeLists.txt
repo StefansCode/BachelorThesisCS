@@ -18,7 +18,9 @@ idf_component_register(
           
           "core/signal/signal.cpp"
           "core/sound/sound.cpp"
-          "core/synthesizer/synthesizer.cpp"
+          "core/synthesizer/synthesizer_main.cpp"
+          "core/synthesizer/synthesizer_synth.cpp"
+          "core/synthesizer/synthesizer_IO.cpp"
           "core/synthesizer/synthesizer_screen.cpp"
           "core/synthesizer/notes/notes.cpp"
           "core/synthesizer/envelope/envelope.cpp"
