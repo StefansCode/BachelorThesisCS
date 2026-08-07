@@ -27,7 +27,7 @@ Signal& Signal::applyFunction(sample (*func)(sample data, void *param), void *pa
  * Arithmetic Operations
  */
 
-Signal& Signal::add(Signal other) {
+Signal& Signal::add(Signal &other) {
   this->buffer[index] += other.buffer[other.index];
   return *this;
 }
@@ -37,7 +37,7 @@ Signal& Signal::add(sample value) {
   return *this;
 }
 
-Signal& Signal::multiply(Signal other) {
+Signal& Signal::multiply(Signal &other) {
   this->buffer[index] *= other.buffer[other.index];
   return *this;
 }

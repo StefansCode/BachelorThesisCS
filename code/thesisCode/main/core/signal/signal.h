@@ -15,10 +15,10 @@ public:
 
   Signal& applyFunction(sample (*func)(sample data, void *param), void *param);
 
-  Signal& add(Signal other);
+  Signal& add(Signal &other);
   Signal& add(sample value);
 
-  Signal& multiply(Signal other);
+  Signal& multiply(Signal &other);
   Signal& multiply(sample value);
   Signal& multiply(float value);
 

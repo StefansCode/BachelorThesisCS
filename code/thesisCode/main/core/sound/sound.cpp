@@ -13,6 +13,12 @@ int Sound::calculateSaw(unsigned int frequency) {
   return (SAMPLE_MIN + (((time * frequency * SAMPLE_RANGE)/SAMPLE_RATE) % (SAMPLE_RANGE)));
 }
 
+Sound& Sound::fromSilence() {
+  time = (time + 1) % SAMPLE_RATE;
+  signal.fromValue(0);
+  return *this;
+}
+
 Sound& Sound::fromSaw(unsigned int frequency) {
   time = (time + 1) % SAMPLE_RATE;
   sample value = (sample)(calculateSaw(frequency));
@@ -48,8 +54,13 @@ Sound& Sound::amplify(float value) {
   return *this;
 }
 
-Sound& Sound::add(Sound other) {
+Sound& Sound::add(Sound &other) {
   signal.add(other.signal);
+  return *this;
+}
+
+Sound& Sound::add(sample value) {
+  signal.add(value);
   return *this;
 }
 

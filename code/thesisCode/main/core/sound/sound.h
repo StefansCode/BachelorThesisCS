@@ -11,13 +11,15 @@ private:
   uint64_t time;
 
 public:
+  Sound& fromSilence();
   Sound& fromSaw(unsigned int frequency);
   Sound& fromSine(unsigned int frequency);
   Sound& fromSquare(unsigned int frequency);
   Sound& fromTriangle(unsigned int frequency);
 
   Sound& amplify(float value);
-  Sound& add(Sound other);
+  Sound& add(Sound &other);
+  Sound& add(sample value);
 
   void toFunction(void (*output)(sample data, void *param), void *param);
   void toFunction(void (*output)(sample *data, void *param), void *param);

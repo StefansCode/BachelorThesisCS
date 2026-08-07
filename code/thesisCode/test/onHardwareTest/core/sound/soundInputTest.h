@@ -1,10 +1,11 @@
 #ifndef SOUND_INPUT_TEST_H
 #define SOUND_INPUT_TEST_H
-#include <esp_timer.h>
 #include "adapter/button/button.h"
 #include "core/sound/sound.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include <esp_timer.h>
+#include <esp_random.h>
 #include <stdio.h>
 
 Sound saw;
@@ -105,6 +106,42 @@ void runSoundInputTest_waveformCalulationSpeed() {
     }
     uint32_t t5 = millis();
     printf("Saw: %lu ms, Sine: %lu ms, Square: %lu ms, Triangle: %lu ms\r\n", t2 - t1, t3 - t2, t4 - t3, t5 - t4);
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
+  }
+}
+
+ThreadSaveInt testVariable(256);
+
+void runSoundInputTest_calulationSpeeds() {
+
+  int x = testVariable.get();
+  while (1) {
+    uint32_t t1 = millis();
+    for (int i = 0; i < SAMPLE_RATE; i++) {
+      sound.fromSaw(440);
+    }
+    uint32_t t2 = millis();
+    for (int i = 0; i < SAMPLE_RATE; i++) {
+      sound.amplify(x);
+    }
+    uint32_t t3 = millis();
+    for (int i = 0; i < SAMPLE_RATE; i++) {
+      sound.amplify(float(testVariable.get()) / 255.0f );
+    }
+    uint32_t t4 = millis();
+    for (int i = 0; i < SAMPLE_RATE; i++) {
+      sound.add(esp_random());
+    }
+    uint32_t t5 = millis();
+    for (int i = 0; i < SAMPLE_RATE; i++) {
+      sound.add(sound);
+    }
+    uint32_t t6 = millis();
+    for (int i = 0; i < SAMPLE_RATE; i++) {
+      sound.toFunction(emptyFunction, NULL);
+    }
+    uint32_t t7 = millis();
+    printf("Generate: %lu ms, Amplify: %lu ms, Amplify (Variable): %lu ms,Add(random): %lu ms, Add: %lu ms, Output: %lu ms\r\n", t2 - t1, t3 - t2, t4 - t3, t5 - t4, t6 - t5, t7 - t6);
     vTaskDelay(1000 / portTICK_PERIOD_MS);
   }
 }
