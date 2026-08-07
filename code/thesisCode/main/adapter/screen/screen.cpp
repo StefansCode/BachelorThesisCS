@@ -50,3 +50,6 @@ void Screen::drawString(const char* string, int x, int y, bool invert) {
   i2c_ssd1306_buffer_text(&i2c_ssd1306, x, y, string, invert);
 }
 
+void Screen::drawNumber(int number, int x, int y, bool invert) {
+  i2c_ssd1306_buffer_int(&i2c_ssd1306, x, y, number, invert);
+}
