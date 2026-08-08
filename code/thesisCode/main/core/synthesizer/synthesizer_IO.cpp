@@ -51,6 +51,6 @@ void Synthesizer::IOTask(void *param) {
     // }
     // rgbLed.on();
 
-    util.delay(100);
+    util.delay(10);
   }
 }
