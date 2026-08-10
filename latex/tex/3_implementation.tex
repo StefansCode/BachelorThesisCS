@@ -1,15 +1,140 @@
 \section{Implementation}
 
+\subsection{Signal}
+
+\subsubsection{Die Klasse}
+
 Ein digitales Signal wird in seiner simpelsten Form als eine sich ständig
-ändernde Variable dargestellt. Diese Variable kann zum Beispiel als 
-Gleitkommazahlen dargestellt werden, wird aber der wegen der arithmetischen
-Komplexität oft als Ganzzahl implementiert. I2S funktioniert mit 
+ändernde Variable dargestellt. Der Datentyp der Variable wird dem Nutzer 
+überlassen, indem die Signalklasse als Template implementiert wird. 
+
+\begin{lstlisting}[language=C++, 
+                       frame=single, 
+                       caption={Signalklasse Version 0.1},
+                       captionpos=b]
+template<typename T>
+class Signal {
+  T value;
+}
+\end{lstlisting}
+
+Da viele Funktionen, vor allem 
+Filter, auf vorherige Werte zu greifen, lohnt es sich diese auch zu speichen.
+Dafür bietet sich ein RingBuffer an. Ein RingBuffer ist ein fest definierter
+Speicherblock (zum Beispiel ein Array) mit fester Größe, das ist vorallen 
+auf Mikrocontrollern sehr 
+wichtig, da hier der Speicher sehr begrenzt ist und Speicherallokation während 
+der Laufzeit schnell zu Abstürzen führen kann. Ein Ringbuffer hat auserdem 
+einen Index Wert welcher anzeigt, wo in diesen Speicherblock geschrieben 
+werden soll. Der Index wird bei jedem schreiben erhöht und fängt wieder am Anfang
+des Speicherblocks an zu schreiben, wenn das Ende erreicht ist.
+Die Größe des Speichers soll auch den Nutzer überlassen werden. Sie muss aber zur
+Compilezeit festgelegt sein.
+
+\begin{lstlisting}[language=C++, 
+                       frame=single, 
+                       caption={Signalklasse Version 0.2},
+                       captionpos=b]
+template <typename T, unsigned int BUFFER_SIZE = 256>
+class Signal {
+private:
+  T buffer[BUFFER_SIZE] = {0};
+  unsigned int index = 0;
+}
+\end{lstlisting}
+
+Wenn das Signal zu einem neuen Wert übergeht, muss der Index erhöht werden.
+Das passiert in einer Inputfunktion, welche mit dem Prefix \glqq from-\grqq\ 
+gekennzeichnet sind. Eine Inputfunktion gibt immer eine Referenz auf das 
+Signalobjekt zurück.
+
+\begin{lstlisting}[language=C++, 
+                       frame=single, 
+                       caption={Signalklasse Version 0.3},
+                       captionpos=b]
+template <typename T, unsigned int BUFFER_SIZE = 256>
+class Signal {
+private:
+  T buffer[BUFFER_SIZE] = {0};
+  unsigned int index = 0;
+public:
+  Signal& fromValue(T value) {
+    index = (index + 1) % BUFFER_SIZE;
+    buffer[index] = value;
+    return *this;
+  }
+}
+\end{lstlisting}
+
+Eine Funktion, die welche mit dem Prefix \glqq return-\grqq\ 
+gekennzeichnet sind, ist eine Ausgangsfunktion. 
+Solche Funktionen geben keine Signalreferenz zurück, sondern zum Beispiel den 
+momentanen Wert.
+
+\begin{lstlisting}[language=C++, 
+                       frame=single, 
+                       caption={Signalklasse Version 0.3},
+                       captionpos=b]
+template <typename T, unsigned int BUFFER_SIZE = 256>
+class Signal {
+private:
+  T buffer[BUFFER_SIZE] = {0};
+  unsigned int index = 0;
+public:
+  ...
+
+  T returnValue() {
+    return buffer[index];
+  }
+}
+\end{lstlisting}
+
+Alle anderen Funktionen sind Funktionen, welche eine Signalreferenz zurückgeben
+und im gegansatz zu Inputfunktionen nicht den Index erhöhen. Das sind zum Beispiel
+add, multiply oder applyFunction. Letzteres erlaubt es dem Nutzer selbstdefinierte 
+in die Verarbeitungskette einzufügen.
+\begin{lstlisting}[language=C++, 
+                       frame=single, 
+                       caption={Signalklasse Version 0.4},
+                       captionpos=b]
+template <typename T, unsigned int BUFFER_SIZE = 256>
+class Signal {
+private:
+  T buffer[BUFFER_SIZE] = {0};
+  unsigned int index = 0;
+public:
+  ...
+
+  Signal& add(Signal &other) {
+    this->buffer[index] += other.buffer[other.index];
+    return *this;
+  }
+
+  Signal& multiply(T value) {
+    this->buffer[index] = T(this->buffer[index] * value);
+    return *this;
+  }
+
+  SIgnal applyFunction(T (*func)(T data, void *param), 
+                       void *param) {
+
+    buffer[index] = func(buffer[index], param);
+    return *this;
+  }
+}
+\end{lstlisting}
+
+\subsubsection{Anwendung}
+
+\subsubsection{Anmerkungen}
+Dies ist auch ein erster, großer unterschied zu
+
+\subsection{Sound}
+
+ I2S funktioniert mit 
 Pulse-Code-Modulation (PCM) Daten. Das ist ein unkomprimiertes Audio format mit
 meistens 16,24 oder 32 Bit unsigned Integern.  In dem config Header ist ein 
 Datentyp mit dem Namen sample definiert, welcher genau so ein unsigned Int ist.
 Hier kann man die Auflösung global einstellen.
 % todo finde Quellen zu PCM.
 
-Da viele Funktionen, zum 
-Beispiel das Mitteln der letzten Werte, auf vorherige Werte zu greifen muss
-lohnt es

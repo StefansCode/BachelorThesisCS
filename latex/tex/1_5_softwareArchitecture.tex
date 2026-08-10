@@ -1,15 +1,21 @@
 \section{Softwarearchitekture}
 
-Die Software ist nach der Ports-and-Adapter Struktur aufgebaut.
+Die Software ist nach der Ports-and-Adapter Struktur aufgebaut. 
 
 \subsection{Adapter}
 
 Adapter bilden die Schnittstelle zur Hardware und zur ESP-IDF.
+Dadurch lässt sich der Kern unabhängig von diesen beiden Faktoren, also
+auch auf einen normalen PC, testen. Im folgenden werden alles Adapter und 
+ihre Funktionen kurz erklärt.
+
 
 \subsection{Kern}
+
+Der Kern b
 
 Der Kern der Anwendung ist die DSV-Bibliothek.
 Diese hat als zentrales Objekt eine Klasse, welche ein Signal darstellt.
 Die Signal Klasse soll ähnlich zu Java Streams \cite{java2026stream} 
-eine FluentAPI sein, welche ein Signal bzw einen Stream erzeugt, bearbeitet
+eine FluentAPI sein, welche ein Signal erhält, bearbeitet
 und ausgibt.
