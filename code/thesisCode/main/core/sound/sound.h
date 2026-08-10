@@ -7,7 +7,7 @@
 
 class Sound {
 private:
-  Signal signal;
+  Signal<sample> signal;
   uint64_t time;
 
 public:
