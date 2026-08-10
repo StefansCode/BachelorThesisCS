@@ -84,8 +84,8 @@ uint16_t buffer[BUFFER_SIZE] = {0};
 
 void fillBufferWithSaw(uint64_t time, uint32_t freq, uint32_t divisor) {
   for (int i = 0; i < BUFFER_SIZE; i++) {
-    buffer[i] = ((((time * UINT16_MAX * freq) / SAMPLE_RATE)) % UINT16_MAX) / divisor;
-    time = (time + 1) % SAMPLE_RATE;
+    buffer[i] = ((((time * UINT16_MAX * freq) / STANDART_SAMPLE_RATE)) % UINT16_MAX) / divisor;
+    time = (time + 1) % STANDART_SAMPLE_RATE;
   }
 }
 uint64_t globalTime = 0;

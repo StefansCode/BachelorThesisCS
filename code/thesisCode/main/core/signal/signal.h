@@ -2,45 +2,52 @@
 #define SIGNAL_H
 #include "config.h"
 
-template <typename T>
+template <typename T, unsigned int BUFFER_SIZE = 256>
 class Signal {
 private:
   T buffer[BUFFER_SIZE] = {0};
   unsigned int index = 0;
-  unsigned int size = BUFFER_SIZE;
 
 public:
+  unsigned int getSize();
 
-  Signal& fromFunction(T (*input)(void *param), void *param);
-  Signal& fromValue(T value);
+  Signal &fromFunction(T (*input)(void *param), void *param);
+  Signal &fromValue(T value);
 
-  Signal& applyFunction(T (*func)(T data, void *param), void *param);
+  Signal &applyFunction(T (*func)(T data, void *param), void *param);
+  Signal &applyFunction(T (*func)(T *data, void *param), void *param);
 
-  Signal& add(Signal<T> &other);
-  Signal& add(T value);
+  Signal &add(Signal<T, BUFFER_SIZE> &other);
+  Signal &add(T value);
 
-  Signal& multiply(Signal<T> &other);
-  Signal& multiply(T value);
-  Signal& multiply(float value);
+  Signal &multiply(Signal<T, BUFFER_SIZE> &other);
+  Signal &multiply(T value);
+  Signal &multiply(float value);
 
-  Signal& FourierTransform();
+  Signal &FourierTransform();
 
-  void toFunction(void (*output)(T data, void *param), void *param);
-  void toFunction(void (*output)(T *data, void *param), void *param);
+  T returnValue();
+  T *returnBuffer();
 };
 
+template <typename T, unsigned int BUFFER_SIZE>
+unsigned int Signal<T, BUFFER_SIZE>::getSize() {
+  return BUFFER_SIZE;
+}
 
 /**
  * Input
  */
-template <typename T>
-Signal<T>& Signal<T>::fromFunction(T (*input)(void *param), void *param) {
+template <typename T, unsigned int BUFFER_SIZE>
+Signal<T, BUFFER_SIZE> &Signal<T, BUFFER_SIZE>::fromFunction(T (*input)(void *param), void *param) {
+  index = (index + 1) % BUFFER_SIZE;
   buffer[index] = input(param);
   return *this;
 }
 
-template <typename T>
-Signal<T>& Signal<T>::fromValue(T value) {
+template <typename T, unsigned int BUFFER_SIZE>
+Signal<T, BUFFER_SIZE> &Signal<T, BUFFER_SIZE>::fromValue(T value) {
+  //index = (index + 1) % BUFFER_SIZE;
   buffer[index] = value;
   return *this;
 }
@@ -49,9 +56,17 @@ Signal<T>& Signal<T>::fromValue(T value) {
  * General Operations
  */
 
-template <typename T>
-Signal<T>& Signal<T>::applyFunction(T (*func)(T data, void *param), void *param) {
+template <typename T, unsigned int BUFFER_SIZE>
+Signal<T, BUFFER_SIZE> &Signal<T, BUFFER_SIZE>::applyFunction(T (*func)(T data, void *param), void *param) {
   buffer[index] = func(buffer[index], param);
+  return *this;
+}
+
+template <typename T, unsigned int BUFFER_SIZE>
+Signal<T, BUFFER_SIZE> &Signal<T, BUFFER_SIZE>::applyFunction(T (*func)(T *data, void *param), void *param) {
+  if (index == 0) {
+    func(buffer, param);
+  }
   return *this;
 }
 
@@ -59,32 +74,32 @@ Signal<T>& Signal<T>::applyFunction(T (*func)(T data, void *param), void *param)
  * Arithmetic Operations
  */
 
-template <typename T>
-Signal<T>& Signal<T>::add(Signal<T> &other) {
+template <typename T, unsigned int BUFFER_SIZE>
+Signal<T, BUFFER_SIZE> &Signal<T, BUFFER_SIZE>::add(Signal<T, BUFFER_SIZE> &other) {
   this->buffer[index] += other.buffer[other.index];
   return *this;
 }
 
-template <typename T>
-Signal<T>& Signal<T>::add(T value) {
+template <typename T, unsigned int BUFFER_SIZE>
+Signal<T, BUFFER_SIZE> &Signal<T, BUFFER_SIZE>::add(T value) {
   this->buffer[index] += value;
   return *this;
 }
 
-template <typename T>
-Signal<T>& Signal<T>::multiply(Signal<T> &other) {
+template <typename T, unsigned int BUFFER_SIZE>
+Signal<T, BUFFER_SIZE> &Signal<T, BUFFER_SIZE>::multiply(Signal<T, BUFFER_SIZE> &other) {
   this->buffer[index] *= other.buffer[other.index];
   return *this;
 }
 
-template <typename T>
-Signal<T>& Signal<T>::multiply(T value) {
+template <typename T, unsigned int BUFFER_SIZE>
+Signal<T, BUFFER_SIZE> &Signal<T, BUFFER_SIZE>::multiply(T value) {
   this->buffer[index] *= value;
   return *this;
 }
 
-template <typename T>
-Signal<T>& Signal<T>::multiply(float value) {
+template <typename T, unsigned int BUFFER_SIZE>
+Signal<T, BUFFER_SIZE> &Signal<T, BUFFER_SIZE>::multiply(float value) {
   this->buffer[index] = T(this->buffer[index] * value);
   return *this;
 }
@@ -93,18 +108,14 @@ Signal<T>& Signal<T>::multiply(float value) {
  * Output
  */
 
-template <typename T>
-void Signal<T>::toFunction(void (*output)(T data, void *param), void *param) {
-  output(buffer[index], param);
-  index = (index + 1) % BUFFER_SIZE;
+template <typename T, unsigned int BUFFER_SIZE>
+T Signal<T, BUFFER_SIZE>::returnValue() {
+  return buffer[index];
 }
 
-template <typename T>
-void Signal<T>::toFunction(void (*output)(T *data, void *param), void *param) {
-  index = (index + 1) % BUFFER_SIZE;
-  if(index == 0) {
-    output(buffer, param);
-  }
+template <typename T, unsigned int BUFFER_SIZE>
+T *Signal<T, BUFFER_SIZE>::returnBuffer() {
+  return buffer;
 }
 
 #endif // SIGNAL_H

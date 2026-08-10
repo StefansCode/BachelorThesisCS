@@ -1,8 +1,9 @@
 #include "synthesizer.h"
 
 
-void sendData(sample *data, void *param) {
-  dac.sendBuffer(data, BUFFER_SIZE * sizeof(sample));
+sample sendData(sample *data, void *param) {
+  dac.sendBuffer(data, SOUND_BUFFER_SIZE * sizeof(sample));
+  return 0;
 }
 
 
@@ -52,7 +53,7 @@ void Synthesizer::synthTask(void *param) {
 
     // taskAnalyser.startTimerWithId(4);
 
-    bass.amplify(0.3).toFunction(sendData, NULL);
+    bass.amplify(0.3).applyFunction(sendData, NULL);
 
     // taskAnalyser.stopTimerWithId(4);
   }

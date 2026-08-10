@@ -17,7 +17,7 @@
 extern "C" void app_main(void) {
 
   buttons.init();
-  dac.init(SAMPLE_RATE);
+  dac.init(STANDART_SAMPLE_RATE);
   encoder.init();
   rgbLed.init();
   screen.init();
@@ -33,7 +33,7 @@ extern "C" void app_main(void) {
 
   // runScreenFontTest();
 
-  synth.run();
+  // synth.run();
 
   while(1){
     vTaskDelay(1000/portTICK_PERIOD_MS);

@@ -3,8 +3,8 @@
 #include <stdint.h>
 
 // possible sample rates: 44100, 22050, 11025 
-#define SAMPLE_RATE 11025
-#define BUFFER_SIZE 256
+#define STANDART_SAMPLE_RATE 44100
+#define SOUND_BUFFER_SIZE 256
 typedef int16_t sample;
 
 const uint8_t BITS_PER_SAMPLE = sizeof(sample) * 8;

@@ -16,14 +16,16 @@ Sound triangle;
 
 Sound sound;
 
-void printOneSignal(sample data, void *param) {
+sample printOneSignal(sample data, void *param) {
   const char *name = (const char *)param;
   printf(">%s:%d\r\n", name, data);
+  return data;
 }
 
-void printSignal(sample data, void *param) {
+sample printSignal(sample data, void *param) {
   const char *name = (const char *)param;
   printf("%s:%d ", name, data);
+  return data;
 }
 
 void runSoundInputTest_allWaveforms() {
@@ -31,15 +33,15 @@ void runSoundInputTest_allWaveforms() {
   while (1) {
     x = x + 0.1;
     printf(">");
-    saw.fromSaw(440).toFunction(printSignal, (void *)"Saw");
+    saw.fromSaw(440).applyFunction(printSignal, (void *)"Saw");
     printf(",");
-    saw2.fromSaw(880).toFunction(printSignal, (void *)"Saw2");
+    saw2.fromSaw(880).applyFunction(printSignal, (void *)"Saw2");
     printf(",");
-    sine.fromSine(440).toFunction(printSignal, (void *)"Sine");
+    sine.fromSine(440).applyFunction(printSignal, (void *)"Sine");
     printf(",");
-    square.fromSquare(440).toFunction(printSignal, (void *)"Square");
+    square.fromSquare(440).applyFunction(printSignal, (void *)"Square");
     printf(",");
-    triangle.fromTriangle(440).toFunction(printSignal, (void *)"Triangle");
+    triangle.fromTriangle(440).applyFunction(printSignal, (void *)"Triangle");
     printf("\r\n");
     vTaskDelay(pdMS_TO_TICKS(100));
   }
@@ -73,7 +75,7 @@ void runSoundInputTest_switchWaveforms() {
       sound = sound.fromTriangle(440);
     }
 
-    sound.toFunction(printOneSignal, (void *)"sound");
+    sound.applyFunction(printOneSignal, (void *)"sound");
     vTaskDelay(20 / portTICK_PERIOD_MS);
   }
 }
@@ -89,20 +91,20 @@ uint32_t millis() {
 void runSoundInputTest_waveformCalulationSpeed() {
   while (1) {
     uint32_t t1 = millis();
-    for (int i = 0; i < SAMPLE_RATE; i++) {
-      sound.fromSaw(440).toFunction(emptyFunction, NULL);
+    for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
+      sound.fromSaw(440);
     }
     uint32_t t2 = millis();
-    for (int i = 0; i < SAMPLE_RATE; i++) {
-      sound.fromSine(440).toFunction(emptyFunction, NULL);
+    for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
+      sound.fromSine(440);
     }
     uint32_t t3 = millis();
-    for (int i = 0; i < SAMPLE_RATE; i++) {
-      sound.fromSquare(440).toFunction(emptyFunction, NULL);
+    for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
+      sound.fromSquare(440);
     }
     uint32_t t4 = millis();
-    for (int i = 0; i < SAMPLE_RATE; i++) {
-      sound.fromTriangle(440).toFunction(emptyFunction, NULL);
+    for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
+      sound.fromTriangle(440);
     }
     uint32_t t5 = millis();
     printf("Saw: %lu ms, Sine: %lu ms, Square: %lu ms, Triangle: %lu ms\r\n", t2 - t1, t3 - t2, t4 - t3, t5 - t4);
@@ -117,31 +119,31 @@ void runSoundInputTest_calulationSpeeds() {
   int x = testVariable.get();
   while (1) {
     uint32_t t1 = millis();
-    for (int i = 0; i < SAMPLE_RATE; i++) {
+    for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
       sound.fromSaw(440);
     }
     uint32_t t2 = millis();
-    for (int i = 0; i < SAMPLE_RATE; i++) {
+    for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
       sound.amplify(x);
     }
     uint32_t t3 = millis();
-    for (int i = 0; i < SAMPLE_RATE; i++) {
+    for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
       sound.amplify(float(testVariable.get()) / 255.0f );
     }
     uint32_t t4 = millis();
-    for (int i = 0; i < SAMPLE_RATE; i++) {
-      sound.add(esp_random());
+    for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
+      int x = testVariable.get();
     }
     uint32_t t5 = millis();
-    for (int i = 0; i < SAMPLE_RATE; i++) {
+    for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
       sound.add(sound);
     }
     uint32_t t6 = millis();
-    for (int i = 0; i < SAMPLE_RATE; i++) {
-      sound.toFunction(emptyFunction, NULL);
+    for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
+      sound.returnBuffer();
     }
     uint32_t t7 = millis();
-    printf("Generate: %lu ms, Amplify: %lu ms, Amplify (Variable): %lu ms,Add(random): %lu ms, Add: %lu ms, Output: %lu ms\r\n", t2 - t1, t3 - t2, t4 - t3, t5 - t4, t6 - t5, t7 - t6);
+    printf("Generate: %lu ms, Amplify: %lu ms, Amplify (Variable): %lu ms,set Variable: %lu ms, Add: %lu ms, Output: %lu ms\r\n", t2 - t1, t3 - t2, t4 - t3, t5 - t4, t6 - t5, t7 - t6);
     vTaskDelay(1000 / portTICK_PERIOD_MS);
   }
 }
