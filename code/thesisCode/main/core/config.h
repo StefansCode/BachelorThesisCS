@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 // possible sample rates: 44100, 22050, 11025 
-#define STANDART_SAMPLE_RATE 44100
+#define STANDART_SAMPLE_RATE 11025
 #define SOUND_BUFFER_SIZE 256
 typedef int16_t sample;
 
