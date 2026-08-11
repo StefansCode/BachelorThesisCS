@@ -1,5 +1,9 @@
 #include "sound.h"
-#if STANDART_SAMPLE_RATE == 44100
+#if STANDART_SAMPLE_RATE == 32768
+  #include "sineTable32768.h"
+#elif STANDART_SAMPLE_RATE == 16384
+  #include "sineTable16384.h"
+#elif STANDART_SAMPLE_RATE == 44100
   #include "sineTable44100.h"
 #elif STANDART_SAMPLE_RATE == 22050
   #include "sineTable22050.h"
