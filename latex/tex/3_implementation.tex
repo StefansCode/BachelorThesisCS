@@ -27,7 +27,7 @@ wichtig, da hier der Speicher sehr begrenzt ist und Speicherallokation während
 der Laufzeit schnell zu Abstürzen führen kann. Ein Ringbuffer hat auserdem 
 einen Index Wert welcher anzeigt, wo in diesen Speicherblock geschrieben 
 werden soll. Der Index wird bei jedem schreiben erhöht und fängt wieder am Anfang
-des Speicherblocks an zu schreiben, wenn das Ende erreicht ist.
+des Speicherblocks anzuschreiben, wenn das Ende erreicht ist.
 Die Größe des Speichers soll auch den Nutzer überlassen werden. Sie muss aber zur
 Compilezeit festgelegt sein.
 
@@ -93,6 +93,7 @@ Alle anderen Funktionen sind Funktionen, welche eine Signalreferenz zurückgeben
 und im gegansatz zu Inputfunktionen nicht den Index erhöhen. Das sind zum Beispiel
 add, multiply oder applyFunction. Letzteres erlaubt es dem Nutzer selbstdefinierte 
 in die Verarbeitungskette einzufügen.
+
 \begin{lstlisting}[language=C++, 
                        frame=single, 
                        caption={Signalklasse Version 0.4},
@@ -124,12 +125,48 @@ public:
 }
 \end{lstlisting}
 
+% mehr funktionen einbauen
+
 \subsubsection{Anwendung}
+% wohin soll das Example?
+Im Anhang sieht man eine Beispielanwendung in der ArduinoIDE. Hier werden ein
+Lichtabhängiger Widersand, und ein Potenztiometer eingelesen. Der Potentiometerwert
+wird dazu verwendet, um den aktuell stabielen Lichtwert zu kompensieren. Dann wird
+eine LED angeschaltet, wenn der compensierte lichtwert unter 0 sinkt. Hält man den 
+Lichtabhängigen Wiederstand gegen eine Lichtquelle oder einen reflektierenden 
+hintergrund kann durch Blocken des Lichts eine Bewegung erkannt werden. 
+(Es gibt bessere Möglichkeiten dies umzusetzen aber zu Demonstrationszwecken 
+sollte dieses Beispiel reichen).
+
+Der Code verkürzt sich hier nicht wirklich. Im Gegenteil er wird wegen der 
+zusätzlich definierten Funktionen erstmal komplexer. Sollen nun weitere 
+Funkionen wie zum Beispiel Filter in die Verarbeitungskette eingebracht werden, 
+kann dies mit der Signalbibliothek einfacher und schöner umgesetzt werden.
+
+Ein Besseres und ausfürlicheres Beispiel liefert die Erweiterung von Signal zu 
+Sound im nächsten Unterkapitel und die Anwendung der Soundklasse als Synthesizer
+im nächsetn Kapitel.
 
 \subsubsection{Anmerkungen}
-Dies ist auch ein erster, großer unterschied zu
+Ein großer Unterschied zwischen der Signalklasse und Java-streams ist, dass 
+die Inputfunktionen der Signalklasse keine statischen Memberfunktionen sind.
+Das liegt daran, dass ein Signal im Normalfall in einer Endlosschleife 
+aktualisiert wird und nicht wie ein Stream einmal erschaffen und direkt 
+beendet wird. 
+
+Ein weiterer wichtiger Punkt ist, dass der Index in den Inputfunktionen erhöht
+werden muss, da diese der auch einen neuen Wert setzt und für andere Funktionen 
+nicht garantiert ist, dass diese aufgerufen werden.
+
+Außerdem ist es wichtig, dass nur Referenzen des Signals zurück- und übergeben werden. 
+Auch wenn das Signal nicht verändert wird ist dies wichtig, da so zeitintensieves
+Kopieren des Buffers verhindert wird.
 
 \subsection{Sound}
+
+Die Soundklasse ist eine Erweiterung bzw. eine Anwendung der Signalklasse. 
+Diese Erweiterung wird umgesetzt, indem die Soundklasse ein Signal als 
+Membervariable besitzt.
 
  I2S funktioniert mit 
 Pulse-Code-Modulation (PCM) Daten. Das ist ein unkomprimiertes Audio format mit
