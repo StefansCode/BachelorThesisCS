@@ -10,7 +10,6 @@
 
 #include "sound/sound.h"
 
-#include "config.h"
 #include "notes/notes.h"
 #include "menu/menu.h"
 #include "envelope/envelope.h"

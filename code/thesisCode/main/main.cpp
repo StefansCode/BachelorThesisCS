@@ -5,7 +5,7 @@
 #include "adapter/rgbLed/rgbLed.h"
 #include "adapter/screen/screen.h"
 
-#include "config.h"
+#include "sound/config.h"
 
 #include "core/synthesizer/synthesizer.h"
 
