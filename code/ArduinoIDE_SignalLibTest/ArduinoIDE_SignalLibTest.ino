@@ -1,47 +1,49 @@
-#include "../thesisCode/main/core/signal/singal.h"
+#include "signal.h"
 
-Signal<int> lightSignal;
-Signal<int> potiSignal;
+Signal<int, 16> lightSignal;
+Signal<int, 16> potiSignal;
 
 void setup() {
   pinMode(2, OUTPUT);
   Serial.begin(9600);
 }
-int print(int sample, void * param) {
-  const char * variableName = (const char*) param;
-  Serial.print(sprintf("%s: %d ", variableName, sample));
-}
-
-void setLight
 
 void loop() {
 
   potiSignal.fromValue(analogRead(A7))
-            .applyFunction(print, "poti")
+            .applyFunction(printSignal, "poti")
             .multiply(-1);
   
   lightSignal.fromValue(analogRead(A6))
-             .applyFunction(print, "lightLevel")
+             .applyFunction(printSignal, "lightLevel")
              .add(potiSignal)
-             .applyFunction(print, "calibrated")
-             .toFunction();
-  
-  int calibrated = lightLevel - poti;
- 
-  Serial.print(" calibrated:");
-  Serial.println(calibrated);
+             .applyFunction(printSignal, "calibrated")
+             .applyFunction(switchLight, NULL);
 
-  if(calibrated < 0) {
+  Serial.println();
+  delay(1);
+}
+
+
+int printSignal(int sample, const void * param) {
+  const char * variableName = (const char*) param;
+  
+  Serial.print(variableName);
+  Serial.print(":");
+  Serial.print(sample);
+  Serial.print(" ");
+
+  return sample;
+}
+
+int switchLight(int sample, void * param) {
+    if(sample < 0) {
     digitalWrite(2,HIGH);
   } else {
     digitalWrite(2,LOW);
   }
-  
-  
-  delay(1);                       // wait for a second
+  return sample;
 }
-
-
 
 
 

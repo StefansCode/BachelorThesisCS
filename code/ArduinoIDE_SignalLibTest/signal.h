@@ -1,6 +1,5 @@
 #ifndef SIGNAL_H
 #define SIGNAL_H
-#include "config.h"
 
 template <typename T, unsigned int BUFFER_SIZE = 256>
 class Signal {
