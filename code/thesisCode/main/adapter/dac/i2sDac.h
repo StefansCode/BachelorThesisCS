@@ -5,7 +5,7 @@
 
 class I2sDac {
 public:
-  esp_err_t init(unsigned int sampleRate);
+  esp_err_t init(unsigned int sampleRate, unsigned int bitsPerSample);
   size_t sendBuffer(const void *buffer, unsigned int len);
   esp_err_t getError();
 

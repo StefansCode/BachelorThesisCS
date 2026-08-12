@@ -10,13 +10,25 @@ I2sDac dac;
 
 i2s_chan_handle_t i2s_tx_handle;
 
-esp_err_t I2sDac::init(unsigned int sampleRate) {
+esp_err_t I2sDac::init(unsigned int sampleRate, unsigned int bitsPerSample) {
+
+  if(// bitsPerSample != 8 &&     8Bit is not supported by the MAX98357A
+     bitsPerSample != 16 && 
+     bitsPerSample != 24 && 
+     bitsPerSample != 32){
+    return ESP_ERR_INVALID_ARG;
+  }
+
+  /** supported sample rates by the MAX98357A */
+  if (sampleRate < 8000 || sampleRate > 96000) {
+    return ESP_ERR_INVALID_ARG;
+  }
 
   i2s_chan_config_t chan_cfg = I2S_CHANNEL_DEFAULT_CONFIG(I2S_NUM_AUTO, I2S_ROLE_MASTER);
 
   i2s_std_config_t i2s_config = {
       .clk_cfg = I2S_STD_CLK_DEFAULT_CONFIG(sampleRate),
-      .slot_cfg = I2S_STD_PHILIPS_SLOT_DEFAULT_CONFIG(I2S_DATA_BIT_WIDTH_16BIT, I2S_SLOT_MODE_MONO),
+      .slot_cfg = I2S_STD_PHILIPS_SLOT_DEFAULT_CONFIG((i2s_data_bit_width_t) bitsPerSample, I2S_SLOT_MODE_MONO),
       .gpio_cfg = {
           .mclk = I2S_GPIO_UNUSED,
           .bclk = PIN_I2S_BCLK,

@@ -17,7 +17,7 @@
 extern "C" void app_main(void) {
 
   buttons.init();
-  dac.init(STANDART_SAMPLE_RATE);
+  dac.init(STANDART_SAMPLE_RATE, BITS_PER_SAMPLE);
   encoder.init();
   rgbLed.init();
   screen.init();
