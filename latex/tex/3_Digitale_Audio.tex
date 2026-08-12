@@ -1,0 +1,37 @@
+\section{Digitale Audio}
+
+
+Die Soundklasse ist eine Erweiterung bzw. eine Anwendung der Signalklasse. 
+Diese Erweiterung wird umgesetzt, indem die Soundklasse ein Signal als 
+Membervariable besitzt.
+
+\subsection{Auflösung und Abtastrate}
+
+I2S verwendet wie viele ander digitale Audio Systeme
+Pulse-Code-Modulation (PCM) Daten. Das ist ein unkomprimiertes Audio format mit
+meistens 16, 24 oder 32 Bit unsigned Integern. In dem config Header ist ein 
+Datentyp mit dem Namen sample definiert, welcher genau so ein unsigned Int ist.
+Hier kann man die Auflösung global einstellen.
+
+TODO finde Quellen zu PCM.
+
+In der config-Datei kann man auch die Abtatsrate (Samplerate) 
+einstellen. Dies ist die Frequenz in Hertz (samples pro Sekunde) 
+in der sich das signal ändert. Aus dem Abtasttheorem 
+\cite{grueningen2008dsv}[2.6.2] folgt, dass die Abtatsrate größer der 
+höchsten Frequenz eines Signales sein soll. Das menschliche Gehöhr 
+kann in der Regel Frequezen zwischen 20 und 20000 Hertz wahrnehmen.
+(TODO Quelle finden). Deshalb wurde 44100 als Abtastrate für CDs und 
+infolge dessen für viele andere digitale Systeme gewählt. Da die 
+Samplerate in der 
+
+
+\subsection{Generierung von Audiosignalen}
+TODO: Wie und Warum man welche Audiosignale generiert.
+
+\subsection{GrundOperationen}
+TODO: Addieren und multiplizieren von Signalen und die probleme dabei.
+z.b. Overflow
+
+\subsection{andere operationen}
+TODO: vlt delay, filter distortion, etc. vlt schaffe ich es noch das zu implementieren.

@@ -10,12 +10,66 @@ auch auf einen normalen PC, testen. Im folgenden werden alles Adapter und
 ihre Funktionen kurz erklärt.
 
 
+\subsubsection{Digital-to-Analog Converter}
+Ein MAX98357A-DAC (Digital-to-Analog Converter) \cite{MAX983572026Datasheet}
+wandelt das digitale Signal in
+analoges Signal um und verstärkt es so, dass es direkt an einen passenden 
+Lautsprecher weitergeleitet werden kann. Die Kommunikation zwischen dem DAC und
+dem ESP32 findet über das I2S-Protokoll statt. Dazu wird die I2S-API der ESP-IDF
+im Standard, TX und Mono-Modus verwendet. Die Abtastrate und die Auflösung des 
+Signals über eine Initialisierungsfunkion Übergeben. Der MAX98357A kann 
+Abtatsraten zuwischen 8kHz und 96kHz und eine Auflösung von 16, 24 oder 32 bit
+verarbeiten \cite{MAX983572026Datasheet}[Digital Audio Interface Modes].
+Ein Signal kann als Buffer über die Funktion sendBuffer an den DAC gesendet werden.
+
+The communication between the
+DAC and the ESP32 happens via the I2S-protocol in standard, TX and mono mode
+as described in the ESP-IDF-Documentation \cite{espidf2026api}. A signal can
+be sent to the DAC by updating a buffer and calling the sendBuffer function 
+with this buffer.
+
+%blocking funktion
+
+%tread save
+
+%code example
+
+%pictures
+
+\subsubsection{User input}
+The button Input can be read be calling button.getState\(Pin\) with the 
+Pin-macro of the desired Pin. This returns weather or not the given pin is 
+pulled low by pressing the button. The function readQueue will read from a
+queue that contains the last 10 button presses. If it is used it should be
+read accordingly often to avoid overfilling it. The debounstime for the 
+buttons is 200ms.
+% das ist sehr hoch vlt sollte ich da nochmal drüberschauen
+
+A rotary encoder is used to edit numerical value. The encoder 
+software-interface is implemented using the pulse-control-API as in
+the ESP-IDF encoder example and contains two functions to interact with it. 
+These are getValue and resetValue. getValue returns the current encoder value 
+which can be incremented or decremented by turning the encoder. It goes to 
+zero when reaching 256 or -256 or when calling resetValue.
+
+\subsubsection{RGB-LED and LED}
+An RGB-LED is used for...
+%TODO
+
+\subsubsection{Screen}
+An I2C OLED-screen is integrated by using a library from voidlooprobotechs
+github \cite{voidloop2026ssd1306}.
+% schreiben falls ich die bib erweitere
+
+\cite{espidf2026api}
+
+TODO Timer, ThreadsaveVariable, Util
+
 \subsection{Kern}
 
-Der Kern b
-
-Der Kern der Anwendung ist die DSV-Bibliothek.
-Diese hat als zentrales Objekt eine Klasse, welche ein Signal darstellt.
-Die Signal Klasse soll ähnlich zu Java Streams \cite{java2026stream} 
-eine FluentAPI sein, welche ein Signal erhält, bearbeitet
-und ausgibt.
+Der Kern der Anwendung besteht aus 3 Komponenten. Das sind die DSV-Bibliothek, welche
+wie oben beschrieben, als eine Klasse namens Signal implementiert ist. Dann eine 
+Erweiterung dieser Klasse namens Sound welche ein Audiosignal darstellt
+und zuletzt die Synthesizer-Klasse, welche die Soundklasse nutzt, um mithilfe der 
+Hardware einen Synthesizer zu implementieren. Diese 3 Komponenten werden in den 
+folgenden Kapiteln beschrieben.
