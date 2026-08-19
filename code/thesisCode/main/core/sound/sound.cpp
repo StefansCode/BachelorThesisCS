@@ -1,17 +1,4 @@
 #include "sound.h"
-#if STANDART_SAMPLE_RATE == 32768
-  #include "sineTable32768.h"
-#elif STANDART_SAMPLE_RATE == 16384
-  #include "sineTable16384.h"
-#elif STANDART_SAMPLE_RATE == 44100
-  #include "sineTable44100.h"
-#elif STANDART_SAMPLE_RATE == 22050
-  #include "sineTable22050.h"
-#elif STANDART_SAMPLE_RATE == 11025
-  #include "sineTable11025.h"
-#else
-  #error "Unsupported STANDART_SAMPLE_RATE. Please use 44100, 22050, or 11025."
-#endif
 
 int Sound::calculateSaw(unsigned int frequency) {
   return (SAMPLE_MIN + (((time * frequency * SAMPLE_RANGE)/STANDART_SAMPLE_RATE) % (SAMPLE_RANGE)));

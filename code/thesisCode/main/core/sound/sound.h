@@ -5,32 +5,56 @@
 #include "config.h"
 #include "signal/signal.h"
 
+#if STANDART_SAMPLE_RATE == 32768
+  #include "sineTable32768.h"
+#elif STANDART_SAMPLE_RATE == 16384
+  #include "sineTable16384.h"
+#elif STANDART_SAMPLE_RATE == 44100
+  #include "sineTable44100.h"
+#elif STANDART_SAMPLE_RATE == 22050
+  #include "sineTable22050.h"
+#elif STANDART_SAMPLE_RATE == 11025
+  #include "sineTable11025.h"
+#else
+  #error "Unsupported STANDART_SAMPLE_RATE. Please use 44100, 22050, or 11025."
+#endif
+
 class Sound {
 private:
   Signal<sample, SOUND_BUFFER_SIZE> signal;
-  uint64_t time = 0;
+  unsigned int time = 0;
   unsigned int sampleRate = STANDART_SAMPLE_RATE;
 
 public:
+  void resetTime() {
+    time = 0;
+  }
+
+sample loadSine(unsigned int frequency) {
+  
+  time = (time + 1) % STANDART_SAMPLE_RATE;
+  sample value = sineLookupTable[(time * frequency) % STANDART_SAMPLE_RATE];
+  return value;
+}
   void setSampleRate(unsigned int sampleRate) {
     this->sampleRate = sampleRate;
   }
 
-  Sound& fromSilence();
-  Sound& fromSaw(unsigned int frequency);
-  Sound& fromSine(unsigned int frequency);
-  Sound& fromSquare(unsigned int frequency);
-  Sound& fromTriangle(unsigned int frequency);
+  Sound &fromSilence();
+  Sound &fromSaw(unsigned int frequency);
+  Sound &fromSine(unsigned int frequency);
+  Sound &fromSquare(unsigned int frequency);
+  Sound &fromTriangle(unsigned int frequency);
 
   Sound &applyFunction(sample (*func)(sample data, void *param), void *param);
   Sound &applyFunction(sample (*func)(sample *data, void *param), void *param);
 
-  Sound& amplify(float value);
-  Sound& add(Sound &other);
-  Sound& add(sample value);
+  Sound &amplify(float value);
+  Sound &add(Sound &other);
+  Sound &add(sample value);
 
   sample returnValue();
-  sample* returnBuffer();
+  sample *returnBuffer();
 
 private:
   int calculateSaw(unsigned int frequency);

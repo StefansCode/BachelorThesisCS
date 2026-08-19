@@ -1,11 +1,12 @@
 #ifndef SOUND_INPUT_TEST_H
 #define SOUND_INPUT_TEST_H
 #include "adapter/button/button.h"
+#include "adapter/util/util.h"
 #include "core/sound/sound.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include <esp_timer.h>
 #include <esp_random.h>
+#include <esp_timer.h>
 #include <stdio.h>
 
 Sound saw;
@@ -112,39 +113,41 @@ void runSoundInputTest_waveformCalulationSpeed() {
   }
 }
 
-ThreadSaveInt testVariable(256);
+ThreadSaveFloat testVariableFloat(0.25f);
 
 void runSoundInputTest_calulationSpeeds() {
-
-  int x = testVariable.get();
+  unsigned int x = 0;
   while (1) {
-    uint32_t t1 = millis();
-    for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
-      sound.fromSaw(440);
+    for (int j = 0; j < 1000; j++) {
+      saw.resetTime();
+      sine.resetTime();
+      float t1 = ((float)util.micros()) / 1000.0f / 1000.0f * 100.0f;
+      for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
+        saw.fromSaw(j);
+      }
+      float t2 = ((float)util.micros()) / 1000.0f / 1000.0f * 100.0f;
+      for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
+        x = sine.loadSine(j);
+      }
+      float t3 = ((float)util.micros()) / 1000.0f / 1000.0f * 100.0f;
+      for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
+        saw.amplify(testVariableFloat.get());
+      }
+      float t4 = ((float)util.micros()) / 1000.0f / 1000.0f * 100.0f;
+      for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
+        saw.add(sine);
+      }
+      float t5 = ((float)util.micros()) / 1000.0f / 1000.0f * 100.0f;
+      for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
+        saw.returnBuffer();
+      }
+      float t6 = ((float)util.micros()) / 1000.0f / 1000.0f * 100.0f;
+      printf("frequenzy: %d, Generate saw: %f %%, generate sine: %f %%, amplify: %f %%, add: %f %%, return: %f %%\r\n", j, t2 - t1, t3 - t2, t4 - t3, t5 - t4, t6 - t5);
+      vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
-    uint32_t t2 = millis();
-    for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
-      sound.amplify(x);
-    }
-    uint32_t t3 = millis();
-    for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
-      sound.amplify(float(testVariable.get()) / 255.0f );
-    }
-    uint32_t t4 = millis();
-    for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
-      int x = testVariable.get();
-    }
-    uint32_t t5 = millis();
-    for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
-      sound.add(sound);
-    }
-    uint32_t t6 = millis();
-    for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
-      sound.returnBuffer();
-    }
-    uint32_t t7 = millis();
-    printf("Generate: %lu ms, Amplify: %lu ms, Amplify (Variable): %lu ms,set Variable: %lu ms, Add: %lu ms, Output: %lu ms\r\n", t2 - t1, t3 - t2, t4 - t3, t5 - t4, t6 - t5, t7 - t6);
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
+    printf("%d", saw.returnValue());
+    printf("%d", sine.returnValue());
+    printf("%d", x);
   }
 }
 #endif // SOUND_INPUT_TEST_H
