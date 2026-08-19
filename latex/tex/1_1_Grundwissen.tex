@@ -1,0 +1,268 @@
+\section{Grundwissen}
+
+
+Zunächst wird die Theorie der Signale und Systeme kurz erklärt, wie sie 
+in Grüningens Buch digitale Signalverarbeitung \cite{grueningen2008dsv}
+beschrieben wird. In Kapitel 4 wird eine mögliche Implementierung vorgestellt.
+
+Anschließen wird erklärt wie ein Ton digital als Signal dargestellt 
+werden kann. Die Implementierung dazu steht in Kapitel 5.
+
+\subsection{Digitale Signale und Systeme}
+
+Ein (kontinuierliches) \textbf{Signal} ist eine Funktion 
+$f: \mathbb{R} \rightarrow \mathbb{R}$ und beschreibt einen sich
+über die Zeit verändenden Wert.
+
+\textbf{Digitale Signale} hingegen sind Funktion 
+$f: \mathbb{Z} \rightarrow \mathbb{Z}$. Sie stellen in den meisten Fällen ein 
+kontinuierliches Signal dar.
+
+Unten wird die Funktion $ t \rightarrow sin(2\pi t) $ einmal als 
+kontinuierliches ($f_k$) und einmal als digitales Signal ($f_d$) dargestellt.
+
+\begin{center}
+    \begin{tikzpicture}
+    \begin{axis}[
+        width=\textwidth, % Nutzt die volle Breite der Minipage
+        height=4cm,
+        axis lines = middle,
+        xlabel = $t$,
+        ylabel = {$f(t)$},
+        domain = -2:2,
+        samples = 100,
+        grid = major,
+        trig format plots=rad,
+        xtick={-4,-3,-2,-1,0,1,2,3,4},               % Hauptbeschriftung (ganze Zahlen)
+        title={Kontinuierlich ($f_k: \mathbb{R} \rightarrow \mathbb{R}$)},
+        ymin=-1.2, ymax=1.2 % Gleiche Skalierung wie rechts
+    ]
+        \addplot[blue, thick] {sin(x*2*pi)};
+    \end{axis}
+    \end{tikzpicture}
+\end{center}
+\begin{center}
+    \begin{tikzpicture}
+    \begin{axis}[
+        width=\textwidth, % Nutzt die volle Breite der Minipage
+        height=4cm,
+        axis lines = middle,
+        xlabel = $n$,
+        ylabel = {$f[n]$},
+        domain = -2:2,
+        samples = 41, 
+        trig format plots=rad,
+        ytick={-3,-2,-1,0,1,2,3},          % Hauptbeschriftung (ganze Zahlen)
+        minor y tick num=4,                % Erzeugt 9 Zwischenstufen -> Schritte von 0.1
+        xtick={-4,-3,-2,-1,0,1,2,3,4},               % Hauptbeschriftung (ganze Zahlen)
+        minor x tick num=9,                % Erzeugt 9 Zwischenstufen -> Schritte von 0.1
+        grid = both,                       % Aktiviert Haupt- UND Nebengitter
+        minor grid style={dashed=false, gray!15, ultra thin}, % Sehr feine, helle Linien für das 0.1-Raster
+        title={Digital / Diskret ($f_d: \mathbb{Z} \rightarrow \mathbb{Z}$)},
+        ymin=-1.2, ymax=1.2
+    ]
+        %%\addplot[gray, thin, ycomb, mark=*] {sin(x*2*pi)};
+        \addplot[red, thick, ycomb, mark=*] {round(5*sin(x*2*pi))/5};
+    \end{axis}
+    \end{tikzpicture}
+\end{center}
+
+Meistens sind periodische Signale wie zum Beispiel $f_k$ bzw $f_d$ interessant.
+Eine wichtige Kenngröße von periodischen Signalen ist die Frequenz. 
+Das ist die Anzehl der Wiederholungen pro Einheit (in diesen Fall Sekunden).
+Sie wird angegeben in Hertz (Hz). $f_k$ und $f_d$ haben eine Frequenz von 1Hz.
+
+Zwei wichtige Kenngröße von digitalen Signalen sind die Abtastrate
+und die Auflösung.
+
+Die \textbf{Abtastrate} ist ein Maß für die Feinheit der Unterteilung der y-Achse
+bzw. der Zeit. Sie wird ebenfalls in Herz gemessen. Nehmen wir an, dass
+das Signal $f_d$ in Sekunden angegeben ist, so ist seine Abtastrate 10Hz.
+
+% TODO bessert machen
+% \begin{center}
+%     \begin{tikzpicture}
+%     \begin{axis}[
+%         width=\textwidth/2, % Nutzt die volle Breite der Minipage
+%         height=4cm,
+%         axis lines = middle,
+%         xlabel = $n$,
+%         ylabel = {$f_d[n]$},
+%         domain = 0:10,
+%         samples = 11, 
+%         trig format plots=rad,
+%         ytick={-3,-2,-1,0,1,2,3},          % Hauptbeschriftung (ganze Zahlen)
+%         minor y tick num=4,                % Erzeugt 9 Zwischenstufen -> Schritte von 0.1
+%         xtick={0,1,2,3,4,5,6,7,8,9},               % Hauptbeschriftung (ganze Zahlen)
+%         xticklabels={1,2,3,4,5,6,7,8,9,10},
+%         grid = both,                       % Aktiviert Haupt- UND Nebengitter
+%         minor grid style={dashed=false, gray!15, ultra thin}, % Sehr feine, helle Linien für das 0.1-Raster
+%         title={Digital / Diskret ($f_d: \mathbb{Z} \rightarrow \mathbb{Z}$)},
+%         xmin=-0.5, xmax=9.5, ymin=-1.2, ymax=1.2,
+%         xticklabel style={
+%             yshift=-1.2cm % Schiebt die Zahlen 1 bis 11 unter den Graphen
+%         },
+%         xlabel style={
+%             at={(ticklabel* cs:1)}, anchor=west % Setzt das "n" sauber ans Ende der Achse
+%         },
+%         ylabel style={
+%             at={(ticklabel* cs:1)}, anchor=south % Setzt das "n" sauber ans Ende der Achse
+%         }
+%     ]
+%         %%\addplot[gray, thin, ycomb, mark=*] {sin(x*2*pi)};
+%         \addplot[red, thick, ycomb, mark=*] {round(5*sin((1/10)*x*2*pi))/5};
+%     \end{axis}
+%     \end{tikzpicture}
+% \end{center}
+
+Für die \textbf{Auflösung} muss ein maximaler und ein minimaler Wert festgelegt werden.
+Dann ist die Auflösung die Anzahl der möglichen Werte zwischen dem
+Maximalwert und dem Minimalwert. Für $f_d$ mit MinimalWert -1 und Maximalwert 1
+wäre das 11.
+
+Das \textbf{Abtatsttheorem} \cite{grueningen2008dsv} besagt, dass 
+Signale mi
+
+In der Signaltheorie beschreibt ein System etwas, das ein Signal $f(t)$ in ein
+Signal $g(t)$ umwandelt. Ein digitales System schickt ein digitales Signal 
+$f(n)$ auf ein anderes digitales Signal $g(n)$. Ein Beispiel ist das System,
+das alles Werte eines Signals mit $0.5$ multipliziert.
+
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}[
+        system/.style={
+            draw,
+            rounded corners,
+            minimum width=2.8cm,
+            minimum height=1cm,
+            align=center
+        },
+        arrow/.style={
+            ->,
+            >=stealth,
+            thick
+        }
+    ]
+
+        \node[] (f) {$f(t)$};
+        \node[system, right=1cm of f] (Sys) {System};
+        \node[right=1cm of Sys] (g) {$g(t)$};
+
+        \draw[arrow] (f) -- (Sys);
+        \draw[arrow] (Sys) -- (g);
+
+    \end{tikzpicture}
+    \caption{Darstellung einses Systems}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}[
+        system/.style={
+            draw,
+            rounded corners,
+            minimum width=2.8cm,
+            minimum height=1cm,
+            align=center
+        },
+        arrow/.style={
+            ->,
+            >=stealth,
+            thick
+        }
+    ]
+
+        \node[] (f) {$sin(t)$};
+        \node[system, right=1cm of f] (Sys) {*0.5};
+        \node[right=1cm of Sys] (g) {$sin(t)*0.5$};
+
+        \draw[arrow] (f) -- (Sys);
+        \draw[arrow] (Sys) -- (g);
+
+    \end{tikzpicture}
+    \caption{Darstellung einses Systems}
+\end{figure}
+
+Weitere Eigenschaften von Systemen und Signalen sind in Grüningens Buch
+digitale Signalverarbeitung \cite{grueningen2008dsv}.
+
+\subsection{Wie stellt man Ton digital dar?}
+
+Wie kann man einen Ton erzeugen? Ein Ton beschreibt eine
+periodische Druckänderungen über die Zeit in der Luft. Solch eine
+Druckänderung kann durch einen Lautsprecher erzeugt werden, in dem der
+Lautsprecher analoges (kontinuierliches) elektrisches Signal erhält. Diese 
+kann von einem Digital-zu-Analog-Konverter erzeut werden, welcher wiederum ein
+digitales Signal erhält.
+
+% erstellt mit chatGPT
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}[
+        signal/.style={
+            draw,
+            rounded corners,
+            minimum width=2.8cm,
+            minimum height=1cm,
+            align=center
+        },
+        arrow/.style={
+            ->,
+            >=stealth,
+            thick
+        }
+    ]
+
+        \node[signal] (digital) {Digitales\\Signal};
+        \node[signal, right=2.5cm of digital] (analog) {Analoges\\Signal};
+        \node[signal, right=2.5cm of analog] (sound) {Ton};
+
+        \draw[arrow] (digital) -- node[above] {DAC} (analog);
+        \draw[arrow] (analog) -- node[above] {Lautsprecher} (sound);
+
+    \end{tikzpicture}
+    \caption{Vereinfachte Darstellung der Tonerzeugung}
+    \label{fig:tonerzeugung}
+\end{figure}
+
+\subsubsection{Auflösung und Abtastrate}
+
+
+I2S verwendet wie viele andere digitale Audiosysteme
+Pulse-Code-Modulation (PCM)\cite{jita2023} Daten. Das ist ein unkomprimiertes 
+Audioformat mit meistens 8, 16, 24 oder 32 Bit unsigned Integern. 
+In dem config Header ist ein 
+Datentyp mit dem Namen sample definiert, welcher genau so ein unsigned Int ist.
+Hier kann man die Auflösung global einstellen. (Quellen finden)
+
+
+TODO finde Quellen zu PCM.
+
+In der config-Datei kann man auch die Abtatsrate (Samplerate) 
+einstellen. Dies ist die Frequenz in Hertz (samples pro Sekunde) 
+in der sich das Signal ändert. Aus dem Abtasttheorem 
+\cite{grueningen2008dsv}[2.6.2] folgt, dass die Abtatsrate größer der 
+höchsten Frequenz eines Signales sein soll. Das menschliche Gehöhr 
+kann in der Regel Frequezen zwischen 20 und 20000 Hertz wahrnehmen.
+(TODO Quelle finden). Deshalb wurde 44100 als Abtastrate für CDs und 
+infolge dessen auch für viele andere digitale Systeme gewählt. Hochwertige Systeme 
+verwenden auch bis zu über 100 kHz. Für die Optimierung von Rechenoperationen macht
+es Sinn eine Potentz von 2 zu wählen. 
+
+Die Wahl der Auflösung und Abtastrate ist eine Entscheidung zwischen der Qualität 
+des Tons und Komplexität des Synthesizers. Im Folgen den wird verglichen wie lange
+die addition zweier Signale, die multiplikation eines Signals mit einer 
+threadsicheren Variable und die Generierung eines Tons (siehe nächstes Unterkapitel)
+für verschiedene Auflösungen und Abtastraten brauchen. Dazu werden zwei Soundobjekte
+mit der angegebenen Auflösung erzeugt und die jeweilige Operation so oft wie die
+Abtastrate ist ausgeführt. Dann wird berechnet wie viel Prozent einer Sekunde diese
+Zeit ein nimmt.
+
+\begin{tabular}{c|c|c|c|c}
+  Auflösung & Abtastrate & Generierung & Addition & multiplikation \\
+  \hline
+  A & B & C & D & E \\
+  1 & 2 & 3 & 4 & 5 \\
+\end{tabular}
+
