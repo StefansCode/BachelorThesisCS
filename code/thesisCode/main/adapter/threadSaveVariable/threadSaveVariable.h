@@ -5,5 +5,6 @@
 
 #include "threadSaveInt.h"
 #include "threadSaveBool.h"
+#include "threadSaveFloat.h"
 
 #endif // THREAD_SAVE_VARIABLE_H

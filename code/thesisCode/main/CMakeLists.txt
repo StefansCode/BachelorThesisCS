@@ -12,6 +12,7 @@ idf_component_register(
           "adapter/screen/SSD1306/ssd1306.c"
           "adapter/threadSaveVariable/threadSaveInt.cpp"
           "adapter/threadSaveVariable/threadSaveBool.cpp"
+          "adapter/threadSaveVariable/threadSaveFloat.cpp"
           "adapter/timer/timer.cpp"
           "adapter/util/util.cpp"
 
