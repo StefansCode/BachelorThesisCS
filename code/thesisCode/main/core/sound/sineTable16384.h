@@ -2,7 +2,7 @@
 #define SINE_TABLE_16384_H
 #include "config.h"
 
-const int16_t sineLookupTable[] = {
+const sample sineLookupTable[] = {
 1, 13, 26, 38, 51, 63, 76, 88,
 101, 114, 126, 139, 151, 164, 176, 189,
 202, 214, 227, 239, 252, 264, 277, 290,
