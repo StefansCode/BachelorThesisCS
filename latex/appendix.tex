@@ -1,19 +1,48 @@
-\section{Zusätzliche Informationen}
+\section{Pinbelegung}
 
-Hier können Sie Ihren Anhang definieren.
-
-Achten Sie darauf, dass der Anhang in Ihrer \texttt{thesis.tex}
-initial auskommentiert ist.
-Der entsprechende Part befindet sich nahe dem Ende der Datei.
-Entfernen Sie bei Bedarf die Kommentierung um den Anhang nutzen zu können.
-
-
-\section{Nutzung}
-
-Der Anhang wird wie die Abschnitte des Hauptteils der Arbeit gestaltet,
-also mit \texttt{\textbackslash section} Befehlen.
-
-  \subsection{Unterabschnitte}
-  Die Verwendung von Unterabschnitten im Anhang
-  mittels \texttt{\textbackslash subsection}
-  funktioniert ebenfalls!
+\begin{table}[ht]
+    \centering
+    \caption{Pinbelegung des ESP32-S3.}
+    \label{tab:pinout}
+    \begin{tabular}{c|l|l|l}
+        \textbf{Pin} & \textbf{Typ} & \textbf{Funktion} & \textbf{Bemerkung} \\
+        \hline
+        0  & --        & --              & Strapping-Pin, nicht empfohlen \\
+        1  & PCNT      & Encoder DT      & \\
+        2  & PCNT      & Encoder CLK     & \\
+        3  & --        & --              & Strapping-Pin, nicht empfohlen \\
+        4  & GPIO IN   & BTN\_11         & \\
+        5  & GPIO IN   & BTN\_12         & \\
+        6  & GPIO IN   & BTN\_13         & \\
+        7  & GPIO IN   & BTN\_14         & \\
+        8  & GPIO IN   & Encoder\_SW     & \\
+        9  & GPIO IN   & BTN\_21         & \\
+        10 & GPIO IN   & BTN\_22         & \\
+        11 & GPIO IN   & BTN\_23         & \\
+        12 & GPIO IN   & BTN\_24         & \\
+        13 & GPIO IN   & BTN\_B          & \\
+        14 & GPIO IN   & BTN\_A          & \\
+        15 & --        & --              & \\
+        16 & I\textsuperscript{2}S & I\textsuperscript{2}S DIN & DAC \\
+        17 & I\textsuperscript{2}S & I\textsuperscript{2}S BCK & DAC \\
+        18 & I\textsuperscript{2}S & I\textsuperscript{2}S LRC & DAC \\
+        19 & USB-JTAG  & USB-JTAG        & standardmäßig USB D- \\
+        20 & USB-JTAG  & USB-JTAG        & standardmäßig USB D+ \\
+        21 & --        & --              & \\
+        \hline
+        22--34 & --     & nicht vorhanden & \\
+        \hline
+        33--37 & --     & Flash/PSRAM     & abhängig von Flash/PSRAM-Konfiguration \\
+        38 & SPI       & SPI CS          & SD-Karte \\
+        39 & SPI       & SPI MOSI        & SD-Karte\\
+        40 & SPI       & SPI CLK         & SD-Karte\\
+        41 & SPI       & SPI MISO        & SD-Karte\\
+        42 & I\textsuperscript{2}C & I\textsuperscript{2}C SCL\\
+        43 & --        & --              & U0TXD / UART0 \\
+        44 & GPIO      & BUILTIN\_LED    & U0RXD / UART0 \\
+        45 & --        & --              & Strapping-Pin, nicht empfohlen \\
+        46 & --        & --              & Strapping-Pin, nicht empfohlen \\
+        47 & I\textsuperscript{2}C & I\textsuperscript{2}C SDA & \\
+        48 & RMT       & BUILTIN\_RGB\_LED & Fehleranzeige \\
+    \end{tabular}
+\end{table}

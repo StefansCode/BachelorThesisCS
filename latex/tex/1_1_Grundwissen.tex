@@ -120,8 +120,15 @@ Dann ist die Auflösung die Anzahl der möglichen Werte zwischen dem
 Maximalwert und dem Minimalwert. Für $f_d$ mit MinimalWert -1 und Maximalwert 1
 wäre das 11.
 
-Das \textbf{Abtatsttheorem} \cite{grueningen2008dsv} besagt, dass 
-Signale mi
+
+Jedes stückweise stetige periodische Signal $S$ lässt sich, mit Hilfe der Fouriereihe,
+als Summe von Sinus- und Cosinuskurven mit verschiedenen Frequenzen schreiben.
+
+Sei ein Signal $f_{max}$ die höchste dieser Frequenzen.
+Das \textbf{Abtatsttheorem} \cite{grueningen2008dsv} besagt, dass das 
+Signale $S$ wieder aus seiner Darstellung als digitales Signal $S_d$ 
+rekonstruiert werden kann, wenn die Abtastrate von $S_d$ mindestens 
+doppelt so groß ist wie $f_{max}$.
 
 In der Signaltheorie beschreibt ein System etwas, das ein Signal $f(t)$ in ein
 Signal $g(t)$ umwandelt. Ein digitales System schickt ein digitales Signal 
@@ -181,20 +188,22 @@ das alles Werte eines Signals mit $0.5$ multipliziert.
         \draw[arrow] (Sys) -- (g);
 
     \end{tikzpicture}
-    \caption{Darstellung einses Systems}
+    \caption{Beispiel einses Systems}
 \end{figure}
 
 Weitere Eigenschaften von Systemen und Signalen sind in Grüningens Buch
 digitale Signalverarbeitung \cite{grueningen2008dsv}.
 
-\subsection{Wie stellt man Ton digital dar?}
+\subsection{Darstellung  digitaler Audio}
+
+
 
 Wie kann man einen Ton erzeugen? Ein Ton beschreibt eine
 periodische Druckänderungen über die Zeit in der Luft. Solch eine
 Druckänderung kann durch einen Lautsprecher erzeugt werden, in dem der
 Lautsprecher analoges (kontinuierliches) elektrisches Signal erhält. Diese 
-kann von einem Digital-zu-Analog-Konverter erzeut werden, welcher wiederum ein
-digitales Signal erhält.
+kann von einem DAC (Digital-zu-Analog-Konverter) erzeut werden, 
+welcher wiederum ein digitales Signal erhält.
 
 % erstellt mit chatGPT
 \begin{figure}[ht]
@@ -227,28 +236,39 @@ digitales Signal erhält.
 \end{figure}
 
 \subsubsection{Auflösung und Abtastrate}
+TODO Schreibe das später
+
+Nun ist also die Frage, was für ein Signal der DAC erwartet. Da gibt es viele
+verschiedene Möglichkeiten. Aber ein Standard für digitale Audio ist 
+I2S (Inter-IC Sound). Das ist ein Protokoll, welches Stereoaudio, also 2 
+Audiosignale, über 3 (manchmal 4) Leitungen überträgt.
+\begin{enumerate}
+    \item BCLK (Bit-Clock) ist der Taktgeber.
+    \item LRCLK (Left-Right-Clock) gibt an, ob gerade Links oder Rechts übertragen
+     wird.
+    \item DIN/DOUT (Data in/ Data out) übertragt die Audiodaten.
+\end{enumerate}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{fig/I2S.png}
+    \caption{Zeitlicher Ablauf der I2S-Kommunikation,
+    nach \cite{wdwd2011}.}
+    \label{fig:I2S-leitungen}
+\end{figure}
 
 
-I2S verwendet wie viele andere digitale Audiosysteme
-Pulse-Code-Modulation (PCM)\cite{jita2023} Daten. Das ist ein unkomprimiertes 
+
+(PCM)\cite{jita2023} Daten ist ein unkomprimiertes 
 Audioformat mit meistens 8, 16, 24 oder 32 Bit unsigned Integern. 
-In dem config Header ist ein 
-Datentyp mit dem Namen sample definiert, welcher genau so ein unsigned Int ist.
-Hier kann man die Auflösung global einstellen. (Quellen finden)
 
 
-TODO finde Quellen zu PCM.
-
-In der config-Datei kann man auch die Abtatsrate (Samplerate) 
-einstellen. Dies ist die Frequenz in Hertz (samples pro Sekunde) 
-in der sich das Signal ändert. Aus dem Abtasttheorem 
-\cite{grueningen2008dsv}[2.6.2] folgt, dass die Abtatsrate größer der 
-höchsten Frequenz eines Signales sein soll. Das menschliche Gehöhr 
-kann in der Regel Frequezen zwischen 20 und 20000 Hertz wahrnehmen.
+Das menschliche Gehöhr kann in der Regel Frequezen zwischen 20 und 20000
+Hertz wahrnehmen. Aus dem Abtatsttheorem folgt, das einen Abtastrate von 
+mindestens 40000Hz nötig ist um Ton digital darzustellen.
 (TODO Quelle finden). Deshalb wurde 44100 als Abtastrate für CDs und 
-infolge dessen auch für viele andere digitale Systeme gewählt. Hochwertige Systeme 
-verwenden auch bis zu über 100 kHz. Für die Optimierung von Rechenoperationen macht
-es Sinn eine Potentz von 2 zu wählen. 
+infolge dessen auch für viele andere digitale Systeme gewählt. 
+Hochwertige Systeme verwenden auch bis zu über 100 kHz.
 
 Die Wahl der Auflösung und Abtastrate ist eine Entscheidung zwischen der Qualität 
 des Tons und Komplexität des Synthesizers. Im Folgen den wird verglichen wie lange

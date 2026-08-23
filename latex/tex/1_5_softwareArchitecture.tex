@@ -11,16 +11,13 @@ ihre Funktionen kurz erklärt.
 
 
 \subsubsection{Digital-to-Analog Converter}
-Ein MAX98357A-DAC (Digital-to-Analog Converter) \cite{MAX983572026Datasheet}
-wandelt das digitale Signal in
-analoges Signal um und verstärkt es so, dass es direkt an einen passenden 
-Lautsprecher weitergeleitet werden kann. Die Kommunikation zwischen dem DAC und
-dem ESP32 findet über das I2S-Protokoll statt. Dazu wird die I2S-API der ESP-IDF
-im Standard, TX und Mono-Modus verwendet. Die Abtastrate und die Auflösung des 
-Signals über eine Initialisierungsfunkion Übergeben. Der MAX98357A kann 
-Abtatsraten zuwischen 8kHz und 96kHz und eine Auflösung von 16, 24 oder 32 bit
-verarbeiten \cite{MAX983572026Datasheet}[Digital Audio Interface Modes].
-Ein Signal kann als Buffer über die Funktion sendBuffer an den DAC gesendet werden.
+Die 
+Kommunikation zwischen dem DAC und dem ESP32 findet über das I2S-Protokoll statt. Dazu wird die I2S-API der ESP-IDF
+im Standard, TX und Mono-Modus verwendet.
+Die 
+Abtastrate und die Auflösung des 
+Signals über eine Initialisierungsfunkion Übergeben.
+
 
 The communication between the
 DAC and the ESP32 happens via the I2S-protocol in standard, TX and mono mode
