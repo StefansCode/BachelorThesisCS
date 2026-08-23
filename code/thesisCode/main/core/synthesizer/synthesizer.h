@@ -5,7 +5,7 @@
 #include "adapter/rgbLed/rgbLed.h"
 #include "adapter/screen/screen.h"
 #include "adapter/dac/i2sDac.h"
-#include "adapter/threadSaveVariable/threadSaveVariable.h"
+#include "helper/threadSaveVariable/threadSaveVariable.h"
 #include "adapter/util/util.h"
 
 #include "sound/sound.h"

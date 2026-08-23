@@ -3,7 +3,7 @@
 
 #include "../pinDefines.h"
 #include "driver/pulse_cnt.h"
-#include "adapter/threadSaveVariable/threadSaveVariable.h"
+#include "helper/threadSaveVariable/threadSaveVariable.h"
 
 class Encoder {
 public:

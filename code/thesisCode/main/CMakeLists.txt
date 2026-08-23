@@ -10,9 +10,6 @@ idf_component_register(
           "adapter/rgbLed/rgbLed.cpp"
           "adapter/screen/screen.cpp"
           "adapter/screen/SSD1306/ssd1306.c"
-          "adapter/threadSaveVariable/threadSaveInt.cpp"
-          "adapter/threadSaveVariable/threadSaveBool.cpp"
-          "adapter/threadSaveVariable/threadSaveFloat.cpp"
           "adapter/timer/timer.cpp"
           "adapter/util/util.cpp"
 
@@ -25,6 +22,8 @@ idf_component_register(
           "core/synthesizer/notes/notes.cpp"
           "core/synthesizer/envelope/envelope.cpp"
           "core/synthesizer/menu/menu.cpp"
+          "core/helper/threadSaveVariable/threadSaveInt.cpp"
+          "core/helper/threadSaveVariable/threadSaveFloat.cpp"
      
      INCLUDE_DIRS 
           "."

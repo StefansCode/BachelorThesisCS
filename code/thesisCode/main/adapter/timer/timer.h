@@ -2,7 +2,7 @@
 #define TIMER_H
 #include "stdint.h"
 #include "driver/gptimer.h"
-#include "adapter/threadSaveVariable/threadSaveVariable.h"
+#include "helper/threadSaveVariable/threadSaveVariable.h"
 
 class Timer {
 private:
