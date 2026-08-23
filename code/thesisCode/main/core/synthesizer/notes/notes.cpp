@@ -48,11 +48,12 @@ const char * noteNames[12] = {
 "G#"
 };
 
-const char * waveformNames[4] = {
+const char * waveformNames[5] = {
 "SAW",      // sawtooth
 "SQUARE",   // square
 "TRINGL",   // triangle
-"SINE"      // sine
+"SINE",      // sine
+"NOISE"     // noise
 };
 
 const char * sampleRateNames[3] = {

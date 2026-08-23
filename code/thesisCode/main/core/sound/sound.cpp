@@ -40,6 +40,13 @@ Sound& Sound::fromTriangle(unsigned int frequency) {
   return *this;
 }
 
+Sound& Sound::fromNoise() {
+  time = (time + 1) % STANDART_SAMPLE_RATE;
+  sample value = noiseTable[time % noiseTableSize];
+  signal.fromValue(value);
+  return *this;
+}
+
 Sound& Sound::applyFunction(sample (*func)(sample data, void *param), void *param) {
   signal.applyFunction(func, param);
   return *this;

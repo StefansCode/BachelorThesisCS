@@ -19,7 +19,7 @@ extern uint8_t * scales[8];
 
 extern const char * scaleNames[8];
 extern const char * noteNames[12];
-extern const char * waveformNames[4];
+extern const char * waveformNames[5];
 extern const char * sampleRateNames[3];
 
 extern const uint16_t NOTES[];

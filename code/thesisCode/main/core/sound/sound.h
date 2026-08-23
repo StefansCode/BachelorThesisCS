@@ -18,6 +18,7 @@
 #else
   #error "Unsupported STANDART_SAMPLE_RATE. Please use 44100, 22050, or 11025."
 #endif
+#include "noiseTable.h"
 
 class Sound {
 private:
@@ -41,10 +42,11 @@ sample loadSine(unsigned int frequency) {
   }
 
   Sound &fromSilence();
-  Sound &fromSaw(unsigned int frequency);
   Sound &fromSine(unsigned int frequency);
-  Sound &fromSquare(unsigned int frequency);
   Sound &fromTriangle(unsigned int frequency);
+  Sound &fromSquare(unsigned int frequency);
+  Sound &fromSaw(unsigned int frequency);
+  Sound &fromNoise();
 
   Sound &applyFunction(sample (*func)(sample data, void *param), void *param);
   Sound &applyFunction(sample (*func)(sample *data, void *param), void *param);

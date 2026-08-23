@@ -18,6 +18,7 @@
 #define WAVEFORM_SQUARE 1
 #define WAVEFORM_TRIANGLE 2
 #define WAVEFORM_SINE 3
+#define WAVEFORM_NOISE 4
 
 class Synthesizer {
 public:

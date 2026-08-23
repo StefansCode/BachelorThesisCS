@@ -32,12 +32,12 @@ private:
   const char *bass_onOff_values[2] = {"OFF", "ON"};
   entry_t bass_onOff = {&root, {NULL}, 0, "SWITCH", bass_onOff_values, 2, 0};
   entry_t bass_note = {&root, {NULL}, 0, "NOTE", noteNames, 12, 0};
-  entry_t bass_waveform = {&root, {NULL}, 0, "WAVE", waveformNames, 4, 0};
+  entry_t bass_waveform = {&root, {NULL}, 0, "WAVE", waveformNames, 5, 0};
   entry_t bass_LFO = {&root, {NULL}, 0, "LFO", NULL, 0, 0};
 
   /** lead -> */
   entry_t lead_scale = {&root, {NULL}, 0, "SCALE", scaleNames, 8, 1};
-  entry_t lead_waveform = {&root, {NULL}, 0, "WAVE", waveformNames, 4, 0};
+  entry_t lead_waveform = {&root, {NULL}, 0, "WAVE", waveformNames, 5, 0};
   entry_t lead_envelope = {&root, {NULL}, 0, "ENV", NULL, 0, 0};
   entry_t lead_LFO = {&root, {NULL}, 0, "LFO", NULL, 0, 0};
   entry_t lead_filter = {&root, {NULL}, 0, "FILTER", NULL, 0, 0};

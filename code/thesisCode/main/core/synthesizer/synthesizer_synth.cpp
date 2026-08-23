@@ -20,6 +20,8 @@ void Synthesizer::synthTask(void *param) {
       bass.fromTriangle(NOTES[A4 + bassNote.get() - 12]);
     } else if(bassWaveform.get() == WAVEFORM_SINE) {
       bass.fromSine(NOTES[A4 + bassNote.get() - 12]);
+    } else if(bassWaveform.get() == WAVEFORM_NOISE) {
+      bass.fromNoise();
     } else {
       bass.fromSaw(NOTES[A4 + bassNote.get() - 12]);
     }
@@ -72,6 +74,8 @@ void Synthesizer::generateSound(Sound &sound, float amplification, int frequency
     sound.fromTriangle(frequency);
   } else if (waveform == WAVEFORM_SINE) {
     sound.fromSine(frequency);
+  } else if (waveform == WAVEFORM_NOISE) {
+    sound.fromNoise();
   } else {
     sound.fromSaw(frequency);
   }
