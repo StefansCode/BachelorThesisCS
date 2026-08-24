@@ -108,9 +108,14 @@ Als Nutzereingabe werden Taster und ein Drehgeber verwendet.
 \end{figure}
 
 
-Ein Taster lässt nur Strom durch, wenn er gedrückt wird. Der ESP32S3 
+Ein Taster lässt nur Strom durch, wenn er gedrückt wird. Der ESP32-S3 
 kann an den meisten GPIO-Pins (General Purpose Input/Output)erkennen,
-ob ein High- oder Low-Pegel anliegt.
+ob ein High- oder Low-Pegel anliegt. Schaltet man den einen Taster und 
+eine Resistor (z.B. 10k) in Reihe ,also nacheinander, zwischen der Masse
+und einen GPIOpin, so wird dieser auf LOW gesetzt, wenn der Taster gedrückt
+wird. Ist der Pullup an diesem Pin aktiviert, wird der Pin HIGH gesetzt, 
+wenn nichts an dem Pin anliegt. Also, auch wenn der Taster nicht gedrückt 
+wird.
 
 \begin{figure}[H]
     \begin{subfigure}{0.48\textwidth}

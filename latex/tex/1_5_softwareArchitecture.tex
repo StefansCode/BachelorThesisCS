@@ -15,50 +15,80 @@ TODO Ist das so ok?
 
 \subsection{Adapter}
 
-Porst bilden die Schnittstelle zur Hardware und zur ESP-IDF und 
-Adapter ihre Implementierung.
-Dadurch lässt sich der Kern unabhängig von diesen beiden Faktoren, also
-auch auf einen normalen PC, testen. Im Folgenden werden alles Adapter und 
-ihre Funktionen kurz erklärt.
+Ports sind abstrakte Klassen und bilden die Schnittstelle zur Hardware und zur ESP-IDF.
+Adapter sind ihre Implementierung.
+Durch das Austauschen der Adapter, lässt sich der Kern unabhängig von 
+diesen beiden Faktoren, also auch auf einen normalen PC, testen.
+Im Folgenden werden alles Adapter und ihre Funktionen kurz erklärt.
 
 
 \subsubsection{Digital-to-Analog Converter}
-Die 
-Kommunikation zwischen dem DAC und dem ESP32 findet über das I2S-Protokoll statt. Dazu wird die I2S-API der ESP-IDF
-im Standard, TX und Mono-Modus verwendet.
-Die 
+Die Kommunikation zwischen dem DAC und dem ESP32 findet über die 
+I2S-API \cite{esp32s3i2s} der ESP-IDF statt.
+
+Die I2S-API ist im Standardmodus mit dem Phillipsformat eingestellt, 
+da das, das Standartformat ist, das der MAX98357A erwartet.
+
+Der Mono-Modus wird verwendet, da der MAX98357A ein Monoverstärker ist.
+Das heist das nur ein Signal gesendet wird, anstatt jeweils eins für 
+Links und
+eins für Rechts. Das I2S Protokoll sendet zwar immer ein linkes und ein 
+rechtes Signal, aber die die I2S-API sendet im Monomodus für beide Seiten
+das gleiche Signal und es reicht der API ein Signal zu übergeben.
+Der MAX98357A erhält also immer ein linkes Signal $L$ und ein 
+rechtes Signal $R$ und gibt $(L+R)/2$ verstärkt heraus.
+
 Abtastrate und die Auflösung des 
 Signals über eine Initialisierungsfunkion Übergeben.
 
-The communication between the
-DAC and the ESP32 happens via the I2S-protocol in standard, TX and mono mode
-as described in the ESP-IDF-Documentation \cite{espidf2026api}. A signal can
-be sent to the DAC by updating a buffer and calling the sendBuffer function 
-with this buffer.
+Um ein Signal zu senden, ruft man die Funktion \lstinline|sendBuffer| auf.
+Ihr wird ein Buffer und die Länge des Buffers übergeben. Die Werte 
+werden an die API weitergegeben und diese blockiert bis alle Werte 
+gesendet wurden. Dadurch wird die richtige Abtastrate eingehalten.
 
-%blocking funktion
+\begin{lstlisting}[language=C++, 
+                   frame=single, 
+                   caption={Beispiel Code zum Dac Port},
+                   captionpos=b]
+Dac dac;
+bufferLen = 256;
+int16_t buffer[bufferLen];
+int16_t value;
+int main {
+    dac.init(32768, 16)
+    int16_t value = 0;
+    while(1) {
+        for(int i=0; i<bufferLen; i++) {
+            buffer[i] = value;
+            value++;
+        }
+        dac.send(buffer, bufferLen);
+    }
+}
+\end{lstlisting}
 
-%tread save
+\subsubsection{Button}
+Der Buttonport hat 2 Methoden um auf die Taster zu reagieren.
 
-%code example
+\lstinline|getState| wird eine GPIO-pinnummer übergeben und als 
+Rückgabe gibt es 1 zurück, wenn der Pin mit dieser Nummer LOW ist.
+Also, wenn der Taster an diesem Pin gedrückt wird. 
+\lstinline|getState| gibt 0 zurück, wenn der Taster nicht gedrückt ist.
 
-%pictures
+Diese Methode ist dafür geeignet um zu sehen, ob ein Taster über längere
+Zeit gedrückt wird. Um nur zu schauen, ob ein Taster kurz oder überhaupt
+gedrückt wurde, ist \lstinline|readQueue| die bessere Wahl.
 
-\subsubsection{User input}
-The button Input can be read be calling button.getState\(Pin\) with the 
-Pin-macro of the desired Pin. This returns weather or not the given pin is 
-pulled low by pressing the button. The function readQueue will read from a
-queue that contains the last 10 button presses. If it is used it should be
-read accordingly often to avoid overfilling it. The debounstime for the 
-buttons is 200ms.
-% das ist sehr hoch vlt sollte ich da nochmal drüberschauen
+Bei jedem Drücken eines Tasteres, also bei jeden Fallen von HIGH 
+zu LOW an einem Pin mit einem Taster wird die Nummer des Pins 
+in eine Queue gepackt.
+Die Queue kann mit \lstinline|readQueue| ausgelesen werden.
+Hierbei gibt es zwei Dinge zu beachten.
 
-A rotary encoder is used to edit numerical value. The encoder 
-software-interface is implemented using the pulse-control-API as in
-the ESP-IDF encoder example and contains two functions to interact with it. 
-These are getValue and resetValue. getValue returns the current encoder value 
-which can be incremented or decremented by turning the encoder. It goes to 
-zero when reaching 256 or -256 or when calling resetValue.
+1. Entprellung. Wenn ein Taster gedrückt wird, geht der Pegel des 
+zugehörigen Pins nicht einfach auf LOW. Sondern er springt ein paar mal 
+zwischen LOW und HIGH.  
+
 
 \subsubsection{RGB-LED and LED}
 An RGB-LED is used for...

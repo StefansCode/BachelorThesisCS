@@ -19,7 +19,9 @@ esp_err_t I2sDac::init(unsigned int sampleRate, unsigned int bitsPerSample) {
     return ESP_ERR_INVALID_ARG;
   }
 
-  /** supported sample rates by the MAX98357A */
+  /** supported sample rates by the MAX98357A 
+   * @todo the Max98357A can supports only certain sample rates.
+  */
   if (sampleRate < 8000 || sampleRate > 96000) {
     return ESP_ERR_INVALID_ARG;
   }
