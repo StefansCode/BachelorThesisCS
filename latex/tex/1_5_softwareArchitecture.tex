@@ -1,12 +1,24 @@
 \section{Softwarearchitekture}
 
-Die Software ist nach der Ports-and-Adapter Struktur aufgebaut. 
+Die Software sollte nach dem Ports-and-Adapter Pattern 
+\cite{cockburn2005hexagonal} aufgebaut sein, allerdings wurden nur 
+Adapter implementiert. Nach einigen kleinen Änderungen wäre die 
+Struktur wie folgt.
+
+TODO Ist das so ok?
+
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[width=\textwidth]{fig/UML_diagram.png}
+    \end{center}
+\end{figure}
 
 \subsection{Adapter}
 
-Adapter bilden die Schnittstelle zur Hardware und zur ESP-IDF.
+Porst bilden die Schnittstelle zur Hardware und zur ESP-IDF und 
+Adapter ihre Implementierung.
 Dadurch lässt sich der Kern unabhängig von diesen beiden Faktoren, also
-auch auf einen normalen PC, testen. Im folgenden werden alles Adapter und 
+auch auf einen normalen PC, testen. Im Folgenden werden alles Adapter und 
 ihre Funktionen kurz erklärt.
 
 
@@ -17,7 +29,6 @@ im Standard, TX und Mono-Modus verwendet.
 Die 
 Abtastrate und die Auflösung des 
 Signals über eine Initialisierungsfunkion Übergeben.
-
 
 The communication between the
 DAC and the ESP32 happens via the I2S-protocol in standard, TX and mono mode

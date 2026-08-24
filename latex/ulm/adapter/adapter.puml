@@ -1,0 +1,39 @@
+
+package "Adapters" as Adapters {
+
+    class DacImpl {
+        + sendBuffer(buffer)
+    }
+
+    class ButtonImpl {
+        + value readQueue()
+        + bool getState(pin)
+    }
+
+    class EncoderImpl {
+        + value getvalue();
+        + value getLastValue();
+        + resetvalue();
+        + changeExternalValue(...);
+    }
+
+    class ScreenImpl {
+        + clear();
+        + display();
+        + drawBitmap(...);
+        + drawPixel(...);
+        + drawString(...);
+        + drawNumber(...);
+    }
+
+    class TimerImpl {
+        + value getValue();
+        + setValue(value);
+    }
+
+    class utilImpl {
+        + time millis();
+        + time micros();
+        + void delay(ms);
+    }
+}

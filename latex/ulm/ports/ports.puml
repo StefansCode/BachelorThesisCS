@@ -1,0 +1,39 @@
+
+package "Ports" as Ports {
+
+    interface Dac {
+        + sendBuffer(buffer)
+    }
+
+    interface Button {
+        + value readQueue()
+        + bool getState(pin)
+    }
+
+    interface Encoder {
+        + value getvalue();
+        + value getLastValue();
+        + resetvalue();
+        + changeExternalValue(...);
+    }
+
+    interface Screen {
+        + clear();
+        + display();
+        + drawBitmap(...);
+        + drawPixel(...);
+        + drawString(...);
+        + drawNumber(...);
+    }
+
+    interface Timer {
+        + value getValue();
+        + setValue(value);
+    }
+
+    interface util {
+        + time millis();
+        + time micros();
+        + void delay(ms);
+    }
+}

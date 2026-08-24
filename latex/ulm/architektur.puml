@@ -1,0 +1,60 @@
+@startuml ArchitekturUML
+
+top to bottom direction
+
+skinparam nodesep 12
+skinparam ranksep 18
+scale max 600 width
+
+!include adapter/adapter.puml
+!include ports/ports.puml
+
+package "Domain" as Domain {
+
+    class Synthesizer {
+        + synthTask()
+        + screenTask()
+        + IOTask()
+    }
+
+    class Signal {
+    }
+
+    class Sound {
+    }
+
+    class Menu {
+    }
+
+    class Envelope {
+    }
+}
+
+Adapters -[hidden]down-> Ports
+Ports -[hidden]down-> Domain
+Dac -[hidden]down-> Signal
+
+
+DacImpl ..|>  Dac
+ButtonImpl ..|>  Button
+EncoderImpl ..|>  Encoder
+ScreenImpl ..|>  Screen
+TimerImpl ..|>  Timer
+utilImpl ..|>  util
+
+Synthesizer -up-> Dac
+Synthesizer -up-> Button
+Synthesizer -up-> Encoder
+Synthesizer -up-> Screen
+Synthesizer -up-> Timer
+Synthesizer -up-> util
+
+Sound --> Signal
+Synthesizer --> Sound
+Synthesizer --> Menu
+Synthesizer --> Envelope
+
+Envelope --> Timer
+Menu --> Screen
+
+@enduml
