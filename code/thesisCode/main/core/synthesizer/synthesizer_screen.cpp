@@ -14,19 +14,19 @@ void Synthesizer::screenTask(void *param) {
     bool somethingChanged = false;
 
     uint8_t queue = buttons.readQueue();
-    int encoderValue = encoder.getvalue();
+    int encoderValue = encoder.getValue();
 
     if (menu.leaveIsSelected()) {
       somethingChanged = handelValueChange(queue);
     } else {
       somethingChanged = navigateMenuWithEncoder(encoderValue);
       if (queue == PIN_BTN_A) {
-        encoder.resetvalue();
+        encoder.resetValue();
         lastEncoderValue = 0;
         somethingChanged = menu.moveForward();
       }
       if (queue == PIN_BTN_B) {
-        encoder.resetvalue();
+        encoder.resetValue();
         lastEncoderValue = 0;
         somethingChanged = menu.moveBack();
       }
@@ -114,13 +114,13 @@ bool Synthesizer::handleVariableChange(uint8_t queue, ThreadSaveInt &variable) {
   menu.drawSelected(variable.get());
 
   if (queue == PIN_BTN_A) {
-    encoder.resetvalue();
+    encoder.resetValue();
     lastEncoderValue = 0;
     menu.setSelectedValueIndex(variable.get());
     somethingChanged = menu.moveBack();
   }
   if (queue == PIN_BTN_B) {
-    encoder.resetvalue();
+    encoder.resetValue();
     lastEncoderValue = 0;
     variable.set(menu.getSelectedValueIndex());
     somethingChanged = menu.moveBack();
@@ -132,12 +132,12 @@ bool Synthesizer::handleVariableChange(uint8_t queue, ThreadSaveInt &variable) {
 bool Synthesizer::handleTODO(uint8_t queue) {
   screen.drawString("TODO", 64 - 16, 32, false);
   if (queue == PIN_BTN_A) {
-    encoder.resetvalue();
+    encoder.resetValue();
     lastEncoderValue = 0;
     return menu.moveBack();
   }
   if (queue == PIN_BTN_B) {
-    encoder.resetvalue();
+    encoder.resetValue();
     lastEncoderValue = 0;
     return menu.moveBack();
   }

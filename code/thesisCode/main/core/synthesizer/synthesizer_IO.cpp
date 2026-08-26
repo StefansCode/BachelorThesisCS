@@ -36,7 +36,7 @@ void Synthesizer::IOTask(void *param) {
     envelope7.apply(buttons.getState(PIN_BTN_23));
     envelope8.apply(buttons.getState(PIN_BTN_24));
 
-    // printf("Encoder value: %d  lightLvl: %d  buttonState: ", encoder.getvalue(), lightLvl);
+    // printf("Encoder value: %d  lightLvl: %d  buttonState: ", encoder.getValue(), lightLvl);
     // for (int i = 0; i < 32; i++) {
     //   printf("%d", int((allButton >> i) & (1U)));
     // }

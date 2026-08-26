@@ -9,8 +9,8 @@ class Encoder {
 public:
   Encoder();
   void init();
-  int getvalue();
-  void resetvalue();
+  int getValue();
+  void resetValue();
   void changeExternalValue(ThreadSaveInt &value, int min, int max, int step);
 
 private:

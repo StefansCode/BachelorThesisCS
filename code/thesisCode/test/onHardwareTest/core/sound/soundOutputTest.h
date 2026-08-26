@@ -25,7 +25,7 @@ void sendData(sample *data, void *param) {
 
 int lastEncoderValue = 0;
 void encoderChangeValue(float *variable, float min, float max, float step) {
-  int v = encoder.getvalue();
+  int v = encoder.getValue();
   if (v > lastEncoderValue && *variable < max && (v - lastEncoderValue) < 128) {
     *variable += step;
   } else if (v < lastEncoderValue && *variable > min && (lastEncoderValue - v) < 128) {
