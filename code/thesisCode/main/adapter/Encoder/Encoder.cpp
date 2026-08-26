@@ -55,10 +55,6 @@ int Encoder::getvalue() {
   return pulse_count / 4;
 }
 
-int Encoder::getLastValue() {
-  return lastEncoderValue;
-}
-
 void Encoder::resetvalue() {
   ESP_ERROR_CHECK(pcnt_unit_clear_count(pcnt_unit));
   lastEncoderValue = 0;

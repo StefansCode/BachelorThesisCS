@@ -10,7 +10,6 @@ public:
   Encoder();
   void init();
   int getvalue();
-  int getLastValue();
   void resetvalue();
   void changeExternalValue(ThreadSaveInt &value, int min, int max, int step);
 
