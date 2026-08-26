@@ -85,10 +85,27 @@ in eine Queue gepackt.
 Die Queue kann mit \lstinline|readQueue| ausgelesen werden.
 Hierbei gibt es zwei Dinge zu beachten.
 
+TODO Quellen zu Entprellung und besser Hardware angeben
+
 1. Entprellung. Wenn ein Taster gedrückt wird, geht der Pegel des 
 zugehörigen Pins nicht einfach auf LOW. Sondern er springt ein paar mal 
-zwischen LOW und HIGH.  
+zwischen LOW und HIGH. Um ein mehrfaches Lesen des Tasters bei
+einmaligem Drücken zu verhindern wird zwischen 2 Eingaben 
+eine mindest Zeitabstand von 200ms festgelegt.
 
+2. Threadsavety. Wenn zum Beispiel Taster 1 gedrückt wird und in 
+2 verschiedenen Tasks (siehe Unterkapitel zu FreeRTOS) 
+\lstinline|getQueue| aufgerufen, dann erhält nur eine der beiden 
+den den Wert 1 und leert die Queue.
+
+TODO Beispiel Code
+
+\subsubsection{Encoder}
+Encoder ist der Port/Adapter für den Drehgeber. Dazu wurden aus dem 
+ESP-Beispielcode für Encoder die wichtigsten Teile kopiert.
+Dieser nutzt die Pulsecontrol-API.
+
+Encoder hat 
 
 \subsubsection{RGB-LED and LED}
 An RGB-LED is used for...
