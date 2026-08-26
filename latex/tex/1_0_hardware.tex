@@ -135,7 +135,8 @@ wird.
 
 Ein incrementeller Drehregler kann mithilfe von zwei versetzten Impulsen, 
 welche auf dem DT und CLK Pin des Encoders gesendet werden, angeben in welche
-Richtung er gedreht wird. Diese Pins müssen mit GPIO-Pins des ESP32-S3 
+Richtung er gedreht wird. Diese Drehung kann unendlich sein, passiert aber 
+nur in Schritten. Die Pins müssen mit GPIO-Pins des ESP32-S3 
 verbunden werden. Zusätzlich kann der Encoder als Taster genutzt werden,
 in dem man den Schaft drückt.
 

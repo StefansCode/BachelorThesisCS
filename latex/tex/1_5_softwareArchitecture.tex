@@ -102,19 +102,61 @@ TODO Beispiel Code
 
 \subsubsection{Encoder}
 Encoder ist der Port/Adapter für den Drehgeber. Dazu wurden aus dem 
-ESP-Beispielcode für Encoder die wichtigsten Teile kopiert.
-Dieser nutzt die Pulsecontrol-API.
+ESP-Beispielcode \cite{espEncoder} für Encoder die wichtigsten Teile kopiert.
+Dieser nutzt die Pulsecontrol-API. 
 
-Encoder hat 
+Encoder hat eine Funktion \lstinline|getValue| welche ein Wert 
+zurückgibt. Dieser Wert ist zu begin 0 und erhöht sich um Eins, wenn der 
+Drehgeber um einen Schritt mit dem Uhrzeigersinn gedreht wurde. 
+Gegen den Uhrzeigersinn veringert sich der Wert.
+
+Mit \lstinline|resetValue| wird der Wert auf 0 zurückgesetzt.
+% Das ist nötig, wenn Encoder zum Ändern einer Variable genutzt wird,
+% aber zwichenzeitlich auch für etwas anderes.
+Um eine Variable zu ändern, kann in einer Schleife der aktuelle Wert mit
+dem Wert aus der vorherigen Itteration verglichen werden. 
+Jenachdem wie sich der Wert ändert, wir die Variable geändert. 
+
+\begin{lstlisting}[language=C++, 
+                   frame=single, 
+                   caption={Beispiel Variable ändern mit Encoder},
+                   captionpos=b]
+    int lastValue= 0;
+    int Variable;
+    while(1) {
+        if(lastValue < encoder.getValue()) { 
+            Variable++;
+        }
+        if(lastValue > encoder.getValue()) {
+            Variable--;
+        }
+    }
+\end{lstlisting}
+
+Dieses Pattern wird häufig mit einer oberen und unteren Grenze verwendet.
+Deshalb gibt es in Encoder eine Funktion changeExternalVariable,
+welcher man eine Variable ein Minimum, ein Maximum und eine 
+Schrittweite gibt. Die Schrittweite gibt an um wieviel die 
+Variable erhöht wird.
+rt/
+\subsubsection{Screen}
+An I2C OLED-screen is integrated by using a library from 
+voidlooprobotechs github \cite{voidloop2026ssd1306}.
+
+Der Port hat kann mit Methoden mit dem Prefix draw Dinge wie einen 
+Punkt, Strings, Zahlen oder Bitmaps malen.
+
+Bitmaps sind uint8\_t-Array, wobei hier jedes Bit ein Pixel darstellt.
+
+\subsubsection{Andere nützliche Adapter}
+
+
 
 \subsubsection{RGB-LED and LED}
 An RGB-LED is used for...
-%TODO
 
-\subsubsection{Screen}
-An I2C OLED-screen is integrated by using a library from voidlooprobotechs
-github \cite{voidloop2026ssd1306}.
-% schreiben falls ich die bib erweitere
+TODO Diesen Adapter habe ich eig. nie benutzt
+
 
 \cite{espidf2026api}
 
