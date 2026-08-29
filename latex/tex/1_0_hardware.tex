@@ -231,12 +231,45 @@ In Fusion360 ist es möglich ein Bild als Referenz zu laden.
 Das hat sich als schneller und genauer herausgestellt, als Maße von der 
 Platine zu nehmen.
 
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[width=\textwidth]{fig/case/hülle_in_fusion.jpeg}
+        \caption{Fusion360 mit der Hülle und dem geladenem Bild der Platine.}%
+        \label{fig:fusion360}
+    \end{center}
+    
+\end{figure}
+
+In Fusion360 wird das erstellte 3D-objekt als stl-Datei exportiert und dann
+in dem Bambu Lab Studio Slicer \cite{bambulabStudio} zu einer gcode-Datei konvertiert.
+Eine gcode-Datei enthält die Anweisungen für den 3D-Drucker und in einem 
+Slicer kann man Parameter wie die Schichthöhe, die Druckgeschwindigkeit, 
+die Temperatur der Düse und der Heizplatte, die Fülldichte von 
+Holräumen, etc. einstellen. Außerdem werden Stützen für Überhänge erstellt,
+da der Drucker nicht in der Luft drucken kann und man kann sehen wieviel 
+Materila verbraucht wird und wie lange der Druck braucht.
+
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[width=\textwidth]{fig/case/hülle_im_slicer.jpeg}
+        \caption{Slicer mit der Hülle.}%
+        \label{fig:slicer}
+    \end{center}
+    
+\end{figure}
+
+Der gcode wird dann an den 3D-Drucker Bambu Lab P1S \cite{bambulabP1S}
+geschickt, der die Hülle Schicht für Schicht druckt. 
+
+Auf der Githubseite zu dieser Arbeit sind die STL-Datei und eine STEP-Datei
+der Hülle zu finden. STEP-Dateien sind Dateien die von CAD-Programmen wie 
+Fusion geladen werden können. TODO link zu github und sagen warum step 
+gut ist.
+
 Zunächst wurde ein dünner Prototyp der Vorderseite gedruckt, da diese die 
 meisten Öffnungen hat. Nach ein paar kleinen Anpassungen wurden die 
 Seitenwände mit einer kleinen Einkerbung am Ende erstellt. Nach Maßen
 wurden Löcher für die USB-, Aux- und SD-Karten-Anschlüsse hinzugefügt.
-
-TODO 2 Figures
 
 \begin{figure}[H]
     \begin{subfigure}{0.36\textwidth}
@@ -261,11 +294,18 @@ Für den Boot- und Resetknopf auf dem ESP32-S3 gibt es Auch jeweils einen Knopf.
 Die sind allerdings kleiner. 
 
 Auf der Platine gibt es 2 größere freie Flächen. Diese wurden genutzt 
-um 2 Löcher zu boren, durch die 2 Säulen laufen. Die Mittelpunkte der Löcher liegen genau auf den kleinen Löchern der 
+um 2 Löcher zu boren, durch die 2 Säulen laufen. Die Mittelpunkte der Löcher
+liegen genau auf den kleinen Löchern der 
 Platine, so wird der Boher fixiert und in Fusion360 kann der Mittelpunkte
 der Säulen leicht ermittelt werden. 
 
-TODO Bild von einschmelzgewinde
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[width=6cm]{fig/case/Einschmelzgewinde.png}
+        \caption{Einschmelzgewinde.}%
+        \label{fig:einschmelzgewinde}
+    \end{center}
+\end{figure}
 
 In die Spitze der Säulen wurden Einschmelzgewinde eingeschmolzen. Dazu wurde 
 in der Säule ein Loch, das etwas kleiner ist als der Außendurchmesser des
