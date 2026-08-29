@@ -1,12 +1,386 @@
 \section{Entwicklung einer Darstellung eines Digitalen Tons}
 
+Wie oben erwähnt kann ein Ton als Signal dargestellt werden. Dazu
+werden zunächst als Auflösung 16Bit, also ein \lstinline|int16_t|,
+und als Abtastrate 32786Hz gewählt. Warum diese Werte gewählt wurden, 
+wird in dem Unterkapitel \ref{chap:Bewertung_der_Auflösung_und_Abtastrate} 
+besprochen. Außerdem wurde die Bufferlänge auf 256 gesetzt. Diese 3
+Werte werden in einer Header-Datei names config.h gespeicher. Sie 
+gehört zu der Sound-Komponente.
+
+\begin{lstlisting}[language=C++, 
+                       frame=single, 
+                       caption={Standartparameter eines Soundobjakts },
+                       captionpos=b]
+#define STANDART_SAMPLE_RATE 32768
+typedef int16_t sample;
+#define SOUND_BUFFER_SIZE 256
+\end{lstlisting}
+
+In der Soundklasse, gibt es ein Signalobjekt, welchem der Sampletyp
+und die Auflösung übergeben wurden. Die Abtastrate und Auflösung werden
+dem DAC übergeben.
+
+Nur durch die blockierende Funktion \lstinline|sendBuffer| des DACs 
+hält die SoundKlasse die Abtastrate ein.
 
 \subsection{Generierung von Audiosignalen}
-TODO: Wie und Warum man welche Audiosignale generiert.
+Anders als in der Signalklasse generieren hier die from-Funktionen 
+eigene Werte. Der from-Funkionen wird eine Frequenz übergeben und es
+soll eine periodische Funktion mit dieser Frequenz und einer bestimmten
+Form generiert werden. Wie Grüningen \cite[Kapitel 7]{grueningen2008dsv} 
+erwähnt sind Sägezahn-, Rechteck und Dreieckgeneratoren leicht zu 
+implementieren. Da die Sinuswelle eine fundamentale Rolle für Signale
+jeder Art spielt, soll auch diese implementiert werden.
+
+\begin{figure}[H]
+    \centering
+
+    \begin{tikzpicture}
+
+        % Sine
+        \begin{axis}[
+            width=7cm,
+            height=4.5cm,
+            title={Sinus},
+            xlabel={Zeit},
+            ylabel={Wert},
+            xmin=0, xmax=2*pi,
+            ymin=-1.2, ymax=1.2,
+            xtick={0,pi,2*pi},
+            xticklabels={$0$,$\pi$,$2\pi$},
+            ytick={-1,0,1},
+            grid=major,
+        ]
+            \addplot[
+                color=red,
+                line width=1.5pt,
+                domain=0:2*pi,
+                samples=200
+            ] {sin(deg(x))};
+        \end{axis}
+
+        % Sawtooth
+        \begin{axis}[
+            width=7cm,
+            height=4.5cm,
+            title={Sägezahn},
+            xlabel={Zeit},
+            ylabel={Wert},
+            xmin=0, xmax=2*pi,
+            ymin=-1.2, ymax=1.2,
+            xtick={0,pi,2*pi},
+            xticklabels={$0$,$\pi$,$2\pi$},
+            ytick={-1,0,1},
+            grid=major,
+            at={(7.5cm,0)},
+        ]
+            \addplot[
+                color=red,
+                line width=1.5pt,
+                domain=0:2*pi,
+                samples=200
+            ] {2*(x/(2*pi)-floor(x/(2*pi)+0.5))};
+        \end{axis}
+
+        % Square
+        \begin{axis}[
+            width=7cm,
+            height=4.5cm,
+            title={Rechteck},
+            xlabel={Zeit},
+            ylabel={Wert},
+            xmin=0, xmax=2*pi,
+            ymin=-1.2, ymax=1.2,
+            xtick={0,pi,2*pi},
+            xticklabels={$0$,$\pi$,$2\pi$},
+            ytick={-1,0,1},
+            grid=major,
+            at={(0,-5.5cm)},
+        ]
+            \addplot[
+                color=red,
+                line width=1.5pt,
+                domain=0:2*pi,
+                samples=200
+            ] {sign(sin(deg(x)))};
+        \end{axis}
+
+        % Triangle
+        \begin{axis}[
+            width=7cm,
+            height=4.5cm,
+            title={Dreieck},
+            xlabel={Zeit},
+            ylabel={Wert},
+            xmin=0, xmax=2*pi,
+            ymin=-1.2, ymax=1.2,
+            xtick={0,pi,2*pi},
+            xticklabels={$0$,$\pi$,$2\pi$},
+            ytick={-1,0,1},
+            grid=major,
+            at={(7.5cm,-5.5cm)},
+        ]
+            \addplot[
+                color=red,
+                line width=1.5pt,
+                domain=0:2*pi,
+                samples=200
+            ] {2*abs(2*(x/(2*pi)-floor(x/(2*pi)+0.5)))-1};
+        \end{axis}
+
+    \end{tikzpicture}
+
+    \caption{Typische Wellenformen der digitalen Klangsynthese.}
+    \label{fig:waveforms}
+
+\end{figure}
+
+Wegen ihrer Einfachheit sind diese 4 Signale typische Formen in der 
+Klangsynthese \cite[3.3]{computerMusic}.
+
+Es gibt also 4 fromFunktionen. Diese nehmen als Parameter eine Frequenz
+und greifen auf einen MemberVariable namens Time zu. Time wird bei jedem
+Aufruf einer Fromfunktion um Eins erhöht und ist der X-Wert der 
+generierten Funktionen. Da nur ganzahlige Frequenz größer gleich null
+betrachtet werden sollen, ist jede mögliche Frequenz ein Vielfaches
+von Eins und somit ist auch jede generierte  1-periodisch (sie wiederholt
+sich bei eins). 
+
+\begin{figure}[H]
+    \centering
+
+    \begin{tikzpicture}
+
+        % Sine
+        \begin{axis}[
+            width=7cm,
+            height=4.5cm,
+            title={1Hz},
+            xlabel={Zeit},
+            ylabel={Wert},
+            xmin=0, xmax=1,
+            ymin=-1.2, ymax=1.2,
+            xtick={0,1},
+            ytick={-1,0,1},
+            grid=major,
+        ]
+            \addplot[
+                color=red,
+                line width=1.5pt,
+                domain=0:1,
+                samples=200
+            ] {sin(deg(x)*2*pi)};
+        \end{axis}
+
+        % Sawtooth
+        \begin{axis}[
+            width=7cm,
+            height=4.5cm,
+            title={3Hz},
+            xlabel={Zeit},
+            ylabel={Wert},
+            xmin=0, xmax=1,
+            ymin=-1.2, ymax=1.2,
+            xtick={0,1},
+            ytick={-1,0,1},
+            grid=major,
+            at={(7.5cm,0)},
+        ]
+            \addplot[
+                color=red,
+                line width=1.5pt,
+                domain=0:1,
+                samples=200
+            ] {sin(deg(x)*3*2*pi)};
+        \end{axis}
+
+        % Square
+        \begin{axis}[
+            width=7cm,
+            height=4.5cm,
+            title={7Hz},
+            xlabel={Zeit},
+            ylabel={Wert},
+            xmin=0, xmax=1,
+            ymin=-1.2, ymax=1.2,
+            xtick={0,1},
+            ytick={-1,0,1},
+            grid=major,
+            at={(0,-5.5cm)},
+        ]
+            \addplot[
+                color=red,
+                line width=1.5pt,
+                domain=0:1,
+                samples=200
+            ] {sin(deg(x)*7*2*pi)};
+        \end{axis}
+
+        % Triangle
+        \begin{axis}[
+            width=7cm,
+            height=4.5cm,
+            title={10Hz},
+            xlabel={Zeit},
+            ylabel={Wert},
+            xmin=0, xmax=1,
+            ymin=-1.2, ymax=1.2,
+            xtick={0,1},
+            ytick={-1,0,1},
+            grid=major,
+            at={(7.5cm,-5.5cm)},
+        ]
+            \addplot[
+                color=red,
+                line width=1.5pt,
+                domain=0:1,
+                samples=200
+            ] {sin(deg(x)*10*2*pi)};
+        \end{axis}
+
+    \end{tikzpicture}
+
+    \caption{Eine Sinuskurve mit verschiedenen Frequenzen.}
+    \label{fig:waveforms_with_different_frequenzys}
+
+\end{figure}
+
+Für die digitale Darstellung heißt das, wenn $s$ (samplerate) die Abtastrate ist
+kann time alle $s$ Aufrufe zurückgesetztwerden. 
+Zu Begin jeder fromFunktion wird also 
+\lstinline|time = (time + 1) % STANDART_SAMPLE_RATE| aufgerufen.
+
+Seien im Folgenden $s$ die Abtastrate, $a$ die Auflösung und $f$ 
+die Frequenz. Außerdem wird für time $x$ geschrieben und für das 
+berechnete Wert $y$.
+Um eine Sägezahnwelle zugenerieren, startet man mit der Identität
+$y=x$
+und passt diese mit den folgenden Schritten an.
+
+\begin{enumerate}
+    \item $y=(-a/2)+(x*a/s)$ Die Funktion wird skaliert, um die Auflösung zu berücksichtigen.
+    \item $y=(-a/2)+((x*a/s) \bmod s)$ Die Funktion wird periodisch gemacht, indem der Modulooperator verwendet wird.
+    \item $y=(-a/2)+((x*f*a/s) \bmod s)$ Die Zeit $x$ wird mit der Frequenz $f$ multipliziert, um die gewünschte Frequenz zu erhalten.
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+
+    \begin{tikzpicture}
+
+        % Identität
+        \begin{axis}[
+            width=7cm,
+            height=4.5cm,
+            title={1. $y=x$},
+            xlabel={Zeit},
+            ylabel={Wert},
+            xmin=-0.2, xmax=1.2,
+            ymin=-0.2, ymax=1.2,
+            xtick={0,1},
+            xticklabels ={$0$, $s$},
+            ytick={0,1},
+            yticklabels ={$0$,$s$},
+            grid=major,
+        ]
+            \addplot[
+                color=red,
+                line width=1.5pt,
+                domain=-0.2:1.2,
+                samples=200
+            ] {x};
+        \end{axis}
+
+        % skaliert
+        \begin{axis}[
+            width=7cm,
+            height=4.5cm,
+            title={2. $y=-(a/2)+(x*a/s)$},
+            xlabel={Zeit},
+            ylabel={Wert},
+            xmin=-0.2, xmax=1.2,
+            ymin=-0.7, ymax=0.7,
+            xtick={0,1},
+            xticklabels ={$0$, $s$},
+            ytick={-0.5, 0, 0.5},
+            yticklabels ={$-a/2$, $0$, $a/2$},
+            grid=major,
+            at={(7.5cm,0)}
+        ]
+            \addplot[
+                color=red,
+                line width=1.5pt,
+                domain=-0.2:1.2,
+                samples=200
+            ] {x-0.5};
+        \end{axis}
+
+        % periodisch
+        \begin{axis}[
+            width=7cm,
+            height=4.5cm,
+            title={3. $y=-(a/2)+((x*a/s) \bmod s)$},
+            xlabel={Zeit},
+            ylabel={Wert},
+            xmin=-0.2, xmax=1.2,
+            ymin=-0.7, ymax=0.7,
+            xtick={0,1},
+            xticklabels ={$0$, $s$},
+            ytick={-0.5, 0, 0.5},
+            yticklabels ={$-a/2$, $0$, $a/2$},
+            grid=major,
+            at={(0,-5.5cm)}
+        ]
+            \addplot[
+                color=red,
+                line width=1.5pt,
+                domain=-0.2:1.2,
+                samples=200
+            ] {(x - floor(x))-0.5};
+        \end{axis}
+
+        % periodisch
+        \begin{axis}[
+            width=7cm,
+            height=4.5cm,
+            title={4. $y=-(a/2)+((x*f*a/s) \bmod s)$},
+            xlabel={Zeit},
+            ylabel={Wert},
+            xmin=-0.2, xmax=1.2,
+            ymin=-0.7, ymax=0.7,
+            xtick={0,1},
+            xticklabels ={$0$, $s$},
+            ytick={-0.5, 0, 0.5},
+            yticklabels ={$-a/2$, $0$, $a/2$},
+            grid=major,
+            at={(7.5cm,-5.5cm)}
+        ]
+            \addplot[
+                color=red,
+                line width=1.5pt,
+                domain=-0.2:1.2,
+                samples=200
+            ] {(x*3 - floor(x*3))-0.5};
+        \end{axis}
+
+    \end{tikzpicture}
+
+    \caption{Generierung einer Sägezahnwelle mit Frequenz 3 Hz.}
+    \label{fig:saw_generation}
+
+\end{figure}
+
 
 \subsection{GrundOperationen}
 TODO: Addieren und multiplizieren von Signalen und die probleme dabei.
 z.b. Overflow
 
+\subsection{Bewertung der Auflösung und Abtastrate}
+\label{chap:Bewertung_der_Auflösung_und_Abtastrate}
+
 \subsection{andere operationen}
-TODO: vlt delay, filter distortion, etc. vlt schaffe ich es noch das zu implementieren.
+TODO: vlt delay, filter distortion, etc. vlt schaffe ich es noch das zu 
+implementieren.
+
+\cite{trustMeBro}

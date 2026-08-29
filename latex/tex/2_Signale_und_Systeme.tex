@@ -156,6 +156,9 @@ Das liegt daran, dass ein Signal im Normalfall in einer Endlosschleife
 aktualisiert wird und nicht wie ein Stream einmal erschaffen und direkt 
 beendet wird. 
 
+Die Abtastrate hängt davon ab, wie oft in der Sekunde eine Inputfunktionen
+augerufen wird.
+
 Ein weiterer wichtiger Punkt ist, dass der Index in den Inputfunktionen erhöht
 werden muss, da diese der auch einen neuen Wert setzt und für andere Funktionen 
 nicht garantiert ist, dass diese aufgerufen werden.
@@ -163,3 +166,4 @@ nicht garantiert ist, dass diese aufgerufen werden.
 Außerdem ist es wichtig, dass nur Referenzen des Signals zurück- und übergeben werden. 
 Auch wenn das Signal nicht verändert wird ist dies wichtig, da so zeitintensieves
 Kopieren des Buffers verhindert wird.
+

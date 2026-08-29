@@ -15,7 +15,8 @@ TODO Ist das so ok?
 
 \subsection{Adapter}
 
-Ports sind abstrakte Klassen und bilden die Schnittstelle zur Hardware und zur ESP-IDF.
+Ports sind abstrakte Klassen und bilden die Schnittstelle zur Hardware und zur ESP-IDF 
+\cite{espidf2026api}.
 Adapter sind ihre Implementierung.
 Durch das Austauschen der Adapter, lässt sich der Kern unabhängig von 
 diesen beiden Faktoren, also auch auf einen normalen PC, testen.
@@ -150,7 +151,17 @@ Bitmaps sind uint8\_t-Array, wobei hier jedes Bit ein Pixel darstellt.
 
 \subsubsection{Andere nützliche Adapter}
 
+Zwei weitere Adapter sind Util und Timer.
 
+Util implementiert die Funktionen millis und delay wie sie bei
+Arduino genutzt werden.
+
+Timer ist ein Wert, der bei 0 startet und alle 16 ms incrementiert wird.
+Die Funktion getValue gibt diesen Wert zurück und set Value setzt den 
+Wert auf einen beliebigen Wert.
+16 ms wurden gewäht das der Teimer so später genutzt wird, aber eine 
+mögliche verbesserung wäre zu begin das Inkrementationsinterval 
+zu übergeben.
 
 \subsubsection{RGB-LED and LED}
 An RGB-LED is used for...
@@ -158,15 +169,20 @@ An RGB-LED is used for...
 TODO Diesen Adapter habe ich eig. nie benutzt
 
 
-\cite{espidf2026api}
 
 TODO Timer, ThreadsaveVariable, Util
 
 \subsection{Kern}
 
-Der Kern der Anwendung besteht aus 3 Komponenten. Das sind die DSV-Bibliothek, welche
-wie oben beschrieben, als eine Klasse namens Signal implementiert ist. Dann eine 
-Erweiterung dieser Klasse namens Sound welche ein Audiosignal darstellt
-und zuletzt die Synthesizer-Klasse, welche die Soundklasse nutzt, um mithilfe der 
-Hardware einen Synthesizer zu implementieren. Diese 3 Komponenten werden in den 
+Der Kern der Anwendung besteht aus 3 Komponenten. Das sind
+\begin{enumerate}
+    \item die DSV-Bibliothek, welche
+            wie oben beschrieben, als eine Klasse namens Signal implementiert ist.
+    \item Eine 
+            Erweiterung dieser Klasse namens Sound welche ein Audiosignal darstellt.
+    \item Der Synthesizer, welche die Soundklasse nutzt, um mithilfe der 
+        Hardware einen Synthesizer zu implementieren. 
+        Dazu gehören auch Envelope und Menu.
+\end{enumerate}
+Diese 3 Komponenten werden in den 
 folgenden Kapiteln beschrieben.

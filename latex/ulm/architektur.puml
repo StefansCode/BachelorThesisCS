@@ -18,15 +18,24 @@ package "Domain" as Domain {
     }
 
     class Signal {
+        + add(...)
+        + multiply(...)
     }
 
     class Sound {
+        + add(...)
+        + multiply(...)
     }
 
     class Menu {
+       + move()
+       + select()
+       + draw()
     }
 
     class Envelope {
+        + apply(value)
+        + getValue()
     }
 }
 
