@@ -116,13 +116,13 @@ void runSoundInputTest_waveformCalulationSpeed() {
 ThreadSaveFloat testVariableFloat(0.25f);
 
 void runSoundInputTest_calulationSpeeds() {
-  unsigned int x = 0;
+  sample x = 0;
+  sample y = 0;
   float sum = 0;
   int count = 0;
   while (1) {
     for (int j = 0; j < 1000; j++) {
-      saw.resetTime();
-      sine.resetTime();
+      y++;
       float t1 = ((float)util.micros()) / 1000.0f / 1000.0f * 100.0f;
       for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
         saw.fromSaw(j);
@@ -141,20 +141,29 @@ void runSoundInputTest_calulationSpeeds() {
       }
       float t5 = ((float)util.micros()) / 1000.0f / 1000.0f * 100.0f;
       for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
-        saw.returnBuffer();
+        x = saw.returnValue();
       }
       float t6 = ((float)util.micros()) / 1000.0f / 1000.0f * 100.0f;
+
+      for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
+        y = x + y;
+      }
+      float t7 = ((float)util.micros()) / 1000.0f / 1000.0f * 100.0f;
 
       sum += t3 - t2;
       count++;
       float average = sum / count;
 
-      printf("frequenzy: %d, Generate saw: %f %%, generate sine: %f %%, average Sine : %f %%, amplify: %f %%, add: %f %%, return: %f %%\r\n", j, t2 - t1, t3 - t2, average, t4 - t3, t5 - t4, t6 - t5);
+      printf("frequenzy: %d, Generate saw: %f %%, generate sine: %f %%, average Sine : %f %%, amplify: %f %%, add: %f %%, return: %f %%, simpleadd: %f %%\r\n", j, t2 - t1, t3 - t2, average, t4 - t3, t5 - t4, t6 - t5, t7 - t6 );
       vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
     printf("%d", saw.returnValue());
     printf("%d", sine.returnValue());
     printf("%d", x);
+    printf("%d", y);
   }
 }
+
+// frequenzy: 35, Generate saw: 1.354980 %, generate sine: 6.885986 %, average Sine : 4.547216 %, amplify: 1.169922 %, add: 0.780029 %, return: 0.511963 %
+
 #endif // SOUND_INPUT_TEST_H

@@ -24,23 +24,8 @@ class Sound {
 private:
   Signal<sample, SOUND_BUFFER_SIZE> signal;
   unsigned int time = 0;
-  unsigned int sampleRate = STANDART_SAMPLE_RATE;
 
 public:
-  void resetTime() {
-    time = 0;
-  }
-
-sample loadSine(unsigned int frequency) {
-  
-  time = (time + 1) % STANDART_SAMPLE_RATE;
-  sample value = sineLookupTable[(time * frequency) % STANDART_SAMPLE_RATE];
-  return value;
-}
-  void setSampleRate(unsigned int sampleRate) {
-    this->sampleRate = sampleRate;
-  }
-
   Sound &fromSilence();
   Sound &fromSine(unsigned int frequency);
   Sound &fromTriangle(unsigned int frequency);
@@ -59,11 +44,7 @@ sample loadSine(unsigned int frequency) {
   sample *returnBuffer();
 
 private:
-  int calculateSaw(unsigned int frequency);
+  sample calculateSaw(unsigned int frequency);
 };
 
 #endif // SOUND_H
-
-/**
- * Generate: 17 ms, Amplify: 3 ms, Amplify (Variable): 8 ms,Add(random): 246 ms, Add: 3 ms, Output: 2 ms
- */

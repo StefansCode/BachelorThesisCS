@@ -1,7 +1,8 @@
 #include "sound.h"
 
-int Sound::calculateSaw(unsigned int frequency) {
+sample Sound::calculateSaw(unsigned int frequency) {
   return (SAMPLE_MIN + (((time * frequency * SAMPLE_RANGE)/STANDART_SAMPLE_RATE) % (SAMPLE_RANGE)));
+  // return (sample)(SAMPLE_MIN + time*frequency*2);
 }
 
 Sound& Sound::fromSilence() {
