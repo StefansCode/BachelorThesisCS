@@ -1,75 +1,75 @@
 \section{Einleitung}
 
-todo: schreibe irgendwas mit digitale Signalverarbeitung (dsv)
+Digitale Signalverarbeitung (DSV) ermöglicht die softwarebasierte Verarbeitung
+und Erzeugung von Signalen und findet unter anderem in der Audioverarbeitung 
+Anwendung. Durch die zunehmende Leistungsfähigkeit von Mikrocontrollern ist
+es möglich, solche Signalverarbeitungsverfahren auch auf eingebetteten Systemen 
+umzusetzen. 
 
-Das Ziel der Arbeit ist die Entwicklung einer dsv-Bibliothek für 
-Mikrocontroller. Insbesondere für den ESP32-S3, da die Entwicklung der
-Bibliothek auf diesem stattfindet. Der Vorteil und Fokus dieser Bibliothek
-liegt auf der Erweiterbarkeit und Nutzerfreundlichkeit. Im bezug auf
+Ziel dieser Arbeit ist die Entwicklung einer einfach nutzbaren und erweiterbaren
+DSV-Bibliothek für Mikrocontroller. In Bezug auf
 Nutzerfreundlichkeit ist Java Streams \cite{java2026stream} ein 
-sehr gutes Vorbild. Java Streams setzt als fluent API die Mentalität 
+sehr gutes Vorbild. Java Streams setzen als Fluent API die Mentalität 
 \glqq Signal geht rein, Signal geht raus\grqq\ (oder im fall von Java Streams
-Collection) perfekt um. Als zentrale Komponente der dsv-Bibliothek soll es 
-also eine Klasse geben, welche ein Signal von einem Eingang nimmt, es mit 
-verschiedenen Funktionen bearbeitet und danach an einen Ausgang abgibt.
-Die Erweiterbarkeit soll dabei durch Signalfunktionen wie applyFunction,
-welche selbst definierte Funktionen ausführen, gegeben sein. Außerdem soll die
-Signalklasse nicht zu komplex werden und somit leicht erweiterbar sein.
+Collection) und die sequentielle Abarbeitung von Streams perfekt um.
+In den Abbildung \ref{Vergleich_Streams_Signal} wird diese sequentielle
+Abarbeitung dargestellt und gezeigt wie eine Anwendung der Signalklasse aussehen
+könnte.
 
-\begin{minipage}[h]{0.48\textwidth}
+\begin{figure}[H]
+  
+  \begin{minipage}[h]{0.48\textwidth}
     \begin{lstlisting}[language=Java, 
-                       frame=single, 
-                       caption={Java Streams},
-                       captionpos=b]
-Stream.of(1,2,3,4)
-      .map(x -> x*x)
-      .filter(x -> x<10)
-      .toArray();
+      frame=single,
+      captionpos=b]
+      Stream.of(1,2,3,4)
+        .map(x -> x*x)
+        .filter(x -> x<10)
+        .toArray();
     \end{lstlisting}
-\end{minipage}
-\hfill
-\begin{minipage}[h]{0.48\textwidth}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[h]{0.48\textwidth}
     \begin{lstlisting}[language=C++, 
-                       frame=single,
-                       caption={dsv-Bibliothek},
-                       captionpos=b]
-Signal.fromInput(ADC)
-      .multiply(2)
-      .filter(20,5000)
-      .applyFunction(coolFkt)
-      .toOutput(DAC);
+      frame=single,
+      captionpos=b]
+      Signal.fromInput(ADC)
+        .multiply(2)
+        .filter(20,5000)
+        .applyFunction(coolFkt)
+        .toOutput(DAC);
     \end{lstlisting}
-\end{minipage}
-
-\begin{figure}[ht]
-    \centering
-    \begin{lstlisting}[language=Java, 
-                       frame=single, 
-                       caption={Java Streams},
-                       captionpos=b]
-Stream.of(1,2,3,4)
-      .map(x -> x*x)
-      .filter(x -> x<10)
-      .toArray();
-    \end{lstlisting}
-    \hfill
-    \begin{lstlisting}[language=C++, 
-                       frame=single,
-                       caption={dsv-Bibliothek},
-                       captionpos=b]
-Signal.fromInput(ADC)
-      .multiplyWithValue(2)
-      .filterFrequencyRange(20,20000)
-      .applyFunction(coolFkt)
-      .toOutput(DAC);
-    \end{lstlisting}
+  \end{minipage}
+  \caption{Vergleich Einer Beispielanverndung von Javastreams und 
+            der zu entwickelnden Signalbibliothek}
+  \label{Vergleich_Streams_Signal}
 \end{figure}
 
+Neben der Signalklasse soll es außerdem eine Soundklasse geben, welche 
+die Signalklasse auf ein Audiosignal spezifiziert. Der größte Unterschied 
+zwischen diesen liegt darin, dass ein Soundobjekt das Signal selber erzeugt
+und einem Signalobjekt ein Signal übergeben wird.
 
-TODO: Schreibe vlt in ein eigenes Kapitel was für tools ich nutze bzw welche ich
-für nützlich halte, auch wenn sie nicht direkt in die Entwicklung der Bibliothek
-eingebunden sind.
+Wegen der Popularität und des niedrigen Preises für die Leistung des ESP32-S3 
+Mikrocontroller wird die Signalbibliothek auf diesem entwickelt und
+soll neben der eigentlichen 
+Signalverarbeitung auch die Anbindung an die benötigte Hardware ermöglichen. Hierzu 
+wird eine Trennung zwischen der Signalverarbeitung und hardwarespezifischen Komponenten 
+sowie der ESP-IDF
+angestrebt. Dadurch soll die Bibliothek plattformunabhängig bleiben. 
 
-Durunter fallen : Oscilloscope, Logic Analyzer(Kann i2c etc. auslesen),
-VsCode, ESP-IDF, FreRTOS, OpenOCD(on chip debugger), Systemview(Task analyzer), 
-Googletest(für Unit test), OnHardwareTests
+Als praktische Anwendung der Bibliothek wird ein digitaler Synthesizer entwickelt.
+Der Synthesizer dient dabei sowohl als Anwendung der 
+Bibliothek als auch zur praktischen Erprobung ihrer Funktionen.
+Dafür wird die nötige Hardware aufgebaut und in der Software implementiert.
+
+
+% TODO: Schreibe vlt in ein eigenes Kapitel was für tools ich nutze bzw welche ich
+% für nützlich halte, auch wenn sie nicht direkt in die Entwicklung der Bibliothek
+% eingebunden sind.
+
+% Durunter fallen : Oscilloscope, Logic Analyzer(Kann i2c etc. auslesen),
+% VsCode, ESP-IDF, FreRTOS, OpenOCD(on chip debugger), Systemview(Task analyzer), 
+% Googletest(für Unit test), OnHardwareTests
+
+% ich denke das mache ich nicht mehr

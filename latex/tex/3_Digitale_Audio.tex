@@ -2,9 +2,7 @@
 
 Wie oben erwähnt kann ein Ton als Signal dargestellt werden. Dazu
 werden zunächst als Auflösung 16Bit, also ein \lstinline|int16_t|,
-und als Abtastrate 32786Hz gewählt. Warum diese Werte gewählt wurden, 
-wird in dem Unterkapitel \ref{chap:Bewertung_der_Auflösung_und_Abtastrate} 
-besprochen. Außerdem wurde die Bufferlänge auf 256 gesetzt. Diese 3
+und als Abtastrate 32786Hz gewählt. Außerdem wurde die Bufferlänge auf 256 gesetzt. Diese 3
 Werte werden in einer Header-Datei names config.h gespeicher. Sie 
 gehört zu der Sound-Komponente.
 
@@ -47,8 +45,8 @@ jeder Art spielt, soll auch diese implementiert werden.
             ylabel={Wert},
             xmin=0, xmax=2*pi,
             ymin=-1.2, ymax=1.2,
-            xtick={0,pi,2*pi},
-            xticklabels={$0$,$\pi$,$2\pi$},
+            xtick={0,2*pi},
+            xticklabels={$0$,$1$},
             ytick={-1,0,1},
             grid=major,
         ]
@@ -69,8 +67,8 @@ jeder Art spielt, soll auch diese implementiert werden.
             ylabel={Wert},
             xmin=0, xmax=2*pi,
             ymin=-1.2, ymax=1.2,
-            xtick={0,pi,2*pi},
-            xticklabels={$0$,$\pi$,$2\pi$},
+            xtick={0,2*pi},
+            xticklabels={$0$,$1$},
             ytick={-1,0,1},
             grid=major,
             at={(7.5cm,0)},
@@ -92,8 +90,8 @@ jeder Art spielt, soll auch diese implementiert werden.
             ylabel={Wert},
             xmin=0, xmax=2*pi,
             ymin=-1.2, ymax=1.2,
-            xtick={0,pi,2*pi},
-            xticklabels={$0$,$\pi$,$2\pi$},
+            xtick={0,2*pi},
+            xticklabels={$0$,$1$},
             ytick={-1,0,1},
             grid=major,
             at={(0,-5.5cm)},
@@ -115,8 +113,8 @@ jeder Art spielt, soll auch diese implementiert werden.
             ylabel={Wert},
             xmin=0, xmax=2*pi,
             ymin=-1.2, ymax=1.2,
-            xtick={0,pi,2*pi},
-            xticklabels={$0$,$\pi$,$2\pi$},
+            xtick={0,2*pi},
+            xticklabels={$0$,$1$},
             ytick={-1,0,1},
             grid=major,
             at={(7.5cm,-5.5cm)},
@@ -248,8 +246,10 @@ sich bei eins).
 
 Für die digitale Darstellung heißt das, wenn $s$ (samplerate) die Abtastrate ist
 kann time alle $s$ Aufrufe zurückgesetztwerden. 
-Zu Begin jeder fromFunktion wird also 
+Zu Begin jeder from-Funktion wird also 
 \lstinline|time = (time + 1) % STANDART_SAMPLE_RATE| aufgerufen.
+
+\subsubsection{Generierung einer Sägezahnwelle}
 
 Seien im Folgenden $s$ die Abtastrate, $a$ die Auflösung und $f$ 
 die Frequenz. Außerdem wird für time $x$ geschrieben und für das 
@@ -259,9 +259,9 @@ $y=x$
 und passt diese mit den folgenden Schritten an.
 
 \begin{enumerate}
-    \item $y=(-a/2)+(x*a/s)$ Die Funktion wird skaliert, um die Auflösung zu berücksichtigen.
-    \item $y=(-a/2)+((x*a/s) \bmod s)$ Die Funktion wird periodisch gemacht, indem der Modulooperator verwendet wird.
-    \item $y=(-a/2)+((x*f*a/s) \bmod s)$ Die Zeit $x$ wird mit der Frequenz $f$ multipliziert, um die gewünschte Frequenz zu erhalten.
+    \item $y=(-a/2)+(x*a/s)$ Die Funktion wird auf die Auflösung skaliert.
+    \item $y=(-a/2)+((x*a/s) \bmod a)$ Die Funktion wird periodisch gemacht, indem mit der auflösung Modulo gerechnet wird.
+    \item $y=(-a/2)+((x*f*a/s) \bmod a)$ Die Zeit $x$ wird mit der Frequenz $f$ multipliziert, um die gewünschte Frequenz zu erhalten.
 \end{enumerate}
 
 \begin{figure}[H]
@@ -320,7 +320,7 @@ und passt diese mit den folgenden Schritten an.
         \begin{axis}[
             width=7cm,
             height=4.5cm,
-            title={3. $y=-(a/2)+((x*a/s) \bmod s)$},
+            title={3. $y=-(a/2)+((x*a/s) \bmod a)$},
             xlabel={Zeit},
             ylabel={Wert},
             xmin=-0.2, xmax=1.2,
@@ -344,7 +344,7 @@ und passt diese mit den folgenden Schritten an.
         \begin{axis}[
             width=7cm,
             height=4.5cm,
-            title={4. $y=-(a/2)+((x*f*a/s) \bmod s)$},
+            title={4. $y=-(a/2)+((x*f*a/s) \bmod a)$},
             xlabel={Zeit},
             ylabel={Wert},
             xmin=-0.2, xmax=1.2,
@@ -371,16 +371,261 @@ und passt diese mit den folgenden Schritten an.
 
 \end{figure}
 
+Da die Sägezahnwelle auch für die Berechnung der anderen 
+Wellenformen genutzt wird, ist es sinnvoll diese als eigene 
+Funktion zu implementieren.
 
-\subsection{GrundOperationen}
-TODO: Addieren und multiplizieren von Signalen und die probleme dabei.
-z.b. Overflow
+\begin{lstlisting}[language=C++, 
+                       frame=single, 
+                       caption={Generierung einer Sägezahnwelle im Code},
+                       captionpos=b]
+sample Sound::calculateSaw(unsigned int frequency) {
+    unsigned int scaled = time * frequency * SAMPLE_RANGE;
+    scaled = scaled / STANDART_SAMPLE_RATE;
+    return (SAMPLE_MIN + (scaled % (SAMPLE_RANGE)));
+}
+\end{lstlisting}
+
+\subsubsection{Generierung einer Rechteckwelle}
+
+Um eine Rechteckwelle $rect(t)$ zu generieren, wird die 
+Sägezahnwelle $saw(t)$ wie folgt genutzt: 
+
+\begin{equation}
+    rect(t) = \begin{cases}
+        -a/2, & \text{wenn } saw(t) < 0 \\
+        a/2, & \text{sonst}
+    \end{cases}
+\end{equation}
+
+\subsubsection{Generierung einer Dreieckswelle}
+
+Auch für die Dreieckswelle $tri(t)$ wird die 
+Sägezahnwelle $saw(t)$ genutzt:
+
+\begin{equation}
+    tri(t) = \begin{cases}
+        (a/2) + (2*saw(t)), & \text{wenn } saw(t) < 0 \\
+        (a/2) - (2*saw(t)), & \text{sonst}
+    \end{cases}
+\end{equation}
+
+\subsubsection{Generierung einer Sinuswelle}
+
+Da die Berechnung des Sinus viel aufwendiger ist 
+als die Berechnung der anderen Wellenformen
+(siehe \ref{chap:Bewertung_der_Auflösung_und_Abtastrate}),
+werden diese Werte vorher berechnet und in einem Array gespeichert.
+Wären der Laufzeit wird der Index basierend auf der Frequenz und der 
+Zeit berechnet und der Wert aus dem Array gelesen.
+Das Array ist $s$ lang und enthält die Werte für eine Periode der 
+Sinuswelle.
+
+
+
+\subsection{Addition und Multiplikation}
+
+Wenn man 2 Töne geleichzeitig hört, dann hört man diese als 
+einen neuen Ton, welche die Addition der beiden Töne ist \cite{waveInterference}.
+
+Die Addition von zwei Tönen ist in der Soundklasse als Funktion 
+\lstinline{add(Sound * other)} implementiert. Diese ruft einfach die 
+add-Funktion der Signalklasse auf. 
+
+Die Lautstarke eines Tons ist die Amplitude des Signals \cite{soundIntensety}. 
+Wenn man die Lautstärke eines Tons verändern möchte, 
+muss die Amplitude des Signalsmit einem Faktor multipliziert werden.
+Die Multiplikation eines Tons ist in der Soundklasse als Funktion
+\lstinline{amplipfy(float factor)} implementiert, welche ebenfalls einfach
+die multiply-Funktion der Signalklasse aufruft.
+
+\begin{figure}[H]
+    \centering
+
+    \begin{tikzpicture}
+
+        % Sine
+        \begin{axis}[
+            width=7cm,
+            height=4.5cm,
+            title={2Hz(blau) und 3Hz(rot)},
+            xlabel={Zeit},
+            ylabel={Wert},
+            xmin=0, xmax=1,
+            ymin=-1.2, ymax=1.2,
+            xtick={0,1},
+            ytick={-1,0,1},
+            grid=major,
+        ]
+            \addplot[
+                color=blue,
+                line width=1.5pt,
+                domain=0:1,
+                samples=200
+            ] {sin(deg(x)*2*2*pi)};
+            \addplot[
+                color=red,
+                line width=1.5pt,
+                domain=0:1,
+                samples=200
+            ] {sin(deg(x)*3*2*pi)};
+        \end{axis}
+
+        % Square
+        \begin{axis}[
+            width=7cm,
+            height=4.5cm,
+            title={2Hz+3Hz},
+            xlabel={Zeit},
+            ylabel={Wert},
+            xmin=0, xmax=1,
+            ymin=-1.2, ymax=1.2,
+            xtick={0,1},
+            ytick={-1,0,1},
+            grid=major,
+            at={(7.5cm,0cm)},
+        ]
+            \addplot[
+                color=red,
+                line width=1.5pt,
+                domain=0:1,
+                samples=200
+            ] {sin(deg(x)*2*2*pi)+sin(deg(x)*3*2*pi)};
+        \end{axis}
+
+        % Triangle
+        \begin{axis}[
+            width=7cm,
+            height=4.5cm,
+            title={(2Hz*0.5+3Hz*0.5)},
+            xlabel={Zeit},
+            ylabel={Wert},
+            xmin=0, xmax=1,
+            ymin=-1.2, ymax=1.2,
+            xtick={0,1},
+            ytick={-1,0,1},
+            grid=major,
+            at={(0cm,-5.5cm)},
+        ]
+            \addplot[
+                color=red,
+                line width=1.5pt,
+                domain=0:1,
+                samples=200
+            ] {(sin(deg(x)*2*2*pi)+sin(deg(x)*3*2*pi))*0.5};
+        \end{axis}
+
+        % Sawtooth
+        \begin{axis}[
+            width=7cm,
+            height=4.5cm,
+            title={2Hz+3Hz(mit Overflow)},
+            xlabel={Zeit},
+            ylabel={Wert},
+            xmin=0, xmax=1,
+            ymin=-1.2, ymax=1.2,
+            xtick={0,1},
+            ytick={-1,0,1},
+            grid=major,
+            at={(7.5cm,-5.5cm)},
+        ]
+            \addplot[
+                color=red,
+                line width=1.5pt,
+                domain=0:1,
+                samples=200
+            ] {{mod(mod((sin(deg(x)*2*2*pi)+sin(deg(x)*3*2*pi)) + 1, 2) + 2, 2) - 1}};
+        \end{axis}
+
+    \end{tikzpicture}
+
+    \caption{Eine Sinuskurve mit verschiedenen Frequenzen.}
+    \label{fig:addition_and_multiplication}
+
+\end{figure}
+
+In den Graphen oben sieht man die Addition von 2 Sinuswellen und die
+und die Addition von 2 gestauchten Sinuswellen.
+Eine wichtige beobachtung ist, dass die Adition der nicht getauchten Wellen
+zu einer Amplitude von 2 führt, während die Addition der gestauchten Wellen
+unter 1 bleibt. Das ist wichtig, da die Amplitude nicht größer als die Auflösung
+sein darf, da sonst ein Überlauf entsteht und der Ton verzerrt wird.
+
+Es wird also empfohlen mit gestauchten Tönen zu arbeiten.
+
+TODO Return und applyFunktion wurden auch gewrapped
 
 \subsection{Bewertung der Auflösung und Abtastrate}
 \label{chap:Bewertung_der_Auflösung_und_Abtastrate}
 
-\subsection{andere operationen}
-TODO: vlt delay, filter distortion, etc. vlt schaffe ich es noch das zu 
-implementieren.
+Nun wurden einige Methoden implementiert anhand deren verschiedene 
+Abtastraten und Auflösungen getestet werden können. Dazu werden die 
+Abtastrate und die Auflösung gesetzt und dann wird die Zeit gemessen
+wie lange es dauert eine dieser Methoden $s$ mal auszuführen. Diese Zeit wird in
+Prozenz einer Sekunde angegeben. Denn das ist die Zeit, die eine Methode maximal 
+brauchen darf, um die Abtastrate einzuhalten. Natürlich sollte eine Methode viel 
+weniger brauchen, um auch noch Zeit für andere Operationen zu haben.
 
-\cite{trustMeBro}
+\begin{table}[H]
+    \centering
+    \caption{name ausdenken.}
+    \label{tab:Testergebnisse}
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        Abtastrate & Auflösung & fromSaw & fromSine & add & amplify \\
+        \hline
+        \hline
+        44100 & 16Bit & 2,29 \% & 7,20 \% & 1,05 \% & 1,57 \% \\
+        32768 & 16Bit & 1,35 \% & 4,75 \% & 0,78 \% & 1,17 \% \\
+        22050 & 16Bit & 1,15 \% & 2,45 \% & 0,52 \% & 0,78 \% \\
+        16384 & 16Bit & 0,67 \% & 0,47 \% & 0,39 \% & 0,58 \% \\
+        11025 & 16Bit & 0,57 \% & 0,41 \% & 0,26 \% & 0,39 \% \\
+        \hline
+        \hline
+        32768 & 16Bit & 1,35 \% & 4,75 \% & 0,78 \% & 1,17 \% \\
+        32768 & 32Bit & 1,25 \% & 6,30 \% & 0,82 \% & 1,19 \% \\
+        \hline
+        \hline
+        16384 & 16Bit & 0,67 \% & 0,47 \% & 0,39 \% & 0,58 \% \\
+        16384 & 32Bit & 0,62 \% & 2,48 \% & 0,41 \% & 0,59 \% \\
+        \hline
+    \end{tabular}
+\end{table}
+
+Wie zu erwarten nimmt die benötigte Rechenzeit mit deiner geringeren Abtastrate ab
+und es fällt folgendes auf:
+\begin{enumerate}
+    \item Abtastraten welche Potenzen von 2 sind, sind nicht besser als andere Abtastraten.
+    \item Die Generierung das Sinus ist ab einer bestimmten größe des Lookuptables deutlich langsamer.
+    \item Es mach nur bei der Berechnung des Sinus einen Unterschied, ob die Auflösung 16Bit oder 32Bit ist.
+\end{enumerate}
+
+Seien im Folgenden die Abtastrate 32768Hz und die Auflösung 16 Bit.
+
+TODO Die Saw generierung mit 32 Bit klappt garnicht soll ich das einfach weglassen mit dem vergleich
+der Auflösung?
+
+Vermutung zu 2. Die langsame Laden von Sinuswerten könnte man darauf zurückführen,
+wo das Array gespeichert wird. Kleinere Arrays liegen eventuell direkt im RAM und größere
+müssen erst geladen werden. Die Ladezeithängt auch von der Frequenz ab. Das liegt 
+vermutlich daran, dass mehrere benachbarte Werte geleichzeitig geladen werden.
+Die fromSine-Zeiten in der Tabelle oben sind Derdurchschnitt über die Frequenzen 1-50.
+
+\begin{table}[H]
+    \centering
+    \caption{}
+    \label{tab:fromSineFrequenz}
+    
+    \begin{tabular}{c|cccccccccccc}
+        Frequenz [Hz]
+        & 1    & 2    & 3    & 4    & 5    & 10   & 20 \\ 
+        \hline
+        fromSine [\%]
+        & 0,92 & 1,06 & 1,20 & 1,45 & 1,94 & 4,00 & 7,00
+    \end{tabular}
+\end{table}
+
+Die Ladezeiten sind trotzdem viel schneller als die Berechnung des Sinus. 
+Diese dauert mit der Sinusfunktion aus \lstinline|math.h|
+56,32 \% einer Sekunde in gegensatz zu 4,75 \% 
+
