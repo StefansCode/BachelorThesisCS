@@ -48,6 +48,26 @@ void runSoundInputTest_allWaveforms() {
   }
 }
 
+Sound sine220;
+Sound sine220_2;
+Sound sine330;
+Sound sine330_2;
+
+void runSoundInputTest_overflow() {
+  while (1) {
+    printf(">");
+    sine220.fromSine(220).applyFunction(printSignal, (void *)"Sine220");
+    printf(",");
+    sine330.fromSine(330).applyFunction(printSignal, (void *)"Sine330");
+    printf(",");
+    sine220.add(sine330_2.fromSine(330)).applyFunction(printSignal, (void *)"Sine330Sine220");
+    printf(",");
+    sine330.amplify(0.5f).add(sine220_2.fromSine(220).amplify(0.5f)).applyFunction(printSignal, (void *)"Sine33005Sine22005");
+    printf("\r\n");
+    vTaskDelay(pdMS_TO_TICKS(100));
+  }
+}
+
 void runSoundInputTest_switchWaveforms() {
   buttons.init();
   uint8_t waveform = 0;
@@ -115,14 +135,17 @@ void runSoundInputTest_waveformCalulationSpeed() {
 
 ThreadSaveFloat testVariableFloat(0.25f);
 
+sample x[256] = {0};
+sample y[256] = {0};
+
 void runSoundInputTest_calulationSpeeds() {
-  sample x = 0;
-  sample y = 0;
   float sum = 0;
   int count = 0;
   while (1) {
     for (int j = 0; j < 1000; j++) {
-      y++;
+      for (int i = 0; i < 10; i++) {
+        y[i]++;
+      }
       float t1 = ((float)util.micros()) / 1000.0f / 1000.0f * 100.0f;
       for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
         saw.fromSaw(j);
@@ -133,20 +156,21 @@ void runSoundInputTest_calulationSpeeds() {
       }
       float t3 = ((float)util.micros()) / 1000.0f / 1000.0f * 100.0f;
       for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
-        saw.amplify(testVariableFloat.get());
+        saw.add(sine);
       }
       float t4 = ((float)util.micros()) / 1000.0f / 1000.0f * 100.0f;
       for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
-        saw.add(sine);
+        saw.amplify(testVariableFloat.get());
       }
       float t5 = ((float)util.micros()) / 1000.0f / 1000.0f * 100.0f;
       for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
-        x = saw.returnValue();
+        x[i%10] = saw.returnValue();
       }
       float t6 = ((float)util.micros()) / 1000.0f / 1000.0f * 100.0f;
 
       for (int i = 0; i < STANDART_SAMPLE_RATE; i++) {
-        y = x + y;
+        int index = i % 256;
+        y[index] = testVariableFloat.get() + y[index];
       }
       float t7 = ((float)util.micros()) / 1000.0f / 1000.0f * 100.0f;
 
@@ -154,14 +178,16 @@ void runSoundInputTest_calulationSpeeds() {
       count++;
       float average = sum / count;
 
-      printf("frequenzy: %d, Generate saw: %f %%, generate sine: %f %%, average Sine : %f %%, amplify: %f %%, add: %f %%, return: %f %%, simpleadd: %f %%\r\n", j, t2 - t1, t3 - t2, average, t4 - t3, t5 - t4, t6 - t5, t7 - t6 );
+      printf("SampleRate: %d, Bitdepth: %d, fromSaw: %f %%,  fromSine: %f %%, average fromSine : %f %%, add: %f %%, amplify: %f %%, return: %f %%, simpleMult: %f %%\r\n", STANDART_SAMPLE_RATE, BITS_PER_SAMPLE, t2 - t1, t3 - t2, average, t4 - t3, t5 - t4, t6 - t5, t7 - t6 );
       vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
     printf("%d", saw.returnValue());
     printf("%d", sine.returnValue());
-    printf("%d", x);
-    printf("%d", y);
-  }
+    for (int i = 0; i < 10; i++) {
+      printf("%d", x[i]);
+      printf("%d", y[i]);
+    }
+  } 
 }
 
 // frequenzy: 35, Generate saw: 1.354980 %, generate sine: 6.885986 %, average Sine : 4.547216 %, amplify: 1.169922 %, add: 0.780029 %, return: 0.511963 %

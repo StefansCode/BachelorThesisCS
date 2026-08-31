@@ -6,9 +6,17 @@
 #include "signal/signal.h"
 
 #if STANDART_SAMPLE_RATE == 32768
-  #include "sineTable32768.h"
+  #if BITS_PER_SAMPLE_ == 16
+    #include "sineTable32768.h"
+  #elif BITS_PER_SAMPLE_ == 32
+    #include "sineTable32768_32Bit.h"
+  #endif
 #elif STANDART_SAMPLE_RATE == 16384
-  #include "sineTable16384.h"
+  #if BITS_PER_SAMPLE_ == 16
+    #include "sineTable16384.h"
+  #elif BITS_PER_SAMPLE_ == 32
+    #include "sineTable16384_32Bit.h"
+  #endif
 #elif STANDART_SAMPLE_RATE == 44100
   #include "sineTable44100.h"
 #elif STANDART_SAMPLE_RATE == 22050

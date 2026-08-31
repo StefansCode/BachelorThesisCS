@@ -1,4 +1,5 @@
 vorlage-master/
+.vscode/
 
 # Ignore compiled thesis
 thesis.pdf
