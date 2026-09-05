@@ -218,7 +218,12 @@ Das ist eine Klasse, welche nur eine Variable, einen Getter und einen Setter
 enthalten. Bei der Implementierung dieser Klassen wurde darauf geachteh, dass
 die Getter und Setter Methoden Threadsafe sind. 
 
+Die Aufgaben der Tasks werden in den folgenden Unterkapiteln erklärt.
+
 \subsubsection{Generierung des Tons}
+
+Task 1 ist für die Generierung des Tons zuständig und wie der einfacher Synthesizer 
+in Kapitel \ref{chap:simple_synth} aufgebaut, 
 
 Um einfach auf die Frequenzen der einzelnen Noten zugreifen zu können,
 werden die Frequenzen in einem Array namens notes gespeichert. Die Grundnote einer
@@ -232,12 +237,64 @@ kann auf Noten der Tonleiter wie folgt zugegriffen werden:
 int noteFrequenzy = notes[g + scale[i]];
 \end{lstlisting}
 
-So lassen sich dei Grundnote und die Tonleiter einfach verändern.
+Es gibt außerdem ein Array aller möglichen Tonleitern.
+So lassen sich die Grundnote und die Tonleiter einfach verändern und als Indizes 
+zwischen den Tasks übertragen.
+Die Wellenform wird als Ganzzahl gespeichet und in durch if-Abfragen wird 
+entschieden welche from-Funktion aufgerufen wird.
+Zur besseren Lesbarkeit wurden folgende defines erstellt:
 
-
+TODO: Tabelle mit den defines erstellen aber nicht jetzt
 
 \subsubsection{Berechnung der Hüllkurve}
+\label{chap:envelope_calculation}
 
-\subsubsection{Menu}
+Für die Berechnung der Hüllkurve wurde eine Klasse Envelope erstellt, 
+welche die 4 Parameter Attack, Decay, Sustain und Release enthält.
+Diese sind uint8\_t Variablen und haben somit einen Wertebereich von 0 bis 255.
+Für Attack, Decay und Release entspricht 1 Einheit $1/16$ Sekunden. 
+Demnach können Attack, Decay und Release maximal ca. 16 Sekunden betragen.
+Um die $1/16$ Sekundenschritte einzuhalter,wird der Timeradapter genutzt.
+
+Außerdem enthält sie eine Methode \lstinline{apply(int input)},
+welche den Eingabewert auf die Hüllkurve anwendet.
+Der Ausgabewert wird gespeichertundkann über die Methode \lstinline{getValue()}
+abgerufen werden. Das speichern ist lesen ist Threadsafe, sodass die Hüllkurve 
+in einem Task berechnet werden kann und in einem anderen Task der Wert abgerufen 
+werden kann.
+
+in diesem Synthesizer hat jeder Ton seine eigene Hüllkurve, sodass Töne 
+unabhängig voneinander gespielt werden können. wird ein Knopf während
+losgelassen und während der Release-Phase erneut gedrückt, startet die 
+Hüllkurve wieder von vorne.
+
+Die Hüllkurve wird in Task 2 berechnet. Hier werden auch die Parameter der Hüllkurve
+verändert, wenn diese über das Menü, was im nächsten Kapitel beschrieben ist, 
+geändert wurde.
+
+\subsubsection{Menü}
 \label{chap:menu}
-TODO: Erklären wie das Menu funktioniert und wie es implementiert ist.
+
+Die Parameter des Synthesizers sind als Blätter eines Baums organisiert und 
+können wie in Abbildung \ref{fig:menu_tree} dargestellt, werden. Es git aßerdem
+einige Knoten zu nicht implementierten Funktionen, welche in der Abbildung grau
+dargestellt sind.
+\begin{figure}[ht]
+    \centering
+    TODO: Baum zeichnen
+    \caption{Baumstruktur des Menüs}
+    \label{fig:menu_tree}
+\end{figure}
+
+Auf dem Bildschirm wird oben links der Name des aktuellen Knotens angezeigt
+und darunter die Kinderknoten dieses Knotens. Mit dem Drehgeber kann ein 
+Kindknoten ausgewählt werden und mit dem A-Knopf kann in dieses Kindknoten 
+gewechselt werden. Mit dem B-Knopf kann wieder in den Elternknoten gewechselt.
+
+Wird ein Blatt ausgewählt, erscheinen die möglichen Werte des Blatts auf der 
+rechten Seite des Bildschirms. Mit dem Drehgeber kann ein Wert des Paramater 
+den das Blat representiert gewählt werden. Der Wert wird mit dem A-Knopf 
+übernommen und mit dem B-Knopf wird der Wert nicht übernommen und der vorherige 
+Wert bleibt bestehen. Beide Knöpfe führen wieder in den Elternknoten zurück.
+
+TODO Bilder
