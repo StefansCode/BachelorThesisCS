@@ -25,8 +25,6 @@ public:
   Signal &multiply(T value);
   Signal &multiply(float value);
 
-  Signal &average(unsigned int numberOfValues);
-
   Signal &FourierTransform();
 
   T returnValue();
@@ -118,20 +116,6 @@ Signal<T, BUFFER_SIZE> &Signal<T, BUFFER_SIZE>::multiply(T value) {
 template <typename T, unsigned int BUFFER_SIZE>
 Signal<T, BUFFER_SIZE> &Signal<T, BUFFER_SIZE>::multiply(float value) {
   this->buffer[index] = T(this->buffer[index] * value);
-  return *this;
-}
-
-/**
- * Averaging
- */
-
-template <typename T, unsigned int BUFFER_SIZE>
-Signal<T, BUFFER_SIZE> &Signal<T, BUFFER_SIZE>::average(unsigned int numberOfValues) {
-  T sum = T(0);
-  for (unsigned int i = 0; i < numberOfValues; i++) {
-    sum += buffer[(index - i + BUFFER_SIZE) % BUFFER_SIZE];
-  }
-  buffer[index] = sum / T(numberOfValues);
   return *this;
 }
 
