@@ -2,7 +2,14 @@
 #define NOTES_H
 #include "stdint.h"
 
-#define A4 57
+#define A0 10   // 27Hz
+#define A1 22   // 55Hz
+#define A2 33   // 110Hz
+#define A3 45   // 220Hz
+#define A4 57   // 440Hz
+#define A5 69   // 880Hz
+#define A6 81   // 1760Hz
+#define A7 93   // 3520Hz
 
 extern uint8_t lydian[8];
 extern uint8_t ionian[8];

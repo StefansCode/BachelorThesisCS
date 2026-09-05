@@ -13,17 +13,17 @@ void Synthesizer::synthTask(void *param) {
     // taskAnalyser.startTimerWithId(1);
 
     if(bassWaveform.get() == WAVEFORM_SAW) {
-      bass.fromSaw(NOTES[A4 + bassNote.get() - 12]);
+      bass.fromSaw(NOTES[A2 + bassNote.get()]);
     } else if(bassWaveform.get() == WAVEFORM_SQUARE) {
-      bass.fromSquare(NOTES[A4 + bassNote.get() - 12]);
+      bass.fromSquare(NOTES[A2 + bassNote.get()]);
     } else if(bassWaveform.get() == WAVEFORM_TRIANGLE) {
-      bass.fromTriangle(NOTES[A4 + bassNote.get() - 12]);
+      bass.fromTriangle(NOTES[A2 + bassNote.get()]);
     } else if(bassWaveform.get() == WAVEFORM_SINE) {
-      bass.fromSine(NOTES[A4 + bassNote.get() - 12]);
+      bass.fromSine(NOTES[A2 + bassNote.get()]);
     } else if(bassWaveform.get() == WAVEFORM_NOISE) {
       bass.fromNoise();
     } else {
-      bass.fromSaw(NOTES[A4 + bassNote.get() - 12]);
+      bass.fromSaw(NOTES[A2 + bassNote.get()]);
     }
 
     // taskAnalyser.stopTimerWithId(1);
