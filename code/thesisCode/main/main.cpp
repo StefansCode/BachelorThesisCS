@@ -5,11 +5,13 @@
 #include "adapter/rgbLed/rgbLed.h"
 #include "adapter/screen/screen.h"
 
+
 #include "sound/config.h"
 
 #include "core/synthesizer/synthesizer.h"
 
 #include "../test/onHardwareTest/core/sound/soundInputTest.h"
+#include "../test/onHardwareTest/core/sound/miniSynth.h"
 // #include "../test/onHardwareTest/core/sound/soundOutputTest.h"
 // #include "../test/onHardwareTest/core/envelope/envelopetestWithPrints.h"
 // #include "../test/onHardwareTest/adapter/screenFortTest.h"
@@ -26,7 +28,7 @@ extern "C" void app_main(void) {
   // runSoundInputTest_switchWaveforms();
   // runSoundInputTest_overflow();
   // runSoundInputTest_waveformCalulationSpeed();
-   runSoundInputTest_calulationSpeeds();
+  // runSoundInputTest_calulationSpeeds();
 
   // runSoundOutputTest();
   // runSoundOutputTest_unsigned();
@@ -34,6 +36,8 @@ extern "C" void app_main(void) {
   // runEnvelopeTestWithPrints();
 
   // runScreenFontTest();
+
+  // runMiniSynthTest();
 
   synth.run();
 
