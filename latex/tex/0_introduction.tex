@@ -13,10 +13,10 @@ sehr gutes Vorbild. Java Streams setzen als Fluent API die Mentalität
 \glqq Signal geht rein, Signal geht raus\grqq\ (oder im fall von Java Streams
 Collection) und die sequentielle Abarbeitung von Streams perfekt um.
 In den Abbildung \ref{Vergleich_Streams_Signal} wird diese sequentielle
-Abarbeitung dargestellt und gezeigt wie eine Anwendung der Signalklasse aussehen
+Abarbeitung dargestellt und gezeigt wie eine Anwendung der DSV-Bibliothek aussehen
 könnte.
 
-\begin{figure}[H]
+\begin{figure}[h]
   
   \begin{minipage}[h]{0.48\textwidth}
     \begin{lstlisting}[language=Java, 
@@ -45,10 +45,10 @@ könnte.
   \label{Vergleich_Streams_Signal}
 \end{figure}
 
-Neben der Signalklasse soll es außerdem eine Soundklasse geben, welche 
-die Signalklasse auf ein Audiosignal spezifiziert. Der größte Unterschied 
-zwischen diesen liegt darin, dass ein Soundobjekt das Signal selber erzeugt
-und einem Signalobjekt ein Signal übergeben wird.
+Neben der DSV-Bibliothek soll es außerdem eine Audio-Bibliothek geben, welche 
+auf Audiosignal spezialisiert wird. Der größte Unterschied 
+zwischen diesen liegt darin, dass die Audio-Bibliothek das Signal selber erzeugt
+und der DSV-Bibliothek ein Signal übergeben wird.
 
 Wegen der Popularität und des niedrigen Preises für die Leistung des ESP32-S3 
 Mikrocontroller wird die Signalbibliothek auf diesem entwickelt und

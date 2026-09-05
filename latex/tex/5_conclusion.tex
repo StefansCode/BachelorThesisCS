@@ -34,13 +34,7 @@ von Signal, in der zuerst mit F gefiltert wird und dann mit 10 multipliziert wir
 
 Besteht nun das eingehende Signal nur aus den Werten 1, passiert Folgendes.
 
-Hier Bildanfang
-
-1-> in -> [1,0,0,0,0] -> F -> [1,0,0,0,0] -> x10 -> [10,0,0,0,0] -> out
-
-1-> in -> [10,1,0,0,0]  -> F Blitz
-
-\begin{figure}[ht]
+\begin{figure}[h]
     \centering
     \begin{tikzpicture}[
         >=stealth,
@@ -103,8 +97,6 @@ Hier Bildanfang
     \label{fig:signal-buffer-problem}
 \end{figure}
 
-Hier Bildende
-
 Bei der zweiten Itteration müsst F eigentlich über zwei Einsen mitteln, aber
 die vorherige Eins wurde schon mit 10 multipliziert.
 
@@ -118,5 +110,3 @@ das gleiche Problem.
 TODO hier werde ich noch sagen, dass die struktur der Soundklasse trotzdem gut 
 ist und der Synthesizer funktioniert, je nachdem was ich noch im letzten 
 Kapitel schreiben.
-
-\subsection{Wurde das Ziel erreicht?}

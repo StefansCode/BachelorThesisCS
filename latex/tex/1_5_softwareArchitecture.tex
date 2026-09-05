@@ -1,18 +1,19 @@
 \section{Softwarearchitekture}
 
-Die Software sollte nach dem Ports-and-Adapter Pattern 
-\cite{cockburn2005hexagonal} aufgebaut sein, allerdings wurden nur 
-Adapter implementiert. Nach einigen kleinen Änderungen wäre die 
-Struktur wie folgt.
+Die geplante Softwarearchitektur sollte nach dem Ports-and-Adapter Pattern 
+\cite{cockburn2005hexagonal} aufgebaut sein und ist in Abbildung 
+\ref{fig:software_architecture} dargestellt. Allerdings wurden nur 
+Adapter implementiert. Aber durch Das Hinzufügen der Ports, wäre es 
+möglich die Softwarearchitektur wie geplant umzusetzen.
 
-TODO Ist das so ok?
 
-\begin{figure}[H]
+\begin{figure}[h]
     \begin{center}
-        \includegraphics[width=\textwidth]{fig/UML_diagram.png}
+        \includegraphics[width=0.9\textwidth]{fig/UML_diagram.png}
     \end{center}
+    \caption{Geplante Softwarearchitektur}
+    \label{fig:software_architecture}
 \end{figure}
-
 \subsection{Adapter}
 
 Ports sind abstrakte Klassen und bilden die Schnittstelle zur Hardware und zur ESP-IDF 
@@ -20,21 +21,21 @@ Ports sind abstrakte Klassen und bilden die Schnittstelle zur Hardware und zur E
 Adapter sind ihre Implementierung.
 Durch das Austauschen der Adapter, lässt sich der Kern unabhängig von 
 diesen beiden Faktoren, also auch auf einen normalen PC, testen.
-Im Folgenden werden alles Adapter und ihre Funktionen kurz erklärt.
+Im Folgenden werden alle Adapter und ihre Funktionen kurz erklärt.
 
 
 \subsubsection{Digital-to-Analog Converter}
-Die Kommunikation zwischen dem DAC und dem ESP32 findet über die 
+Die Kommunikation zwischen dem DAC und dem ESP32-S3 findet über die 
 I2S-API \cite{esp32s3i2s} der ESP-IDF statt.
 
 Die I2S-API ist im Standardmodus mit dem Phillipsformat eingestellt, 
-da das, das Standartformat ist, das der MAX98357A erwartet.
+da das, das Standartformat ist, welches der MAX98357A erwartet.
 
 Der Mono-Modus wird verwendet, da der MAX98357A ein Monoverstärker ist.
-Das heist das nur ein Signal gesendet wird, anstatt jeweils eins für 
+Das heißt das nur ein Signal gesendet wird, anstatt jeweils eins für 
 Links und
 eins für Rechts. Das I2S Protokoll sendet zwar immer ein linkes und ein 
-rechtes Signal, aber die die I2S-API sendet im Monomodus für beide Seiten
+rechtes Signal, aber die die I2S-API sendet im Mono-Modus für beide Seiten
 das gleiche Signal und es reicht der API ein Signal zu übergeben.
 Der MAX98357A erhält also immer ein linkes Signal $L$ und ein 
 rechtes Signal $R$ und gibt $(L+R)/2$ verstärkt heraus.
@@ -86,8 +87,6 @@ in eine Queue gepackt.
 Die Queue kann mit \lstinline|readQueue| ausgelesen werden.
 Hierbei gibt es zwei Dinge zu beachten.
 
-TODO Quellen zu Entprellung und besser Hardware angeben
-
 1. Entprellung. Wenn ein Taster gedrückt wird, geht der Pegel des 
 zugehörigen Pins nicht einfach auf LOW. Sondern er springt ein paar mal 
 zwischen LOW und HIGH. Um ein mehrfaches Lesen des Tasters bei
@@ -95,19 +94,17 @@ einmaligem Drücken zu verhindern wird zwischen 2 Eingaben
 eine mindest Zeitabstand von 200ms festgelegt.
 
 2. Threadsavety. Wenn zum Beispiel Taster 1 gedrückt wird und in 
-2 verschiedenen Tasks (siehe Unterkapitel zu FreeRTOS) 
+2 verschiedenen Tasks 
 \lstinline|getQueue| aufgerufen, dann erhält nur eine der beiden 
-den den Wert 1 und leert die Queue.
-
-TODO Beispiel Code
+den Wert 1 und leert die Queue.
 
 \subsubsection{Encoder}
-Encoder ist der Port/Adapter für den Drehgeber. Dazu wurden aus dem 
+Encoder ist der Adapter für den Drehgeber. Dazu wurden aus dem 
 ESP-Beispielcode \cite{espEncoder} für Encoder die wichtigsten Teile kopiert.
 Dieser nutzt die Pulsecontrol-API. 
 
-Encoder hat eine Funktion \lstinline|getValue| welche ein Wert 
-zurückgibt. Dieser Wert ist zu begin 0 und erhöht sich um Eins, wenn der 
+Encoder hat eine Funktion \lstinline|getValue|, welche ein Wert 
+zurückgibt. Dieser Wert ist zu Begin 0 und erhöht sich um Eins, wenn der 
 Drehgeber um einen Schritt mit dem Uhrzeigersinn gedreht wurde. 
 Gegen den Uhrzeigersinn veringert sich der Wert.
 
@@ -139,38 +136,44 @@ Deshalb gibt es in Encoder eine Funktion changeExternalVariable,
 welcher man eine Variable ein Minimum, ein Maximum und eine 
 Schrittweite gibt. Die Schrittweite gibt an um wieviel die 
 Variable erhöht wird.
-rt/
+
+
 \subsubsection{Screen}
-An I2C OLED-screen is integrated by using a library from 
-voidlooprobotechs github \cite{voidloop2026ssd1306}.
+
+Der Zugriff auf den OLED-Bildschirm erfolgt über Einen Biblithek
+von voidlooprobotech \cite{voidloop2026ssd1306}.
 
 Der Port hat kann mit Methoden mit dem Prefix draw Dinge wie einen 
 Punkt, Strings, Zahlen oder Bitmaps malen.
 
 Bitmaps sind uint8\_t-Array, wobei hier jedes Bit ein Pixel darstellt.
 
-\subsubsection{Andere nützliche Adapter}
 
+\subsubsection{Andere nützliche Adapter}
 Zwei weitere Adapter sind Util und Timer.
 
 Util implementiert die Funktionen millis und delay wie sie bei
-Arduino genutzt werden.
+Arduino genutzt werden, sie dazu \cite{arduinoMillis} und \cite{arduinoDelay}.
 
 Timer ist ein Wert, der bei 0 startet und alle 16 ms incrementiert wird.
-Die Funktion getValue gibt diesen Wert zurück und set Value setzt den 
+Die Funktion getValue gibt diesen Wert zurück und setValue setzt den 
 Wert auf einen beliebigen Wert.
-16 ms wurden gewäht das der Teimer so später genutzt wird, aber eine 
-mögliche verbesserung wäre zu begin das Inkrementationsinterval 
+16 ms wurden gewäht, da der Timer so später genutzt wird, aber eine 
+mögliche Verbesserung wäre zu Begin das Inkrementationsinterval 
 zu übergeben.
 
-\subsubsection{RGB-LED and LED}
-An RGB-LED is used for...
+\subsubsection{RGB-LED}
+Es wurde ein Adapter für die  RGB-LED auf dem ESP32-S3-Board implementiert.
+Dieser Wurde nie genutzt, aber er steht für mögliche Erweiterungen zur Verfügung.
 
-TODO Diesen Adapter habe ich eig. nie benutzt
+\subsubsection{Mögliche Erweiterung: freeRTOS Adapter}
 
-
-
-TODO Timer, ThreadsaveVariable, Util
+FreeRTOS \cite{freeRTOS} ist ein Echtzeitbetriebssystem für Mikrocontroller.
+Es ist in der ESP-IDF enthalten und wird auch genutzt, um mehrere Tasks 
+gleichzeitig auszuführen.
+Um den Kern FreeRTOS unabhängig zu machen, könnte ein Adapter für FreeRTOS
+implementiert werden. Dieser müsste lediglich die Funktionen zum Erstellen 
+von Tasks implementieren.
 
 \subsection{Kern}
 
@@ -179,10 +182,9 @@ Der Kern der Anwendung besteht aus 3 Komponenten. Das sind
     \item die DSV-Bibliothek, welche
             wie oben beschrieben, als eine Klasse namens Signal implementiert ist.
     \item Eine 
-            Erweiterung dieser Klasse namens Sound welche ein Audiosignal darstellt.
+            Erweiterung dieser Klasse namens Sound, welche ein Audiosignal darstellt.
     \item Der Synthesizer, welche die Soundklasse nutzt, um mithilfe der 
         Hardware einen Synthesizer zu implementieren. 
         Dazu gehören auch Envelope und Menu.
 \end{enumerate}
-Diese 3 Komponenten werden in den 
-folgenden Kapiteln beschrieben.
+Diese 3 Komponenten werden in den folgenden Kapiteln beschrieben.

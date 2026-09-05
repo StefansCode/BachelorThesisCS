@@ -7,37 +7,41 @@ leicht nachgebaut werden.
 \subsection{ESP32-S3}
 
 
-\begin{figure}[H]
+\begin{figure}[h]
     \begin{center}
         \includegraphics[width=8cm]{fig/components/ESP32S3.png}
-        \caption{ESP32-S3 Entwicklingsboard.}%
+        \caption{ESP32-S3 Entwicklungsboard.}%
         \label{fig:ESP32S3}
     \end{center}
 \end{figure}
 
-Neben Arduino-boards \cite{arduino} sind ESP32-boards von Espressif Systems
-\cite{espressif} die bekanntesten
-Microkontrollerboards. Außerdem sind sie für unter 10 € günstig erhältlich.
+% Neben Arduino-boards \cite{arduino} sind ESP32-boards von Espressif Systems
+% \cite{espressif} die bekanntesten
+% Mikrocontrollerboards. Außerdem sind sie für unter 10 € günstig erhältlich.
 
-Ein ESP32 ist ein Microkontroller mit einer 
-32-Bit-Dual-Core-CPU, die mit 240MHz betrieben werden kann.
-Bei einer Abtastrate von 44100 lässt sich jeder Wert im Durchschnitt
-mit ca. 5000 Taktzyklen bearbeiten und es steht ein weiterer Kern für
-andere Funktionen zur Verfügung.
-\begin{center}
-$240MHz / 44100Hz = 5442$
-\end{center}
-Der ESP32-S3 wurde anderen ESP32 Mikrokontrollern vorgezogen, da er
-spezielle Hardware besitzt, um DSP-Operationen zu beschleunigen. Zum 
-Beispiel hat er spezielle Register für 128-Bit-Operationen.
+Die zentrale Recheneinheit des Synthesizers ist ein ESP-S3 von 
+Espressif Systems.
+Ein ESP32-S3 ist ein Microcontroller mit einer 
+32-Bit-Dual-Core-CPU, die mit 240MHz betrieben werden kann\cite[4.1.1.1]{espDatashet}.
+Bei einer Abtastrate von 44100 lässt sich theoretisch jeder Wert 
+mit ca. 
+$240MHz / 44100Hz = 5442$ Taktzyklen bearbeiten. Das lässt genug Zeit für 
+verschiedene DSV-operationen.
 
-Der ESP32 hat dazu den Vorteil gegenüber anderen Microcontrollern, dass
-er viel GPIO pins und viele Perepherieschnittstellen hat. Wichtig für dieses
-Projekt sind vorallem I2C, I2S.
+% Der ESP32-S3 wurde anderen ESP32 Microcontrollern vorgezogen, da er
+% spezielle Hardware besitzt, um DSP-Operationen zu beschleunigen. Zum 
+% Beispiel hat er spezielle Instruktionen für 128-Bit-Operationen
+% \cite[4.1.1.2]{espDatashet}.
+
+Ein weiterer Vorteil des ESP32-S3 ist, dass er viele GPIO-Pins und 
+Peripherieschnittstellen hat
+Wichtig für dieses
+Projekt sind vor allem GPIO-Pins für Taster und einen Encoder, I2C für 
+einen OLED-Bildschirm und I2S für die Ausgabe der Audio-Signale.
 
 \subsection{MAX98357A-I2S-DAC}
 
-\begin{figure}[H]
+\begin{figure}[h]
     \begin{subfigure}{0.48\textwidth}
     \begin{center}
         \includegraphics[width=4cm]{fig/components/dac_front.png}
@@ -53,25 +57,27 @@ Projekt sind vorallem I2C, I2S.
 \label{fig:DAC}
 \end{figure}
 
-Ein MAX98357A-DAC (Digital-to-Analog Converter) \cite{MAX983572026Datasheet}
-wandelt das digitale Signal in analoges Signal um und verstärkt es so, dass es
+Ein MAX98357A-DAC (Digital-zu-Analog Converter) \cite{MAX983572026Datasheet} 
+ist ein Class-D Verstärker, der einen Digital-zu-Analog Converter (DAC) enthält.
+Dieser wandelt das digitale Signal in analoges Signal um und verstärkt es so, dass es
 direkt an einen passenden Lautsprecher weitergeleitet werden kann.
-Der MAX98357A kann Abtatsraten von 8kHz, 16kHz, 32kHz, 44.1kHz,
+Dadurch kann wärend der Entwicklung auf einen externen Verstärker verzichtet werden.
+
+Der MAX98357A kann Abtastraten von 8kHz, 16kHz, 32kHz, 44.1kHz,
 48kHz, 88.2kHz oder 96kHz und eine Auflösung von 
 16, 24 oder 32 Bit
 verarbeiten \cite{MAX983572026Datasheet}[Digital Audio Interface Modes].
 
 Das analoge Signal wird von dem DAC zu einer 3,5mm-Klinkenbuchse geleitet. 
-So kann leicht ein Lautsprecher angeschlossen werden. Klingenstecher sind 
-unterteilt in mehrere segmente und haben in der Regel die Masseverbindung 
-an dem ring, der am nächsten am kabel ist. Deshalb wird der vorderste Pin 
-der Buchse mit dem negativen Ausgang des DACs verbunden. Da der MAX98357A 
-ein Monosignal (nur ein Signal und nicht rechts und links) sendet, werden 
-die beiden anderen Pins der Buchse mit dem Positiven Ausgang verbunden.
- 
-TODO Quelle zu Klinke
+So kann leicht ein Lautsprecher angeschlossen werden. 
+% Klinkenstecher sind 
+% unterteilt in mehrere segmente und haben in der Regel die Masseverbindung 
+% an dem ring, der am nächsten am kabel ist. Deshalb wird der vorderste Pin 
+% der Buchse mit dem negativen Ausgang des DACs verbunden. Da der MAX98357A 
+% ein Monosignal (nur ein Signal und nicht rechts und links) sendet, werden 
+% die beiden anderen Pins der Buchse mit dem Positiven Ausgang verbunden.
 
-\begin{figure}[H]
+\begin{figure}[h]
     \begin{subfigure}{0.48\textwidth}
     \begin{center}
         \includegraphics[width=4cm]{fig/components/aux_front.png}
@@ -87,11 +93,11 @@ TODO Quelle zu Klinke
 \label{fig:AUX}
 \end{figure}
 
-\subsection{Taster und Drehgeber}
+\subsection{Nutzereingabe}
 
 Als Nutzereingabe werden Taster und ein Drehgeber verwendet.
 
-\begin{figure}[H]
+\begin{figure}[h]
     \begin{subfigure}{0.48\textwidth}
     \begin{center}
         \includegraphics[width=4cm]{fig/components/button_top.png}
@@ -108,16 +114,10 @@ Als Nutzereingabe werden Taster und ein Drehgeber verwendet.
 \end{figure}
 
 
-Ein Taster lässt nur Strom durch, wenn er gedrückt wird. Der ESP32-S3 
-kann an den meisten GPIO-Pins (General Purpose Input/Output)erkennen,
-ob ein High- oder Low-Pegel anliegt. Schaltet man den einen Taster und 
-eine Resistor (z.B. 10k) in Reihe ,also nacheinander, zwischen der Masse
-und einen GPIOpin, so wird dieser auf LOW gesetzt, wenn der Taster gedrückt
-wird. Ist der Pullup an diesem Pin aktiviert, wird der Pin HIGH gesetzt, 
-wenn nichts an dem Pin anliegt. Also, auch wenn der Taster nicht gedrückt 
-wird.
+Ein Taster kann als einfacher Eingabeknopf genutzt werden. Er wird zwischen die Masse
+und einen GPIO-Pin geschaltet und setzt diesen Pin beim Drücken auf LOW.
 
-\begin{figure}[H]
+\begin{figure}[h]
     \begin{subfigure}{0.48\textwidth}
     \begin{center}
         \includegraphics[width=4cm]{fig/components/encoder_top.png}
@@ -133,20 +133,19 @@ wird.
 \label{fig:Drehgeber}
 \end{figure}
 
-Ein incrementeller Drehregler kann mithilfe von zwei versetzten Impulsen, 
-welche auf dem DT und CLK Pin des Encoders gesendet werden, angeben in welche
+Ein inkrementeller Drehregler kann mithilfe von zwei phasenverschobenen Signalen, die
+auf dem DT und CLK Pin des Encoders gesendet werden, angeben in welche
 Richtung er gedreht wird. Diese Drehung kann unendlich sein, passiert aber 
 nur in Schritten. Die Pins müssen mit GPIO-Pins des ESP32-S3 
-verbunden werden. Zusätzlich kann der Encoder als Taster genutzt werden,
-in dem man den Schaft drückt.
+verbunden werden.
 
 Mit 10 Tastern und einem Drehgeber ist es möglich,
 während der Laufzeit verschiedene Variablen zu bearbeiten.
-Die genaue Finktion der Taster wird in Kapitel 7 beschrieben.
+Die genaue Funktion der Taster wird in Kapitel 7 beschrieben.
 
-\subsection{OLED-BildSchirm}
+\subsection{OLED-Bildschirm}
 
-\begin{figure}[H]
+\begin{figure}[h]
     \begin{subfigure}{0.48\textwidth}
     \begin{center}
         \includegraphics[width=4cm]{fig/components/screen_front.png}
@@ -162,18 +161,20 @@ Die genaue Finktion der Taster wird in Kapitel 7 beschrieben.
 \label{fig:OLED-Bildschirm}
 \end{figure}
 
-Ein OLED-Bildschirm wird genutzt, um dem Nutzer anzuzeigen, welche
+Ein SSD1306 OLED-Bildschirm mit einer Auflösung von 128x64 Pixeln wird genutzt, 
+um dem Nutzer anzuzeigen, welche
 Variable geändert wird. Die Verbindung zum ESP32 passiert über das
 I2C-Protokoll.
 
 \subsection{Pinbelegung und Löten}
 
-Nun müssen alles Komponenten mit dem ESP32S3 verbunden werden.
-Der ESP32S3 hat intern eine GPIO Matrix\cite{esp32S3gpio}, welche es ermöglicht fast
-jeden internen Perepheriecontroller mit fast jedem Pin zu verbinden.
+Nun müssen alles Komponenten mit dem ESP32-S3 verbunden werden.
+Der ESP32-S3 hat intern eine GPIO-Matrix\cite{esp32S3gpio}, welche es ermöglicht fast
+jeden internen Peripheriecontroller mit fast jedem Pin zu verbinden.
 
-Zusätzlich zu den oben aufgezählten Komponenten wurden ein SD-Karten
-slot über die SPI-Schnittstelle als mögliche Erweiterung verbunden.
+Zusätzlich zu den oben aufgezählten Komponenten wurden ein SD-Karten-Anschluss
+über die SPI-Schnittstelle als mögliche Erweiterung verbunden. 
+Dieser wurde in dieser Arbeit allerdings nicht genutzt.
 
 Die Wahl der Pins ist für I2S, I2C und GPIO fast immer frei wählbar.
 Es ist zwar möglich die folgenden Ausnahmen zu benutzen, aber nicht empfehlen.
@@ -184,13 +185,13 @@ Es ist zwar möglich die folgenden Ausnahmen zu benutzen, aber nicht empfehlen.
             ändern können jenachdem, ob an ihnen, während des Bootvorgangs, ein 
             High- oder Low-Pegel anliegt.
     \item Pins 33-37 sind verbunden mit dem SPI-flash and PSRAM auf dem 
-    Entwicklingsboard.
+    Entwicklungsboard.
 \end{itemize}
 
 Mit diesen Einschränkungen wurde die Pinbelegung aus Anhang A gewählt.
 Anschließend wurde alles auf eine Lochplatine gelötet.
 
-\begin{figure}[H]
+\begin{figure}[h]
     \begin{subfigure}{0.48\textwidth}
     \begin{center}
         \includegraphics[width=6cm]{fig/case/platine_front.png}
@@ -207,10 +208,15 @@ Anschließend wurde alles auf eine Lochplatine gelötet.
 \end{figure}
 
 
-\subsection{Design und Drucken einer Hülle}
-Als Abschluss der Hardware wurde die folgende Hülle 3D-gedruckt.
+\subsection{Design und Drucken eines Gehäuses}
 
-\begin{figure}[H]
+Als Abschluss der Hardware wurde das Gehäuse aus Abbildung \ref{fig:hülle_außen} 
+3D-gedruckt. Dieses
+ist natürlich hautsächlich für die Optik, es sorgt aber auch für ein 
+besseres Handgefühl und schützt die Platine vor Beschädigungen. Außerdem
+werden so die elektrischen Verbindungen nicht durch Berühren beeinflusst.
+
+\begin{figure}[h]
     \begin{subfigure}{0.48\textwidth}
     \begin{center}
         \includegraphics[width=6cm]{fig/case/assembled_front.png}
@@ -222,7 +228,7 @@ Als Abschluss der Hardware wurde die folgende Hülle 3D-gedruckt.
         \includegraphics[width=6cm]{fig/case/assembled_back.png}
     \end{center}
     \end{subfigure}
-\caption{Eine Hülle für die Platine}
+\caption{Ein Gehäuse für die Platine}
 \label{fig:hülle_außen}
 \end{figure}
 
@@ -231,118 +237,44 @@ In Fusion360 ist es möglich ein Bild als Referenz zu laden.
 Das hat sich als schneller und genauer herausgestellt, als Maße von der 
 Platine zu nehmen.
 
-\begin{figure}[H]
+\begin{figure}[h]
     \begin{center}
         \includegraphics[width=\textwidth]{fig/case/hülle_in_fusion.jpeg}
-        \caption{Fusion360 mit der Hülle und dem geladenem Bild der Platine.}%
+        \caption{Fusion360 mit dem Gehäuse und dem geladenem Bild der Platine.}%
         \label{fig:fusion360}
     \end{center}
     
 \end{figure}
 
-In Fusion360 wird das erstellte 3D-objekt als stl-Datei exportiert und dann
-in dem Bambu Lab Studio Slicer \cite{bambulabStudio} zu einer gcode-Datei konvertiert.
-Eine gcode-Datei enthält die Anweisungen für den 3D-Drucker und in einem 
-Slicer kann man Parameter wie die Schichthöhe, die Druckgeschwindigkeit, 
-die Temperatur der Düse und der Heizplatte, die Fülldichte von 
-Holräumen, etc. einstellen. Außerdem werden Stützen für Überhänge erstellt,
-da der Drucker nicht in der Luft drucken kann und man kann sehen wieviel 
-Material verbraucht wird und wie lange der Druck braucht.
-
-\begin{figure}[H]
-    \begin{center}
-        \includegraphics[width=\textwidth]{fig/case/hülle_im_slicer.jpeg}
-        \caption{Slicer mit der Hülle.}%
-        \label{fig:slicer}
-    \end{center}
-    
-\end{figure}
-
-Der gcode wird dann an den 3D-Drucker Bambu Lab P1S \cite{bambulabP1S}
-geschickt, der die Hülle Schicht für Schicht druckt.
-
-\begin{figure}[H]
-    \begin{center}
-        \includegraphics[width=\textwidth]{fig/case/3D_Drucker.jpeg}
-        \caption{Der 2D Drucker Bambu Lab P1S}%
-        \label{fig:drucker}
-    \end{center}
-    
-\end{figure}
-
-Auf der Githubseite zu dieser Arbeit sind die STL-Datei und eine STEP-Datei
-der Hülle zu finden. STEP-Dateien sind Dateien die von CAD-Programmen wie 
-Fusion geladen werden können. TODO link zu github und sagen warum step 
-gut ist.
+% In Fusion360 wird das erstellte 3D-Objekt als stl-Datei exportiert und dann
+% in dem Bambu Lab Studio Slicer \cite{bambulabStudio} zu einer gcode-Datei konvertiert.
+% Eine gcode-Datei enthält die Anweisungen für den 3D-Drucker und in einem 
+% Slicer kann man Parameter wie die Schichthöhe, die Druckgeschwindigkeit, 
+% die Temperatur der Düse und der Heizplatte, die Fülldichte von 
+% Holräumen, etc. einstellen. Außerdem werden Stützen für Überhänge erstellt,
+% da der Drucker nicht in der Luft drucken kann und man kann sehen wieviel 
+% Material verbraucht wird und wie lange der Druck braucht.
+% Der gcode wird dann an den 3D-Drucker Bambu Lab P1S \cite{bambulabP1S}
+% geschickt, der das Gehäuse Schicht für Schicht druckt.
 
 Zunächst wurde ein dünner Prototyp der Vorderseite gedruckt, da diese die 
 meisten Öffnungen hat. Nach ein paar kleinen Anpassungen wurden die 
 Seitenwände mit einer kleinen Einkerbung am Ende erstellt. Nach Maßen
 wurden Löcher für die USB-, Aux- und SD-Karten-Anschlüsse hinzugefügt.
 
-\begin{figure}[H]
-    \begin{subfigure}{0.36\textwidth}
-        \begin{center}
-            \includegraphics[height=2.5cm]{fig/case/buttons.png}
-        \end{center}
-        \caption{Knöpfe von der Seite}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.60\textwidth}
-        \begin{center}
-            \includegraphics[height=2.5cm]{fig/case/case_top.png}
-        \end{center}
-        \caption{Oberseite Vorderseite der Hülle}
-    \end{subfigure}
-\label{fig:hülle_oben}
-\end{figure}
-
-In die Löcher für die Taster kommen kleine Knöpfe, die genau in die 
-Löcher passen, aber unten etwas breiter sind damit sie nicht hinausfallen.
-Für den Boot- und Resetknopf auf dem ESP32-S3 gibt es Auch jeweils einen Knopf.
-Die sind allerdings kleiner. 
-
-Auf der Platine gibt es 2 größere freie Flächen. Diese wurden genutzt 
-um 2 Löcher zu boren, durch die 2 Säulen laufen. Die Mittelpunkte der Löcher
-liegen genau auf den kleinen Löchern der 
-Platine, so wird der Boher fixiert und in Fusion360 kann der Mittelpunkte
-der Säulen leicht ermittelt werden. 
-
-\begin{figure}[H]
-    \begin{center}
-        \includegraphics[width=6cm]{fig/case/Einschmelzgewinde.png}
-        \caption{Einschmelzgewinde.}%
-        \label{fig:einschmelzgewinde}
-    \end{center}
-\end{figure}
-
-In die Spitze der Säulen wurden Einschmelzgewinde eingeschmolzen. Dazu wurde 
-in der Säule ein Loch, das etwas kleiner ist als der Außendurchmesser des
-Gewindes, gelassen. Anschließend setzt man das Gewinde auf das Loch und 
-drückt es herunter, indem man einen heißen Lötkolben in das gewinde drückt.
-Dadurch heizt sich das Gewinde auf und schmiltzt das Plastik.
-
-Die Säulen halten auch die platine am richtigen platz.
+Es wurden 10 Knöpfe für die Taster gedruckt. Die Aufschriften der Knöpfe sind 
+A,B,1,2,3,4,5,6,7,8. Deren Funkionen werden in Kapitel \ref{chap:synth} beschrieben.
 
 
-\begin{figure}[H]
-    \begin{subfigure}{0.48\textwidth}
-    \begin{center}
-        \includegraphics[width=6cm]{fig/case/front_case_inside.png}
-    \end{center}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.48\textwidth}
-    \begin{center}
-        \includegraphics[width=6cm]{fig/case/back_case_inside.png}
-    \end{center}
-    \end{subfigure}
-\caption{Innenseite der Hülle}
-\label{fig:hülle_innen}
-\end{figure}
+% In die Löcher für die Taster kommen kleine Knöpfe, die genau in die 
+% Löcher passen, aber unten etwas breiter sind damit sie nicht hinausfallen.
+% Für den Boot- und Resetknopf auf dem ESP32-S3 gibt es Auch jeweils einen Knopf.
+% Die sind allerdings kleiner. 
 
-Legt man die Platine in die Oberseite der Hülle, so liegen die Taster auf den
-Knöpfen auf. Damit die Platine beim Drücken der Knöpfe nicht nach hinten
-gedrückt wird, wurde auf die Innenseite der Rückwand Blöcke als 
-Abstandshalter gedruckt. Einige der Blöcke wurden nach dem Drucken der 
-RÜckseite durch Aufkleben von blauen platten erhöht.
+Die Platine wird durch 2 Säulen und 4 kleine Blöcke in dem Gehäuse gehalten. 
+In die Spitze der Säulen wurden Einschmelzgewinde eingeschmolzen, 
+um die Rückwand des Gehäuses mit Schrauben zu befestigen.
+
+Zum Drucken wurde der 3D-Drucker Bambu Lab P1S \cite{bambulabP1S} verwendet.
+Auf der Githubseite zu dieser Arbeit sind die STL-Datei und eine STEP-Datei
+des Gehäuses zu finden\cite{meinGithub}.

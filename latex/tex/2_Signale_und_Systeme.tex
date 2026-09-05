@@ -1,10 +1,15 @@
-\section{Signale und Systeme}
+\section{Entwicklung der Signalverarbeitungsbibliothek}
 
 \subsection{Anwendung als DSV}
 
+Die DSV-Bibliothek wird als eine Klasse namens Signal implementiert. 
+Die Klasse ist eien FluentAPi\cite{fluentAPI}. Das bedeutet, dass die 
+nicht beendende Funktionen eine Referenz auf das Signalobjekt zurückgeben. Dadurch können
+Methodeaufrufe verkettet werden, um komplexe Operationen auf das Signal anzuwenden.
+
 Im Folgenden wird die Entwicklung der Signalklasse Schritt für Schritt
-beschrieben. Bei jedem Schritt wird der angegebene Code block erweitert,
-bis am Ende die Klasse vorliegt wie sie zur Zeit der Arbeit vorliegt.
+beschrieben. Bei jedem Schritt wird der angegebene Codeblock erweitert,
+bis am Ende die Klasse vorliegt, wie sie zur Zeit der Arbeit vorliegt.
 
 \subsubsection{Die Klasse}
 \label{chap:signalklasse}
@@ -23,18 +28,16 @@ class Signal {
 }
 \end{lstlisting}
 
-Da viele Funktionen, vor allem 
-Filter, auf vorherige Werte zu greifen, lohnt es sich diese auch zu speichen.
-Dafür bietet sich ein RingBuffer an. Ein RingBuffer ist ein fest definierter
+Da viele Funktionen, wie zum Beispiel, lohnt es sich diese auch zu speichen.
+Dafür bietet sich ein RingBuffer (circular buffer) \cite{ringbuffer} an. 
+Ein Ringbuffer ist ein fest definierter
 Speicherblock (zum Beispiel ein Array) mit fester Größe, das ist vorallen 
 auf Mikrocontrollern sehr 
-wichtig, da hier der Speicher sehr begrenzt ist und Speicherallokation während 
-der Laufzeit schnell zu Abstürzen führen kann. Ein Ringbuffer hat auserdem 
+wichtig, da hie Speicher und rechenkapazität begrenzt sind. Ein Ringbuffer hat außerdem 
 einen Index Wert welcher anzeigt, wo in diesen Speicherblock geschrieben 
 werden soll. Der Index wird bei jedem schreiben erhöht und fängt wieder am Anfang
 des Speicherblocks anzuschreiben, wenn das Ende erreicht ist.
-Die Größe des Speichers soll auch den Nutzer überlassen werden. Sie muss aber zur
-Compilezeit festgelegt sein.
+Die Größe des Speichers soll auch den Nutzer überlassen werden.
 
 \begin{lstlisting}[language=C++, 
                        frame=single, 
@@ -78,7 +81,7 @@ momentanen Wert.
 
 \begin{lstlisting}[language=C++, 
                        frame=single, 
-                       caption={Signalklasse Version 0.3},
+                       caption={Signalklasse Version 0.4},
                        captionpos=b]
 template <typename T, unsigned int BUFFER_SIZE = 256>
 class Signal {
@@ -95,13 +98,13 @@ public:
 \end{lstlisting}
 
 Alle anderen Funktionen sind Funktionen, welche eine Signalreferenz zurückgeben
-und im gegansatz zu Inputfunktionen nicht den Index erhöhen. Das sind zum Beispiel
+und im Gegansatz zu Inputfunktionen nicht den Index erhöhen. Das sind zum Beispiel
 add, multiply oder applyFunction. Letzteres erlaubt es dem Nutzer selbstdefinierte 
-in die Verarbeitungskette einzufügen.
+Funktionenin die Verarbeitungskette einzufügen.
 
 \begin{lstlisting}[language=C++, 
                        frame=single, 
-                       caption={Signalklasse Version 0.4},
+                       caption={Signalklasse Version 0.5},
                        captionpos=b]
 template <typename T, unsigned int BUFFER_SIZE = 256>
 class Signal {
@@ -130,9 +133,6 @@ public:
 }
 \end{lstlisting}
 
-Die Weiterverarbeitug... TODO schreibe über die return.. fkts und applyFunktion
-
-TODO mehr funktionen einbauen
 
 \subsubsection{Anwendung}
 % wohin soll das Example?
@@ -141,7 +141,7 @@ Lichtabhängiger Widersand, und ein Potenztiometer eingelesen. Der Potentiometer
 wird dazu verwendet, um den aktuell stabielen Lichtwert zu kompensieren. Dann wird
 eine LED angeschaltet, wenn der compensierte lichtwert unter 0 sinkt. Hält man den 
 Lichtabhängigen Wiederstand gegen eine Lichtquelle oder einen reflektierenden 
-hintergrund kann durch Blocken des Lichts eine Bewegung erkannt werden. 
+Hintergrund kann durch Blocken des Lichts eine Bewegung erkannt werden. 
 (Es gibt bessere Möglichkeiten dies umzusetzen aber zu Demonstrationszwecken 
 sollte dieses Beispiel reichen).
 

@@ -273,19 +273,3 @@ mindestens 40000Hz nötig ist um Ton digital darzustellen.
 infolge dessen auch für viele andere digitale Systeme gewählt. 
 Hochwertige Systeme verwenden auch bis zu über 100 kHz.
 
-Die Wahl der Auflösung und Abtastrate ist eine Entscheidung zwischen der Qualität 
-des Tons und Komplexität des Synthesizers. Im Folgen den wird verglichen wie lange
-die addition zweier Signale, die multiplikation eines Signals mit einer 
-threadsicheren Variable und die Generierung eines Tons (siehe nächstes Unterkapitel)
-für verschiedene Auflösungen und Abtastraten brauchen. Dazu werden zwei Soundobjekte
-mit der angegebenen Auflösung erzeugt und die jeweilige Operation so oft wie die
-Abtastrate ist ausgeführt. Dann wird berechnet wie viel Prozent einer Sekunde diese
-Zeit ein nimmt.
-
-\begin{tabular}{c|c|c|c|c}
-  Auflösung & Abtastrate & Generierung & Addition & multiplikation \\
-  \hline
-  A & B & C & D & E \\
-  1 & 2 & 3 & 4 & 5 \\
-\end{tabular}
-

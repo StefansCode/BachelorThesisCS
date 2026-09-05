@@ -31,7 +31,7 @@ erwähnt sind Sägezahn-, Rechteck und Dreieckgeneratoren leicht zu
 implementieren. Da die Sinuswelle eine fundamentale Rolle für Signale
 jeder Art spielt, soll auch diese implementiert werden.
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
 
     \begin{tikzpicture}
@@ -145,7 +145,7 @@ betrachtet werden sollen, ist jede mögliche Frequenz ein Vielfaches
 von Eins und somit ist auch jede generierte  1-periodisch (sie wiederholt
 sich bei eins). 
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
 
     \begin{tikzpicture}
@@ -264,7 +264,7 @@ und passt diese mit den folgenden Schritten an.
     \item $y=(-a/2)+((x*f*a/s) \bmod a)$ Die Zeit $x$ wird mit der Frequenz $f$ multipliziert, um die gewünschte Frequenz zu erhalten.
 \end{enumerate}
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
 
     \begin{tikzpicture}
@@ -424,6 +424,7 @@ Sinuswelle.
 
 
 \subsection{Addition und Multiplikation}
+\label{chap:addition_and_multiplication}
 
 Wenn man 2 Töne geleichzeitig hört, dann hört man diese als 
 einen neuen Ton, welche die Addition der beiden Töne ist \cite{waveInterference}.
@@ -439,7 +440,7 @@ Die Multiplikation eines Tons ist in der Soundklasse als Funktion
 \lstinline{amplipfy(float factor)} implementiert, welche ebenfalls einfach
 die multiply-Funktion der Signalklasse aufruft.
 
-\begin{figure}[H]
+\begin{figure}[h]
     \centering
 
     \begin{tikzpicture}
@@ -566,7 +567,7 @@ Prozenz einer Sekunde angegeben. Denn das ist die Zeit, die eine Methode maximal
 brauchen darf, um die Abtastrate einzuhalten. Natürlich sollte eine Methode viel 
 weniger brauchen, um auch noch Zeit für andere Operationen zu haben.
 
-\begin{table}[H]
+\begin{table}[h]
     \centering
     \caption{name ausdenken.}
     \label{tab:Testergebnisse}
@@ -611,7 +612,7 @@ müssen erst geladen werden. Die Ladezeithängt auch von der Frequenz ab. Das li
 vermutlich daran, dass mehrere benachbarte Werte geleichzeitig geladen werden.
 Die fromSine-Zeiten in der Tabelle oben sind Derdurchschnitt über die Frequenzen 1-50.
 
-\begin{table}[H]
+\begin{table}[h]
     \centering
     \caption{}
     \label{tab:fromSineFrequenz}

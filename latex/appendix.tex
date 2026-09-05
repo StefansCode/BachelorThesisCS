@@ -1,6 +1,5 @@
 \section{Pinbelegung}
-
-\begin{table}[ht]
+\begin{table}[H]
     \centering
     \caption{Pinbelegung des ESP32-S3.}
     \label{tab:pinout}
@@ -46,3 +45,195 @@
         48 & RMT       & BUILTIN\_RGB\_LED & Fehleranzeige \\
     \end{tabular}
 \end{table}
+
+
+
+\section{Bilder zur Entwicklung der Hülle}
+\begin{figure}[H]
+    \begin{subfigure}{0.36\textwidth}
+        \begin{center}
+            \includegraphics[height=2.5cm]{fig/case/buttons.png}
+        \end{center}
+        \caption{Knöpfe von der Seite}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.60\textwidth}
+        \begin{center}
+            \includegraphics[height=2.5cm]{fig/case/case_top.png}
+        \end{center}
+        \caption{Oberseite Vorderseite der Hülle}
+    \end{subfigure}
+\label{fig:hülle_oben}
+\end{figure}
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[width=6cm]{fig/case/Einschmelzgewinde.png}
+        \caption{Einschmelzgewinde.}%
+        \label{fig:einschmelzgewinde}
+    \end{center}
+\end{figure}
+\begin{figure}[H]
+    \begin{subfigure}{0.48\textwidth}
+    \begin{center}
+        \includegraphics[width=6cm]{fig/case/front_case_inside.png}
+    \end{center}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+    \begin{center}
+        \includegraphics[width=6cm]{fig/case/back_case_inside.png}
+    \end{center}
+    \end{subfigure}
+\caption{Innenseite der Hülle}
+\label{fig:hülle_innen}
+\end{figure}
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[width=\textwidth]{fig/case/hülle_im_slicer.jpeg}
+        \caption{Slicer mit der Hülle.}%
+        \label{fig:slicer}
+    \end{center}
+    
+\end{figure}
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics[width=\textwidth]{fig/case/3D_Drucker.jpeg}
+        \caption{Der 3D Drucker Bambu Lab P1S}%
+        \label{fig:drucker}
+    \end{center}
+    
+\end{figure}
+
+
+
+\section{Beispielcode für die DSV-Bibliothek}
+
+\begin{lstlisting}[language=C++, 
+                   frame=single, 
+                   caption={Beispielcode für die DSV-Bibliothek in der Arduino IDE},
+                   captionpos=b]
+#include "signal.h"
+
+Signal<int, 16> lightSignal;
+Signal<int, 16> potiSignal;
+
+void setup() {
+  pinMode(2, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+
+  potiSignal.fromValue(analogRead(A7))
+            .applyFunction(printSignal, "poti")
+            .multiply(-1);
+  
+  lightSignal.fromValue(analogRead(A6))
+             .applyFunction(printSignal, "lightLevel")
+             .add(potiSignal)
+             .applyFunction(printSignal, "calibrated")
+             .applyFunction(switchLight, NULL);
+
+  Serial.println();
+  delay(1);
+}
+
+
+int printSignal(int sample, const void * param) {
+  const char * variableName = (const char*) param;
+  
+  Serial.print(variableName);
+  Serial.print(":");
+  Serial.print(sample);
+  Serial.print(" ");
+
+  return sample;
+}
+
+int switchLight(int sample, void * param) {
+    if(sample < 0) {
+    digitalWrite(2,HIGH);
+  } else {
+    digitalWrite(2,LOW);
+  }
+  return sample;
+}
+\end{lstlisting}
+
+\section{Code des einfachen Synthezisers}
+\label{sec:simple_synth_code}
+
+\begin{lstlisting}[language=C++, 
+                   frame=single, 
+                   caption={Code des einfachen Synthezisers},
+                   captionpos=b]
+
+#ifndef MINI_SYNTH_H
+#define MINI_SYNTH_H
+#include "adapter/button/button.h"
+#include "adapter/dac/i2sDac.h"
+#include "sound/sound.h"
+
+Sound bass;
+
+Sound sound1;
+Sound sound2;
+Sound sound3;
+Sound sound4;
+Sound sound5;
+Sound sound6;
+Sound sound7;
+Sound sound8;
+
+// Arrays um auf die einzelnen Sounds mit eine Index zuzugreifen
+Sound leads[8] = 
+{sound1, sound2, sound3, sound4,
+ sound5, sound6, sound7, sound8};
+unsigned int note[8] = 
+{440, 493, 554, 587, 
+ 659, 739, 830, 880};
+int buttonsPin[8] = 
+{PIN_BTN_11, PIN_BTN_12, PIN_BTN_13, PIN_BTN_14, 
+ PIN_BTN_21, PIN_BTN_22, PIN_BTN_23, PIN_BTN_24};
+
+void runMiniSynthTest() {
+
+  float playBass = false;
+
+  while (1) {
+    if (buttons.readQueue() == PIN_BTN_B) {
+      if (playBass == 0) {
+        playBass = 1;
+      } else {
+        playBass = 0;
+      }
+    }
+    for (int j = 0; j < SOUND_BUFFER_SIZE; j++) {
+      // generiere den Bass
+      bass.fromSaw(110)       
+          // mache den Bass leiser
+          .amplify(0.1f)      
+          // mache den Bass aus wenn playBass == 0
+          .amplify(playBass); 
+      for (int i = 0; i < 8; i++) {
+        float b =(float)buttons.getState(buttonsPin[i])
+        // Die Toene der einzelnen Tasten
+        // wie der Bass werden generiert.
+        leads[i].fromSaw(note[i])  
+                .amplify(0.1f)     
+                .amplify(b);
+        // addiere die Toene der einzelnen Tasten zum Bass
+        bass.add(leads[i]);   
+      }
+      // machhe nun alles leiser
+      bass.amplify(0.3f);     
+    }
+    // wenn der Buffer voll ist, sende ihn an den DAC
+    dac.sendBuffer(bass.returnBuffer(),
+                   SOUND_BUFFER_SIZE * sizeof(sample));
+  }
+}
+
+#endif // MINI_SYNTH_H
+    
+\end{lstlisting}
