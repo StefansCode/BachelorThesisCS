@@ -2,6 +2,12 @@
 #define NOTES_H
 #include "stdint.h"
 
+#define WAVEFORM_SAW 0
+#define WAVEFORM_SQUARE 1
+#define WAVEFORM_TRIANGLE 2
+#define WAVEFORM_SINE 3
+#define WAVEFORM_NOISE 4
+
 #define A0 10   // 27Hz
 #define A1 22   // 55Hz
 #define A2 33   // 110Hz
