@@ -18,3 +18,15 @@ PCB
 größere Tasten
 
 eingebauter Lautsprecher
+
+\subsection{Software}
+
+\subsection{FreeRTOS-Adapter}
+
+FreeRTOS \cite{freeRTOS} ist ein Echtzeitbetriebssystem für Mikrocontroller
+und Bestandteil der ESP-IDF. In der aktuellen Implementierung werden die
+FreeRTOS-Funktionen direkt verwendet, um mehrere Tasks gleichzeitig
+auszuführen. Als zukünftige Erweiterung könnte ein Adapter diese Funktionen
+kapseln. Der Kern bliebe dadurch auch bei einem Wechsel des
+Betriebssystems unabhängig von FreeRTOS. Der Adapter müsste insbesondere
+die im Kern benötigte Funktion zum Erstellen und Starten von Tasks anbieten.
