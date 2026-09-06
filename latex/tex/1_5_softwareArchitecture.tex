@@ -1,28 +1,32 @@
 \section{Softwarearchitekture}
 
 Die geplante Softwarearchitektur sollte nach dem Ports-and-Adapter Pattern 
-\cite{cockburn2005hexagonal} aufgebaut sein und ist in Abbildung 
-\ref{fig:software_architecture} dargestellt. Allerdings wurden nur 
-Adapter implementiert. Aber durch Das Hinzufügen der Ports, wäre es 
-möglich die Softwarearchitektur wie geplant umzusetzen.
+\cite{cockburn2005hexagonal} aufgebaut sein, allerdings wurden nur 
+Adapter implementiert. Die aktuelle Softwarearchitektur ist in Abbildung 
+\ref{fig:software_architecture} dargestellt. Ein Pfeil wie bei 
+Sound $\rightarrow$ Signal bedeutet, dass Sound Signal nutzt.
 
+Signal ist die Klasse, welche die DSV-Bibliothek implementiert und Sound ist 
+eine Erweiterung dieser Klasse, welche ein Audiosignal darstellt.
+
+Diese Architektur hat den Vorteil, dass Sound und Signal unabhängig von der
+Hardware sind. Das wird dadurch gewährleistet, dass die 
+Zugriffe auf die Hardware nur über Adapter erfolgen.
+
+Syntehsizer, Envelope und Menu sind die Komponenten, welche die Hardware und 
+Sound nutzen, um einen digitalen Synthesizer zu implementieren. Die genaue 
+Funktionsweise wird in Kapitel \ref{chap:synth} beschrieben.
 
 \begin{figure}[h]
     \begin{center}
-        \includegraphics[width=0.9\textwidth]{fig/UML_diagram.png}
+        \includegraphics[width=0.9\textwidth]{fig/UML_diagram.pdf}
     \end{center}
-    \caption{Geplante Softwarearchitektur}
+    \caption{Softwarearchitektur der Arbeit}
     \label{fig:software_architecture}
 \end{figure}
+
+
 \subsection{Adapter}
-
-Ports sind abstrakte Klassen und bilden die Schnittstelle zur Hardware und zur ESP-IDF 
-\cite{espidf2026api}.
-Adapter sind ihre Implementierung.
-Durch das Austauschen der Adapter, lässt sich der Kern unabhängig von 
-diesen beiden Faktoren, also auch auf einen normalen PC, testen.
-Im Folgenden werden alle Adapter und ihre Funktionen kurz erklärt.
-
 
 \subsubsection{Digital-to-Analog Converter}
 Die Kommunikation zwischen dem DAC und dem ESP32-S3 findet über die 

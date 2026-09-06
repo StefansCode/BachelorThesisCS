@@ -1,23 +1,23 @@
 
-package "Adapters" as Adapters {
+package "Adapter" as Adapter {
 
-    class DacImpl {
+    class Dac {
         + sendBuffer(buffer)
     }
 
-    class ButtonImpl {
+    class Button {
         + value readQueue()
         + bool getState(pin)
     }
 
-    class EncoderImpl {
+    class Encoder {
         + value getvalue();
         + value getLastValue();
         + resetvalue();
         + changeExternalValue(...);
     }
 
-    class ScreenImpl {
+    class Screen {
         + clear();
         + display();
         + drawBitmap(...);
@@ -26,12 +26,12 @@ package "Adapters" as Adapters {
         + drawNumber(...);
     }
 
-    class TimerImpl {
+    class Timer {
         + value getValue();
         + setValue(value);
     }
 
-    class utilImpl {
+    class util {
         + time millis();
         + time micros();
         + void delay(ms);

@@ -2,14 +2,14 @@
 
 top to bottom direction
 
-skinparam nodesep 12
-skinparam ranksep 18
-scale max 600 width
+' skinparam nodesep 12
+' skinparam ranksep 18
+' scale max 600 width
 
 !include adapter/adapter.puml
-!include ports/ports.puml
+' !include ports/ports.puml
 
-package "Domain" as Domain {
+package "Kern" as Kern {
 
     class Synthesizer {
         + synthTask()
@@ -39,31 +39,22 @@ package "Domain" as Domain {
     }
 }
 
-Adapters -[hidden]down-> Ports
-Ports -[hidden]down-> Domain
-Dac -[hidden]down-> Signal
+Adapter -[hidden]down-> Kern
 
-
-DacImpl ..|>  Dac
-ButtonImpl ..|>  Button
-EncoderImpl ..|>  Encoder
-ScreenImpl ..|>  Screen
-TimerImpl ..|>  Timer
-utilImpl ..|>  util
 
 Synthesizer -up-> Dac
 Synthesizer -up-> Button
 Synthesizer -up-> Encoder
 Synthesizer -up-> Screen
-Synthesizer -up-> Timer
 Synthesizer -up-> util
+Synthesizer -up-> Timer
 
 Sound --> Signal
 Synthesizer --> Sound
 Synthesizer --> Menu
 Synthesizer --> Envelope
 
-Envelope --> Timer
-Menu --> Screen
+Envelope -up-> Timer
+Menu -up-> Screen
 
 @enduml

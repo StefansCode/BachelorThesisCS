@@ -244,7 +244,16 @@ Die Wellenform wird als Ganzzahl gespeichet und in durch if-Abfragen wird
 entschieden welche from-Funktion aufgerufen wird.
 Zur besseren Lesbarkeit wurden folgende defines erstellt:
 
-TODO: Tabelle mit den defines erstellen aber nicht jetzt
+\begin{lstlisting}[language=C++,
+                   frame=single,
+                   caption={Defines für die Wellenformen},
+                   captionpos=b]
+#define WAVEFORM_SAW 0
+#define WAVEFORM_SQUARE 1
+#define WAVEFORM_TRIANGLE 2
+#define WAVEFORM_SINE 3
+#define WAVEFORM_NOISE 4
+\end{lstlisting}
 
 \subsubsection{Berechnung der Hüllkurve}
 \label{chap:envelope_calculation}
@@ -263,7 +272,7 @@ abgerufen werden. Das speichern ist lesen ist Threadsafe, sodass die Hüllkurve
 in einem Task berechnet werden kann und in einem anderen Task der Wert abgerufen 
 werden kann.
 
-in diesem Synthesizer hat jeder Ton seine eigene Hüllkurve, sodass Töne 
+In diesem Synthesizer hat jeder Ton seine eigene Hüllkurve, sodass Töne 
 unabhängig voneinander gespielt werden können. wird ein Knopf während
 losgelassen und während der Release-Phase erneut gedrückt, startet die 
 Hüllkurve wieder von vorne.
@@ -281,7 +290,66 @@ einige Knoten zu nicht implementierten Funktionen, welche in der Abbildung grau
 dargestellt sind.
 \begin{figure}[ht]
     \centering
-    TODO: Baum zeichnen
+    \begin{tikzpicture}[
+        menu/.style={
+            draw,
+            rounded corners=1pt,
+            minimum width=1.45cm,
+            minimum height=0.55cm,
+            inner sep=2pt,
+            font=\scriptsize,
+            align=center
+        },
+        unavailable/.style={menu, fill=gray!25},
+        edge/.style={draw, thick}
+    ]
+        \node[menu] (main) at (0, 0) {MAIN};
+
+        \node[menu] (bass) at (2.7, 3.2) {BASS};
+        \node[menu] (lead) at (2.7, 0) {LEAD};
+        \node[menu] (settings) at (2.7, -6.6) {SETTINGS};
+
+        \node[menu] (bassSwitch) at (5.1, 4.2) {SWITCH};
+        \node[menu] (bassNote) at (5.1, 3.2) {NOTE};
+        \node[menu] (bassWave) at (5.1, 2.2) {WAVE};
+        \node[unavailable] (bassLfo) at (5.1, 1.2) {LFO};
+
+        \node[menu] (leadScale) at (5.1, 0.0) {SCALE};
+        \node[menu] (leadWave) at (5.1, -1.1) {WAVE};
+        \node[menu] (leadEnv) at (5.1, -2.2) {ENV};
+        \node[unavailable] (leadLfo) at (5.1, -3.3) {LFO};
+        \node[unavailable] (leadFilter) at (5.1, -4.4) {FILTER};
+        \node[unavailable] (leadFx) at (5.1, -5.5) {FX};
+
+        \node[unavailable] (sampleRate) at (5.1, -6.6) {SMP\_HZ};
+
+        \node[menu] (attack) at (7.5, -1.7) {ATK};
+        \node[menu] (decay) at (7.5, -2.2) {DCY};
+        \node[menu] (sustain) at (7.5, -2.7) {SUS};
+        \node[menu] (release) at (7.5, -3.2) {REL};
+
+        \draw[edge] (main.east) -- ++(0.45,0) |- (bass.west);
+        \draw[edge] (main.east) -- ++(0.45,0) |- (lead.west);
+        \draw[edge] (main.east) -- ++(0.45,0) |- (settings.west);
+
+        \draw[edge] (bass.east) -- ++(0.45,0) |- (bassSwitch.west);
+        \draw[edge] (bass.east) -- ++(0.45,0) |- (bassNote.west);
+        \draw[edge] (bass.east) -- ++(0.45,0) |- (bassWave.west);
+        \draw[edge] (bass.east) -- ++(0.45,0) |- (bassLfo.west);
+
+        \draw[edge] (lead.east) -- ++(0.45,0) |- (leadScale.west);
+        \draw[edge] (lead.east) -- ++(0.45,0) |- (leadWave.west);
+        \draw[edge] (lead.east) -- ++(0.45,0) |- (leadEnv.west);
+        \draw[edge] (lead.east) -- ++(0.45,0) |- (leadLfo.west);
+        \draw[edge] (lead.east) -- ++(0.45,0) |- (leadFilter.west);
+        \draw[edge] (lead.east) -- ++(0.45,0) |- (leadFx.west);
+
+        \draw[edge] (settings.east) -- ++(0.45,0) |- (sampleRate.west);
+        \draw[edge] (leadEnv.east) -- ++(0.45,0) |- (attack.west);
+        \draw[edge] (leadEnv.east) -- ++(0.45,0) |- (decay.west);
+        \draw[edge] (leadEnv.east) -- ++(0.45,0) |- (sustain.west);
+        \draw[edge] (leadEnv.east) -- ++(0.45,0) |- (release.west);
+    \end{tikzpicture}
     \caption{Baumstruktur des Menüs}
     \label{fig:menu_tree}
 \end{figure}
@@ -296,5 +364,29 @@ rechten Seite des Bildschirms. Mit dem Drehgeber kann ein Wert des Paramater
 den das Blat representiert gewählt werden. Der Wert wird mit dem A-Knopf 
 übernommen und mit dem B-Knopf wird der Wert nicht übernommen und der vorherige 
 Wert bleibt bestehen. Beide Knöpfe führen wieder in den Elternknoten zurück.
-
-TODO Bilder
+\begin{figure}[h]
+    \begin{subfigure}{0.48\textwidth}
+        \begin{center}
+            \includegraphics[height=2.5cm]{fig/screen/knot.jpeg}
+        \end{center}
+        \caption{Knoten im Menü}
+        \label{fig:screen_knot}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \begin{center}
+            \includegraphics[height=2.5cm]{fig/screen/leaf.jpeg}
+        \end{center}
+        \caption{Parameter und Werte im Menü}
+        \label{fig:screen_leaf}
+    \end{subfigure}
+    \caption{Bildschirmausgabe des Menüs}
+    \label{fig:screen_menu}
+\end{figure}
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[height=2.5cm]{fig/screen/todo.jpeg}
+        \caption{Nicht implementierte Funktionen.}%
+        \label{fig:screen_todo}
+    \end{center}
+\end{figure}

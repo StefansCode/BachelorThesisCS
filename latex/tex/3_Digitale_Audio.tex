@@ -554,7 +554,11 @@ sein darf, da sonst ein Überlauf entsteht und der Ton verzerrt wird.
 
 Es wird also empfohlen mit gestauchten Tönen zu arbeiten.
 
-TODO Return und applyFunktion wurden auch gewrapped
+\subsection{return und apply Funktionen}
+
+Auch die return und apply Funktionen der Signalklasse werden in der Soundklasse
+implementiert. Diese sind wichtig, da sie es ermöglichen die Werte eines Tons 
+an externe Systeme wie zum Beispiel einen DAC zu übergeben.
 
 \subsection{Bewertung der Auflösung und Abtastrate}
 \label{chap:Bewertung_der_Auflösung_und_Abtastrate}
@@ -601,12 +605,11 @@ und es fällt folgendes auf:
     \item Es mach nur bei der Berechnung des Sinus einen Unterschied, ob die Auflösung 16Bit oder 32Bit ist.
 \end{enumerate}
 
+Leider muss hier erwähnt werden das die Derechnung mit 32-Bit keinen Ton ausgibt.
+Der Fehler wurde aus zeitlichen Gründen nicht gefunden.
+
 Seien im Folgenden die Abtastrate 32768Hz und die Auflösung 16 Bit.
-
-TODO Die Saw generierung mit 32 Bit klappt garnicht soll ich das einfach weglassen mit dem vergleich
-der Auflösung?
-
-Vermutung zu 2. Die langsame Laden von Sinuswerten könnte man darauf zurückführen,
+Vermutung zu 2. Das langsame Laden von Sinuswerten könnte man darauf zurückführen,
 wo das Array gespeichert wird. Kleinere Arrays liegen eventuell direkt im RAM und größere
 müssen erst geladen werden. Die Ladezeithängt auch von der Frequenz ab. Das liegt 
 vermutlich daran, dass mehrere benachbarte Werte geleichzeitig geladen werden.
@@ -614,7 +617,7 @@ Die fromSine-Zeiten in der Tabelle oben sind Derdurchschnitt über die Frequenze
 
 \begin{table}[h]
     \centering
-    \caption{}
+    \caption{Sinusladezeiten in Abhängigkeit der Frequenz.}
     \label{tab:fromSineFrequenz}
     
     \begin{tabular}{c|cccccccccccc}

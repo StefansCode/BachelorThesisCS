@@ -239,17 +239,16 @@ welcher wiederum ein digitales Signal erhält.
 \end{figure}
 
 \subsubsection{Auflösung und Abtastrate}
-TODO Schreibe das später
 
 Nun ist also die Frage, was für ein Signal der DAC erwartet. Da gibt es viele
 verschiedene Möglichkeiten. Aber ein Standard für digitale Audio ist 
 I2S (Inter-IC Sound). Das ist ein Protokoll, welches Stereoaudio, also 2 
 Audiosignale, über 3 (manchmal 4) Leitungen überträgt.
 \begin{enumerate}
-    \item BCLK (Bit-Clock) ist der Taktgeber.
-    \item LRCLK (Left-Right-Clock) gibt an, ob gerade Links oder Rechts übertragen
+    \item BCLK (Bit-Clock) manchmal auch Serial clock genannt, ist der Taktgeber.
+    \item LRCLK (Left-Right-Clock) manchmal auch Word select genannt, gibt an, ob gerade Links oder Rechts übertragen
      wird.
-    \item DIN/DOUT (Data in/ Data out) übertragt die Audiodaten.
+    \item DIN/DOUT (Data in/ Data out) manchmal auch Serial data genannt, übertragt die Audiodaten.
 \end{enumerate}
 
 \begin{figure}[h]
@@ -262,14 +261,16 @@ Audiosignale, über 3 (manchmal 4) Leitungen überträgt.
 
 
 
-(PCM)\cite{jita2023} Daten ist ein unkomprimiertes 
-Audioformat mit meistens 8, 16, 24 oder 32 Bit unsigned Integern. 
+PCM-Daten \cite{jita2023} sind ein unkomprimiertes 
+Audioformat bei dem Werte durch 8, 16, 24 oder 32 Bit unsigned Integern
+dargestellt werden. Somit ist die Auflösung 8, 16, 24 oder 32 Bit.
 
 
 Das menschliche Gehöhr kann in der Regel Frequezen zwischen 20 und 20000
-Hertz wahrnehmen. Aus dem Abtatsttheorem folgt, das einen Abtastrate von 
-mindestens 40000Hz nötig ist um Ton digital darzustellen.
-(TODO Quelle finden). Deshalb wurde 44100 als Abtastrate für CDs und 
+Hertz wahrnehmen \cite{purves2001neuroscience}. 
+Aus dem Abtatsttheorem folgt, das einen Abtastrate von 
+mindestens 40000 Hz nötig ist um Ton digital darzustellen.
+Deshalb wurde 44100 als Abtastrate für CDs und 
 infolge dessen auch für viele andere digitale Systeme gewählt. 
 Hochwertige Systeme verwenden auch bis zu über 100 kHz.
 
