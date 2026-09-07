@@ -9,9 +9,9 @@ Musiktheorie vorgestellt.
 
 In der Musiktheorie ist eine \textbf{Note} ein Ton mit einer bestimmten Frequenz.
 Zum Beispiel ist die Note mit dem Namen A4 ein Ton mit Frequenz 440 Hz.
-Wenn zwei Noten Frequenzen im Verhältnis 2:1 haben, sagnt man sie sind 
+Wenn zwei Noten Frequenzen im Verhältnis 2:1 haben, sagt man, sie seien
 eine \textbf{Oktave} auseinander. Die Note, welche eine Oktave über A4 liegt,
-ist A5 und hat die Frequenz 880 Hz. Mit diesem muster erhält man auch die 
+ist A5 und hat die Frequenz 880 Hz. Mit diesem Muster erhält man auch die
 Noten A4,A3,A6, etc.
 
 Zwischen den Noten A4 und A5 liegen noch 11 weitere Noten, die jeweils eine 
@@ -29,15 +29,16 @@ Aus historischen Gründen erhöht sich die Zahl der Note bei C.
 Eine \textbf{Tonleiter}(englisch: scale) ist eine Auswahl einer \textbf{Grundnote} und von Noten
 zwischen der Grundnote und einer Oktave höher.
 Zum Beispiel hat die C-Dur-Tonleiter die Grundnote C und die im folgenden 
-dickgedurckten Noten:
+fettgedruckten Noten:
 \begin{center}
 \hfill...\hfill \textbf{C4} \hfill C\#4 \hfill \textbf{D4} \hfill D\#4 
 \hfill \textbf{E4} \hfill \textbf{F4} \hfill F\#4 \hfill \textbf{G4} 
-\hfill G\#4 \hfill \textbf{A4} \hfill A\#4 \hfill \textbf{B4} \hfill \textbf{C5} \hfill
+\hfill G\#4 \hfill \textbf{A4} \hfill A\#4 \hfill \textbf{B4} \hfill \textbf{C5} 
+\hfill ... \hfill
 \end{center}
 
 Gehört eine Note zu einer Tonleiter, so gehört auch jede um eine oder mehrere 
-Oktaven verschobene Note zu dieser Tonleiter. Also gehöreh A1,A2,A3, etc. 
+Oktaven verschobene Note zu dieser Tonleiter. Also gehören A1, A2, A3 usw.
 zur C-Dur-Tonleiter.
 
 Häufig spricht man über eine Tonleiter ohne die Grundnote
@@ -77,7 +78,7 @@ Double Harmonic Minor & 0,1,4,5,7,8,11 \\
 \subsection{Einfacher Synthesizer}
 \label{chap:simple_synth}
 
-Zunächst soll eine einfache Variante des Synthesitzers implementiert
+Zunächst soll eine einfache Variante des Synthesizers implementiert
 werden, welche im Folgenden erklärt wird. In den nächsten Abschnitten 
 wird erklärt, wie dieser erweitert werden kann.
 
@@ -190,7 +191,7 @@ Dabei gibt es die folgenden 4 Parameter:
 In Bild \ref{fig:envelope} sieht man in Grau wie der Knopf gedrückt und losgelassen 
 wird und in Rot eine mögliche Hüllkurve.
 
-\subsection{Vollständidiger Synthesizers}
+\subsection{Vollständiger Synthesizer}
 
 Der Synthesizer so wie er zum Zeitpunkt der Abgabe dieser Arbeit implementiert ist, 
 basiert auf dem einfachen Synthesizer aus Kapitel \ref{chap:simple_synth}. Zusätzlich wurde
@@ -199,12 +200,12 @@ beeinflusst und es ist möglich folgende Parameter zu verändern:
 \begin{itemize}
     \item Die Grundnote der Tonleiter
     \item Die Tonleiter
-    \item Die WellenForm des Basses 
+    \item Die Wellenform des Basses
     \item Die Wellenform der einzelnen Töne
     \item Die Parameter der Hüllkurve
 \end{itemize}
 
-Welcher parameter gerade verändert wird, kann über ein Menü, welches auf dem Bildschirm
+Welcher Parameter gerade verändert wird, kann über ein Menü, welches auf dem Bildschirm
 angezeigt wird, ausgewählt werden. Dieses Menü wird mit dem A und B Knopf und dem
 Drehgeber bedient. Wie dies genau funktioniert wird in Kapitel \ref{chap:menu} erklärt.
 
@@ -213,9 +214,9 @@ das Lesen von Eingaben, das Schreiben auf den Bildschirm oder das Berechnen der
 Hüllkurve unterbrochen werden. Deshalb wurden 3 freeRTOS-Tasks implementiert, 
 welche die einzelnen Aufgaben übernehmen.
 
-Um zwischen den Tasks zu kommunizieren, werden ThreadsaveVariables verwendet.
+Um zwischen den Tasks zu kommunizieren, werden threadsichere Variablen verwendet.
 Das ist eine Klasse, welche nur eine Variable, einen Getter und einen Setter 
-enthalten. Bei der Implementierung dieser Klassen wurde darauf geachteh, dass
+enthalten. Bei der Implementierung dieser Klassen wurde darauf geachtet, dass
 die Getter und Setter Methoden Threadsafe sind. 
 
 Die Aufgaben der Tasks werden in den folgenden Unterkapiteln erklärt.
@@ -228,19 +229,19 @@ in Kapitel \ref{chap:simple_synth} aufgebaut,
 Um einfach auf die Frequenzen der einzelnen Noten zugreifen zu können,
 werden die Frequenzen in einem Array namens notes gespeichert. Die Grundnote einer
 Tonleiter kann dann als Index g gespeichert und wenn die Tonleiter wie 
-in Kapitel \ref{chap:music_theorie} beschrieben als Array names scale gespeichert ist,
+in Kapitel \ref{chap:music_theorie} beschrieben als Array namens scale gespeichert ist,
 kann auf Noten der Tonleiter wie folgt zugegriffen werden:
 \begin{lstlisting}[language=C++,
                    frame=single,
                    caption={Zugriff auf die Frequenzen der Noten einer Tonleiter},
                    captionpos=b]
-int noteFrequenzy = notes[g + scale[i]];
+int noteFrequency = notes[g + scale[i]];
 \end{lstlisting}
 
 Es gibt außerdem ein Array aller möglichen Tonleitern.
 So lassen sich die Grundnote und die Tonleiter einfach verändern und als Indizes 
 zwischen den Tasks übertragen.
-Die Wellenform wird als Ganzzahl gespeichet und in durch if-Abfragen wird 
+Die Wellenform wird als Ganzzahl gespeichert, und durch if-Abfragen wird
 entschieden welche from-Funktion aufgerufen wird.
 Zur besseren Lesbarkeit wurden folgende defines erstellt:
 
@@ -267,14 +268,14 @@ Um die $1/16$ Sekundenschritte einzuhalter,wird der Timeradapter genutzt.
 
 Außerdem enthält sie eine Methode \lstinline{apply(int input)},
 welche den Eingabewert auf die Hüllkurve anwendet.
-Der Ausgabewert wird gespeichertundkann über die Methode \lstinline{getValue()}
-abgerufen werden. Das speichern ist lesen ist Threadsafe, sodass die Hüllkurve 
+Der Ausgabewert wird gespeichert und kann über die Methode \lstinline{getValue()}
+abgerufen werden. Das Speichern und Lesen ist threadsicher, sodass die Hüllkurve
 in einem Task berechnet werden kann und in einem anderen Task der Wert abgerufen 
 werden kann.
 
 In diesem Synthesizer hat jeder Ton seine eigene Hüllkurve, sodass Töne 
-unabhängig voneinander gespielt werden können. wird ein Knopf während
-losgelassen und während der Release-Phase erneut gedrückt, startet die 
+unabhängig voneinander gespielt werden können. Wird ein Knopf während der
+Release-Phase erneut gedrückt, startet die
 Hüllkurve wieder von vorne.
 
 Die Hüllkurve wird in Task 2 berechnet. Hier werden auch die Parameter der Hüllkurve
@@ -285,7 +286,7 @@ geändert wurde.
 \label{chap:menu}
 
 Die Parameter des Synthesizers sind als Blätter eines Baums organisiert und 
-können wie in Abbildung \ref{fig:menu_tree} dargestellt, werden. Es git aßerdem
+können wie in Abbildung \ref{fig:menu_tree} dargestellt, werden. Es gibt außerdem
 einige Knoten zu nicht implementierten Funktionen, welche in der Abbildung grau
 dargestellt sind.
 \begin{figure}[ht]
@@ -357,11 +358,12 @@ dargestellt sind.
 Auf dem Bildschirm wird oben links der Name des aktuellen Knotens angezeigt
 und darunter die Kinderknoten dieses Knotens. Mit dem Drehgeber kann ein 
 Kindknoten ausgewählt werden und mit dem A-Knopf kann in dieses Kindknoten 
-gewechselt werden. Mit dem B-Knopf kann wieder in den Elternknoten gewechselt.
+gewechselt werden. Mit dem B-Knopf kann wieder in den Elternknoten gewechselt
+werden.
 
 Wird ein Blatt ausgewählt, erscheinen die möglichen Werte des Blatts auf der 
-rechten Seite des Bildschirms. Mit dem Drehgeber kann ein Wert des Paramater 
-den das Blat representiert gewählt werden. Der Wert wird mit dem A-Knopf 
+rechten Seite des Bildschirms. Mit dem Drehgeber kann ein Wert des Parameters
+den das Blatt representiert gewählt werden. Der Wert wird mit dem A-Knopf 
 übernommen und mit dem B-Knopf wird der Wert nicht übernommen und der vorherige 
 Wert bleibt bestehen. Beide Knöpfe führen wieder in den Elternknoten zurück.
 \begin{figure}[h]

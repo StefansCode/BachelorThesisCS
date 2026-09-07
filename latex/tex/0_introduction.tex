@@ -7,15 +7,15 @@ es möglich, solche Signalverarbeitungsverfahren auch auf eingebetteten Systemen
 umzusetzen. 
 
 Ziel dieser Arbeit ist die Entwicklung einer einfach nutzbaren und erweiterbaren
-DSV-Bibliothek für Mikrocontroller. In Bezug auf
-Nutzerfreundlichkeit ist Java Streams \cite{java2026stream} ein 
-sehr gutes Vorbild. Java Streams setzen als Fluent API \cite{fluentAPI} die Mentalität 
-\glqq Signal geht rein, Signal geht raus\grqq\ (oder im fall von Java Streams
-Collection) und die sequentielle Abarbeitung von Streams perfekt um.
+DSV-Bibliothek für Mikrocontroller. In Bezug auf die
+Nutzerfreundlichkeit sind Java Streams \cite{java2026stream} ein
+sehr gutes Vorbild. Java Streams setzen als Fluent API \cite{fluentAPI} die Mentalität
+\glqq Signal geht rein, Signal geht raus\grqq\ (bei Java Streams eine
+Collection) und die sequentielle Abarbeitung von Streams sehr gut um.
 Da C++ auch objektorientierte Programmierung unterstützt, ist es möglich, eine
 ähnliche Fluent API in C++ zu implementieren. 
-In den Abbildung \ref{Vergleich_Streams_Signal} wird diese sequentielle
-Abarbeitung dargestellt und gezeigt wie eine Anwendung der DSV-Bibliothek 
+In Abbildung \ref{Vergleich_Streams_Signal} wird diese sequentielle
+Abarbeitung dargestellt und gezeigt, wie eine Anwendung der DSV-Bibliothek
 aussehen könnte.
 
 \begin{figure}[h]
@@ -42,18 +42,18 @@ aussehen könnte.
         .toOutput(DAC);
     \end{lstlisting}
   \end{minipage}
-  \caption{Vergleich Einer Beispielanverndung von Javastreams und 
+  \caption{Vergleich einer Beispielanwendung von Java Streams und
             der zu entwickelnden Signalbibliothek}
   \label{Vergleich_Streams_Signal}
 \end{figure}
 
-Neben der DSV-Bibliothek soll es außerdem eine Audio-Bibliothek geben, welche 
-auf Audiosignal spezialisiert wird. Der größte Unterschied 
+Neben der DSV-Bibliothek soll es außerdem eine Audiobibliothek geben, welche
+auf Audiosignale spezialisiert ist. Der größte Unterschied
 zwischen diesen liegt darin, dass die Audio-Bibliothek das Signal selber erzeugt
 und der DSV-Bibliothek ein Signal übergeben wird.
 
-Wegen der Popularität und des niedrigen Preises für die Leistung des ESP32-S3 
-Mikrocontroller wird die Signalbibliothek auf diesem entwickelt und
+Wegen der Popularität und des günstigen Preis-Leistungs-Verhältnisses des ESP32-S3-
+Mikrocontrollers wird die Signalbibliothek auf diesem entwickelt und
 soll neben der eigentlichen 
 Signalverarbeitung auch die Anbindung an die benötigte Hardware ermöglichen. Hierzu 
 wird eine Trennung zwischen der Signalverarbeitung und hardwarespezifischen Komponenten 
@@ -63,7 +63,7 @@ angestrebt. Dadurch soll die Bibliothek plattformunabhängig bleiben.
 Als praktische Anwendung der Bibliothek wird ein digitaler Synthesizer entwickelt.
 Der Synthesizer dient dabei sowohl als Anwendung der 
 Bibliothek als auch zur praktischen Erprobung ihrer Funktionen.
-Dafür wird die nötige Hardware aufgebaut und in der Software implementiert.
+Dafür werden die nötige Hardware aufgebaut und die zugehörige Software implementiert.
 
 
 % TODO: Schreibe vlt in ein eigenes Kapitel was für tools ich nutze bzw welche ich

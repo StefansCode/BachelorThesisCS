@@ -2,10 +2,11 @@
 
 \subsection{Anwendung als DSV}
 
-Die DSV-Bibliothek wird als eine Klasse namens Signal implementiert. 
-Die Klasse ist eien FluentAPi\cite{fluentAPI}. Das bedeutet, dass die 
-nicht beendende Funktionen eine Referenz auf das Signalobjekt zurückgeben. Dadurch können
-Methodeaufrufe verkettet werden, um komplexe Operationen auf das Signal anzuwenden.
+Die DSV-Bibliothek wird als eine Klasse namens Signal implementiert.
+Die Klasse ist eine Fluent API\cite{fluentAPI}. Das bedeutet, dass die
+nicht abschließenden Funktionen eine Referenz auf das Signalobjekt zurückgeben. 
+Dadurch können Methodenaufrufe verkettet werden, um komplexe Operationen auf 
+das Signal anzuwenden.
 
 Im Folgenden wird die Entwicklung der Signalklasse Schritt für Schritt
 beschrieben. Bei jedem Schritt wird der angegebene Codeblock erweitert,
@@ -28,15 +29,16 @@ class Signal {
 }
 \end{lstlisting}
 
-Da viele Funktionen, wie zum Beispiel, lohnt es sich diese auch zu speichen.
+Da Funktionen, wie das Mitteln über die letzten Werte, auf die vergangenen 
+Werte zugreifen, lohnt es sich, diese ebenfalls zu speichern.
 Dafür bietet sich ein RingBuffer (circular buffer) \cite{ringbuffer} an. 
 Ein Ringbuffer ist ein fest definierter
-Speicherblock (zum Beispiel ein Array) mit fester Größe, das ist vorallen 
+Speicherblock (zum Beispiel ein Array) mit fester Größe. Das ist vor allem
 auf Mikrocontrollern sehr 
-wichtig, da hie Speicher und rechenkapazität begrenzt sind. Ein Ringbuffer hat außerdem 
+wichtig, da hier Speicher und Rechenkapazität begrenzt sind. Ein Ringbuffer hat außerdem
 einen Index Wert welcher anzeigt, wo in diesen Speicherblock geschrieben 
 werden soll. Der Index wird bei jedem schreiben erhöht und fängt wieder am Anfang
-des Speicherblocks anzuschreiben, wenn das Ende erreicht ist.
+des Speicherblocks an zu schreiben, wenn das Ende erreicht ist.
 Die Größe des Speichers soll auch den Nutzer überlassen werden.
 
 \begin{lstlisting}[language=C++, 
@@ -74,7 +76,7 @@ public:
 }
 \end{lstlisting}
 
-Eine Funktion, die welche mit dem Prefix \glqq return-\grqq\ 
+Eine Funktion, die mit dem Prefix \glqq return-\grqq\ 
 gekennzeichnet sind, ist eine Ausgangsfunktion. 
 Solche Funktionen geben keine Signalreferenz zurück, sondern zum Beispiel den 
 momentanen Wert.
@@ -98,9 +100,9 @@ public:
 \end{lstlisting}
 
 Alle anderen Funktionen sind Funktionen, welche eine Signalreferenz zurückgeben
-und im Gegansatz zu Inputfunktionen nicht den Index erhöhen. Das sind zum Beispiel
+und im Gegensatz zu Inputfunktionen nicht den Index erhöhen. Das sind zum Beispiel
 add, multiply oder applyFunction. Letzteres erlaubt es dem Nutzer selbstdefinierte 
-Funktionenin die Verarbeitungskette einzufügen.
+Funktionen in die Verarbeitungskette einzufügen.
 
 \begin{lstlisting}[language=C++, 
                        frame=single, 
@@ -137,17 +139,17 @@ public:
 \subsubsection{Anwendung}
 % wohin soll das Example?
 Im Anhang sieht man eine Beispielanwendung in der ArduinoIDE. Hier werden ein
-Lichtabhängiger Widersand, und ein Potenztiometer eingelesen. Der Potentiometerwert
-wird dazu verwendet, um den aktuell stabielen Lichtwert zu kompensieren. Dann wird
-eine LED angeschaltet, wenn der compensierte lichtwert unter 0 sinkt. Hält man den 
-Lichtabhängigen Wiederstand gegen eine Lichtquelle oder einen reflektierenden 
+lichtabhängiger Widerstand und ein Potentiometer eingelesen. Der Potentiometerwert
+wird dazu verwendet, um den aktuell stabilen Lichtwert zu kompensieren. Dann wird
+eine LED angeschaltet, wenn der kompensierte Lichtwert unter 0 sinkt. Hält man den
+lichtabhängigen Widerstand gegen eine Lichtquelle oder einen reflektierenden
 Hintergrund kann durch Blocken des Lichts eine Bewegung erkannt werden. 
 (Es gibt bessere Möglichkeiten dies umzusetzen aber zu Demonstrationszwecken 
 sollte dieses Beispiel reichen).
 
 Der Code verkürzt sich hier nicht wirklich. Im Gegenteil er wird wegen der 
 zusätzlich definierten Funktionen erstmal komplexer. Sollen nun weitere 
-Funkionen wie zum Beispiel Filter in die Verarbeitungskette eingebracht werden, 
+Funktionen wie zum Beispiel Filter in die Verarbeitungskette eingebracht werden,
 kann dies mit der Signalbibliothek einfacher und schöner umgesetzt werden.
 
 Ein Besseres und ausfürlicheres Beispiel liefert die Erweiterung von Signal zu 
@@ -161,7 +163,7 @@ Das liegt daran, dass ein Signal im Normalfall in einer Endlosschleife
 aktualisiert wird und nicht wie ein Stream einmal erschaffen und direkt 
 beendet wird. 
 
-Die Abtastrate hängt davon ab, wie oft in der Sekunde eine Inputfunktionen
+Die Abtastrate hängt davon ab, wie oft pro Sekunde eine Inputfunktion
 augerufen wird.
 
 Ein weiterer wichtiger Punkt ist, dass der Index in den Inputfunktionen erhöht

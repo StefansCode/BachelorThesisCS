@@ -2,19 +2,19 @@
 
 
 Zunächst wird die Theorie der Signale und Systeme kurz erklärt, wie sie 
-in Grüningens Buch digitale Signalverarbeitung \cite{grueningen2008dsv}
+in Grüningens Buch "Digitale Signalverarbeitung" \cite{grueningen2008dsv}
 beschrieben wird. In Kapitel 4 wird eine mögliche Implementierung vorgestellt.
 
-Anschließen wird erklärt wie ein Ton digital als Signal dargestellt 
+Anschließend wird erklärt, wie ein Ton digital als Signal dargestellt
 werden kann. Die Implementierung dazu steht in Kapitel 5.
 
 \subsection{Digitale Signale und Systeme}
 
 Ein (kontinuierliches) \textbf{Signal} ist eine Funktion 
 $f: \mathbb{R} \rightarrow \mathbb{R}$ und beschreibt einen sich
-über die Zeit verändenden Wert.
+über die Zeit verändernden Wert.
 
-\textbf{Digitale Signale} hingegen sind Funktion 
+\textbf{Digitale Signale} hingegen sind Funktionen
 $f: \mathbb{Z} \rightarrow \mathbb{Z}$. Sie stellen in den meisten Fällen ein 
 kontinuierliches Signal dar.
 
@@ -70,8 +70,8 @@ kontinuierliches ($f_k$) und einmal als digitales Signal ($f_d$) dargestellt.
 Meistens sind periodische Signale zwischen -1 und 1, wie zum Beispiel $f_k$ bzw $f_d$ 
 interessant.
 Eine wichtige Kenngröße von periodischen Signalen ist die Frequenz. 
-Das ist die Anzahl der Wiederholungen pro Einheit (in diesen Fall Sekunden).
-Sie wird angegeben in Hertz (Hz). $f_k$ und $f_d$ haben eine Frequenz von 1Hz.
+Das ist die Anzahl der Wiederholungen pro Einheit (in diesem Fall Sekunden).
+Sie wird in Hertz (Hz) angegeben. $f_k$ und $f_d$ haben eine Frequenz von 1 Hz.
 Die Amplitude ist die maximale Auslenkung des Signals. $f_k$ und $f_d$ haben 
 eine Amplitude von 1 und $0.5*sin(x)$ hat eine Amplitude von 0.5.
 
@@ -79,7 +79,7 @@ Zwei wichtige Kenngröße von digitalen Signalen sind die Abtastrate
 und die Auflösung.
 
 Die \textbf{Abtastrate} ist ein Maß für die Feinheit der Unterteilung der X-Achse
-bzw. der Zeit. Sie wird ebenfalls in Herz gemessen. Nehmen wir an, dass
+bzw. der Zeit. Sie wird ebenfalls in Hertz gemessen. Nehmen wir an, dass
 das Signal $f_d$ in Sekunden angegeben ist, so ist seine Abtastrate 10Hz.
 
 % TODO bessert machen
@@ -120,7 +120,7 @@ das Signal $f_d$ in Sekunden angegeben ist, so ist seine Abtastrate 10Hz.
 
 Für die \textbf{Auflösung} muss ein maximaler und ein minimaler Wert festgelegt werden.
 Dann ist die Auflösung die Anzahl der möglichen Werte zwischen dem
-Maximalwert und dem Minimalwert. Für $f_d$ mit MinimalWert -1 und Maximalwert 1
+Maximalwert und dem Minimalwert. Für $f_d$ mit Minimalwert -1 und Maximalwert 1
 wäre das 11.
 
 Jedes stückweise stetige periodische Signal $S$ lässt sich, mithilfe der Fouriereihe,
@@ -128,15 +128,15 @@ als Summe von Sinus- und Cosinuskurven mit verschiedenen Frequenzen schreiben
 \cite[2.2.1]{grueningen2008dsv}
 
 Sei ein Signal $f_{max}$ die höchste dieser Frequenzen.
-Das \textbf{Abtatsttheorem} \cite{grueningen2008dsv} besagt, dass das 
-Signale $S$ wieder aus seiner Darstellung als digitales Signal $S_d$ 
+Das \textbf{Abtasttheorem} \cite{grueningen2008dsv} besagt, dass das
+Signal $S$ wieder aus seiner Darstellung als digitales Signal $S_d$
 rekonstruiert werden kann, wenn die Abtastrate von $S_d$ mindestens 
 doppelt so groß ist wie $f_{max}$.
 
 In der Signaltheorie beschreibt ein System etwas, das ein Signal $f(t)$ in ein
 Signal $g(t)$ umwandelt. Ein digitales System schickt ein digitales Signal 
 $f(n)$ auf ein anderes digitales Signal $g(n)$. Ein Beispiel ist das System,
-das alles Werte eines Signals mit $0.5$ multipliziert.
+das alle Werte eines Signals mit $0.5$ multipliziert.
 
 \begin{figure}[ht]
     \centering
@@ -163,7 +163,7 @@ das alles Werte eines Signals mit $0.5$ multipliziert.
         \draw[arrow] (Sys) -- (g);
 
     \end{tikzpicture}
-    \caption{Darstellung einses Systems}
+    \caption{Darstellung eines Systems}
 \end{figure}
 
 \begin{figure}[ht]
@@ -191,7 +191,7 @@ das alles Werte eines Signals mit $0.5$ multipliziert.
         \draw[arrow] (Sys) -- (g);
 
     \end{tikzpicture}
-    \caption{Beispiel einses Systems}
+    \caption{Beispiel eines Systems}
 \end{figure}
 
 Weitere Eigenschaften von Systemen und Signalen sind in Grüningens Buch
@@ -205,7 +205,7 @@ Wie kann man einen Ton erzeugen? Ein Ton beschreibt eine
 periodische Druckänderungen über die Zeit in der Luft. Solch eine
 Druckänderung kann durch einen Lautsprecher erzeugt werden, in dem der
 Lautsprecher analoges (kontinuierliches) elektrisches Signal erhält. Diese 
-kann von einem DAC (Digital-zu-Analog-Konverter) erzeut werden, 
+kann von einem DAC (Digital-zu-Analog-Konverter) erzeugt werden,
 welcher wiederum ein digitales Signal erhält.
 
 % erstellt mit chatGPT
@@ -248,7 +248,7 @@ Audiosignale, über 3 (manchmal 4) Leitungen überträgt.
     \item BCLK (Bit-Clock) manchmal auch Serial clock genannt, ist der Taktgeber.
     \item LRCLK (Left-Right-Clock) manchmal auch Word select genannt, gibt an, ob gerade Links oder Rechts übertragen
      wird.
-    \item DIN/DOUT (Data in/ Data out) manchmal auch Serial data genannt, übertragt die Audiodaten.
+    \item DIN/DOUT (Data in/Data out), manchmal auch Serial data genannt, überträgt die Audiodaten.
 \end{enumerate}
 
 \begin{figure}[h]
@@ -266,10 +266,10 @@ Audioformat bei dem Werte durch 8, 16, 24 oder 32 Bit unsigned Integern
 dargestellt werden. Somit ist die Auflösung 8, 16, 24 oder 32 Bit.
 
 
-Das menschliche Gehöhr kann in der Regel Frequezen zwischen 20 und 20000
+Das menschliche Gehör kann in der Regel Frequenzen zwischen 20 und 20.000
 Hertz wahrnehmen \cite{purves2001neuroscience}. 
-Aus dem Abtatsttheorem folgt, das einen Abtastrate von 
-mindestens 40000 Hz nötig ist um Ton digital darzustellen.
+Aus dem Abtasttheorem folgt, dass eine Abtastrate von
+mindestens 40.000 Hz nötig ist, um Töne digital darzustellen.
 Deshalb wurde 44100 als Abtastrate für CDs und 
 infolge dessen auch für viele andere digitale Systeme gewählt. 
 Hochwertige Systeme verwenden auch bis zu über 100 kHz.

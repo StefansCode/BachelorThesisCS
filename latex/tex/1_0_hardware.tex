@@ -1,6 +1,6 @@
 \section{Die Hardware}
 
-Das Ziel bei der Hardwarewahl ist es möglichst günstige und weit 
+Das Ziel bei der Hardwarewahl ist es, möglichst günstige und weit
 verbreitete Komponenten zu wählen. So kann der Synthesizer
 leicht nachgebaut werden.
 
@@ -26,7 +26,7 @@ Ein ESP32-S3 ist ein Microcontroller mit einer
 Bei einer Abtastrate von 44100 lässt sich theoretisch jeder Wert 
 mit ca. 
 $240MHz / 44100Hz = 5442$ Taktzyklen bearbeiten. Das lässt genug Zeit für 
-verschiedene DSV-operationen.
+verschiedene DSV-Operationen.
 
 % Der ESP32-S3 wurde anderen ESP32 Microcontrollern vorgezogen, da er
 % spezielle Hardware besitzt, um DSP-Operationen zu beschleunigen. Zum 
@@ -61,7 +61,7 @@ Ein MAX98357A-DAC (Digital-zu-Analog Converter) \cite{MAX983572026Datasheet}
 ist ein Verstärker, der einen Digital-zu-Analog Converter (DAC) enthält.
 Dieser wandelt das digitale Signal in analoges Signal um und verstärkt es so, dass es
 direkt an einen passenden Lautsprecher weitergeleitet werden kann.
-Dadurch kann wärend der Entwicklung auf einen externen Verstärker verzichtet werden.
+Dadurch kann während der Entwicklung auf einen externen Verstärker verzichtet werden.
 
 Der MAX98357A kann Abtastraten von 8kHz, 16kHz, 32kHz, 44.1kHz,
 48kHz, 88.2kHz oder 96kHz und eine Auflösung von 
@@ -133,9 +133,9 @@ und einen GPIO-Pin geschaltet und setzt diesen Pin beim Drücken auf LOW.
 \label{fig:Drehgeber}
 \end{figure}
 
-Ein inkrementeller Drehregler kann mithilfe von zwei phasenverschobenen Signalen, die
-auf dem DT und CLK Pin des Encoders gesendet werden, angeben in welche
-Richtung er gedreht wird. Diese Drehung kann unendlich sein, passiert aber 
+Ein inkrementeller Drehgeber (englisch: encoder) kann mithilfe von zwei phasenverschobenen Signalen, die
+an den Pins DT und CLK anliegen, angeben, in welche
+Richtung er gedreht wird. Diese Drehung ist unbegrenzt, erfolgt aber
 nur in Schritten. Die Pins müssen mit GPIO-Pins des ESP32-S3 
 verbunden werden.
 
@@ -168,7 +168,7 @@ I2C-Protokoll.
 
 \subsection{Pinbelegung und Löten}
 
-Nun müssen alles Komponenten mit dem ESP32-S3 verbunden werden.
+Nun müssen alle Komponenten mit dem ESP32-S3 verbunden werden.
 Der ESP32-S3 hat intern eine GPIO-Matrix\cite{esp32S3gpio}, welche es ermöglicht fast
 jeden internen Peripheriecontroller mit fast jedem Pin zu verbinden.
 
@@ -177,15 +177,15 @@ Zusätzlich zu den oben aufgezählten Komponenten wurden ein SD-Karten-Anschluss
 Dieser wurde in dieser Arbeit allerdings nicht genutzt.
 
 Die Wahl der Pins ist für I2S, I2C und GPIO fast immer frei wählbar.
-Es ist zwar möglich die folgenden Ausnahmen zu benutzen, aber nicht empfehlen.
+Es ist zwar möglich die folgenden Ausnahmen zu benutzen, aber nicht empfohlen.
 \begin{itemize}
     \item Pins 19 und 20 sind mit dem JTAG-Debugger verbunden.
     \item Pins 44 und 48 sind mit den eingebauten LEDs verbunden.
     \item Pins 0, 3, 45 und 46 sind Strappingpins. Das sind Pins, die das Bootverhalten
-            ändern können jenachdem, ob an ihnen, während des Bootvorgangs, ein 
+            ändern können, je nachdem, ob an ihnen während des Bootvorgangs ein
             High- oder Low-Pegel anliegt.
-    \item Pins 33-37 sind verbunden mit dem SPI-flash and PSRAM auf dem 
-    Entwicklungsboard.
+    \item Pins 33--37 sind mit dem SPI-Flash und dem PSRAM auf dem
+    Entwicklungsboard verbunden.
 \end{itemize}
 
 Mit diesen Einschränkungen wurde die Pinbelegung aus Anhang A gewählt.
@@ -234,7 +234,7 @@ werden so die elektrischen Verbindungen nicht durch Berühren beeinflusst.
 
 Zum Erstellen des 3D-Objektes wurde Fusion360\cite{fusion360} verwendet.
 In Fusion360 ist es möglich ein Bild als Referenz zu laden. 
-Das hat sich als schneller und genauer herausgestellt, als Maße von der 
+Das hat sich als schneller und genauer herausgestellt, als die Maße von der 
 Platine zu nehmen.
 
 \begin{figure}[h]
@@ -263,7 +263,7 @@ Seitenwände mit einer kleinen Einkerbung am Ende erstellt. Nach Maßen
 wurden Löcher für die USB-, Aux- und SD-Karten-Anschlüsse hinzugefügt.
 
 Es wurden 10 Knöpfe für die Taster gedruckt. Die Aufschriften der Knöpfe sind 
-A,B,1,2,3,4,5,6,7,8. Deren Funkionen werden in Kapitel \ref{chap:synth} beschrieben.
+A, B, 1, 2, 3, 4, 5, 6, 7 und 8. Deren Funktionen werden in Kapitel \ref{chap:synth} beschrieben.
 
 
 % In die Löcher für die Taster kommen kleine Knöpfe, die genau in die 

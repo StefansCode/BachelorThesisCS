@@ -2,13 +2,13 @@
 
 Wie oben erwähnt kann ein Ton als Signal dargestellt werden. Dazu
 werden zunächst als Auflösung 16Bit, also ein \lstinline|int16_t|,
-und als Abtastrate 32786Hz gewählt. Außerdem wurde die Bufferlänge auf 256 gesetzt. Diese 3
-Werte werden in einer Header-Datei names config.h gespeicher. Sie 
+und als Abtastrate 32786Hz gewählt. Außerdem wurde die Bufferlänge auf 256 gesetzt. 
+Diese 3 Werte werden in einer Header-Datei namens config.h gespeichert. Sie
 gehört zu der Sound-Komponente.
 
 \begin{lstlisting}[language=C++, 
                        frame=single, 
-                       caption={Standartparameter eines Soundobjakts },
+                       caption={Standardparameter eines Soundobjekts},
                        captionpos=b]
 #define STANDART_SAMPLE_RATE 32768
 typedef int16_t sample;
@@ -24,7 +24,7 @@ hält die SoundKlasse die Abtastrate ein.
 
 \subsection{Generierung von Audiosignalen}
 Anders als in der Signalklasse generieren hier die from-Funktionen 
-eigene Werte. Der from-Funkionen wird eine Frequenz übergeben und es
+eigene Werte. Den from-Funktionen wird eine Frequenz übergeben, und es
 soll eine periodische Funktion mit dieser Frequenz und einer bestimmten
 Form generiert werden. Wie Grüningen \cite[Kapitel 7]{grueningen2008dsv} 
 erwähnt sind Sägezahn-, Rechteck und Dreieckgeneratoren leicht zu 
@@ -137,10 +137,10 @@ jeder Art spielt, soll auch diese implementiert werden.
 Wegen ihrer Einfachheit sind diese 4 Signale typische Formen in der 
 Klangsynthese \cite[3.3]{computerMusic}.
 
-Es gibt also 4 fromFunktionen. Diese nehmen als Parameter eine Frequenz
+Es gibt also vier from-Funktionen. Diese nehmen als Parameter eine Frequenz
 und greifen auf einen MemberVariable namens Time zu. Time wird bei jedem
 Aufruf einer Fromfunktion um Eins erhöht und ist der X-Wert der 
-generierten Funktionen. Da nur ganzahlige Frequenz größer gleich null
+generierten Funktionen. Da nur ganzzahlige Frequenzen größer oder gleich null
 betrachtet werden sollen, ist jede mögliche Frequenz ein Vielfaches
 von Eins und somit ist auch jede generierte  1-periodisch (sie wiederholt
 sich bei eins). 
@@ -254,7 +254,7 @@ Zu Begin jeder from-Funktion wird also
 Seien im Folgenden $s$ die Abtastrate, $a$ die Auflösung und $f$ 
 die Frequenz. Außerdem wird für time $x$ geschrieben und für das 
 berechnete Wert $y$.
-Um eine Sägezahnwelle zugenerieren, startet man mit der Identität
+Um eine Sägezahnwelle zu generieren, startet man mit der Identität
 $y=x$
 und passt diese mit den folgenden Schritten an.
 
@@ -416,7 +416,7 @@ Da die Berechnung des Sinus viel aufwendiger ist
 als die Berechnung der anderen Wellenformen
 (siehe \ref{chap:Bewertung_der_Auflösung_und_Abtastrate}),
 werden diese Werte vorher berechnet und in einem Array gespeichert.
-Wären der Laufzeit wird der Index basierend auf der Frequenz und der 
+Während der Laufzeit wird der Index basierend auf der Frequenz und der
 Zeit berechnet und der Wert aus dem Array gelesen.
 Das Array ist $s$ lang und enthält die Werte für eine Periode der 
 Sinuswelle.
@@ -426,14 +426,14 @@ Sinuswelle.
 \subsection{Addition und Multiplikation}
 \label{chap:addition_and_multiplication}
 
-Wenn man 2 Töne geleichzeitig hört, dann hört man diese als 
+Wenn man zwei Töne gleichzeitig hört, dann hört man diese als
 einen neuen Ton, welche die Addition der beiden Töne ist \cite{waveInterference}.
 
 Die Addition von zwei Tönen ist in der Soundklasse als Funktion 
 \lstinline{add(Sound * other)} implementiert. Diese ruft einfach die 
 add-Funktion der Signalklasse auf. 
 
-Die Lautstarke eines Tons ist die Amplitude des Signals \cite{soundIntensety}. 
+Die Lautstärke eines Tons ist die Amplitude des Signals \cite{soundIntensety}.
 Wenn man die Lautstärke eines Tons verändern möchte, 
 muss die Amplitude des Signalsmit einem Faktor multipliziert werden.
 Die Multiplikation eines Tons ist in der Soundklasse als Funktion
@@ -545,9 +545,9 @@ die multiply-Funktion der Signalklasse aufruft.
 
 \end{figure}
 
-In den Graphen oben sieht man die Addition von 2 Sinuswellen und die
-und die Addition von 2 gestauchten Sinuswellen.
-Eine wichtige beobachtung ist, dass die Adition der nicht getauchten Wellen
+In den Abbildungen \ref{fig:addition_and_multiplication} sieht man die 
+Addition von 2 Sinuswellen und dieund die Addition von 2 gestauchten Sinuswellen.
+Eine wichtige Beobachtung ist, dass die Addition der nicht gestauchten Wellen
 zu einer Amplitude von 2 führt, während die Addition der gestauchten Wellen
 unter 1 bleibt. Das ist wichtig, da die Amplitude nicht größer als die Auflösung
 sein darf, da sonst ein Überlauf entsteht und der Ton verzerrt wird.
@@ -567,7 +567,7 @@ Nun wurden einige Methoden implementiert anhand deren verschiedene
 Abtastraten und Auflösungen getestet werden können. Dazu werden die 
 Abtastrate und die Auflösung gesetzt und dann wird die Zeit gemessen
 wie lange es dauert eine dieser Methoden $s$ mal auszuführen. Diese Zeit wird in
-Prozenz einer Sekunde angegeben. Denn das ist die Zeit, die eine Methode maximal 
+Prozent einer Sekunde angegeben. Das ist die Zeit, die eine Methode maximal
 brauchen darf, um die Abtastrate einzuhalten. Natürlich sollte eine Methode viel 
 weniger brauchen, um auch noch Zeit für andere Operationen zu haben.
 
@@ -602,7 +602,7 @@ und es fällt folgendes auf:
 \begin{enumerate}
     \item Abtastraten welche Potenzen von 2 sind, sind nicht besser als andere Abtastraten.
     \item Die Generierung das Sinus ist ab einer bestimmten größe des Lookuptables deutlich langsamer.
-    \item Es mach nur bei der Berechnung des Sinus einen Unterschied, ob die Auflösung 16Bit oder 32Bit ist.
+    \item Es macht nur bei der Berechnung des Sinus einen Unterschied, ob die Auflösung 16 Bit oder 32 Bit beträgt.
 \end{enumerate}
 
 Leider muss hier erwähnt werden das die Derechnung mit 32-Bit keinen Ton ausgibt.
@@ -611,9 +611,9 @@ Der Fehler wurde aus zeitlichen Gründen nicht gefunden.
 Seien im Folgenden die Abtastrate 32768Hz und die Auflösung 16 Bit.
 Vermutung zu 2. Das langsame Laden von Sinuswerten könnte man darauf zurückführen,
 wo das Array gespeichert wird. Kleinere Arrays liegen eventuell direkt im RAM und größere
-müssen erst geladen werden. Die Ladezeithängt auch von der Frequenz ab. Das liegt 
-vermutlich daran, dass mehrere benachbarte Werte geleichzeitig geladen werden.
-Die fromSine-Zeiten in der Tabelle oben sind Derdurchschnitt über die Frequenzen 1-50.
+müssen erst geladen werden. Die Ladezeit hängt auch von der Frequenz ab. Das liegt
+vermutlich daran, dass mehrere benachbarte Werte gleichzeitig geladen werden.
+Die fromSine-Zeiten in der Tabelle oben sind der Durchschnitt über die Frequenzen 1--50.
 
 \begin{table}[h]
     \centering
@@ -631,5 +631,5 @@ Die fromSine-Zeiten in der Tabelle oben sind Derdurchschnitt über die Frequenze
 
 Die Ladezeiten sind trotzdem viel schneller als die Berechnung des Sinus. 
 Diese dauert mit der Sinusfunktion aus \lstinline|math.h|
-56,32 \% einer Sekunde in gegensatz zu 4,75 \% 
+56,32 \% einer Sekunde im Gegensatz zu 4,75 \%.
 

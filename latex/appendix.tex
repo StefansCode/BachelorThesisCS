@@ -61,7 +61,7 @@
         \begin{center}
             \includegraphics[height=2.5cm]{fig/case/case_top.png}
         \end{center}
-        \caption{Oberseite Vorderseite der Hülle}
+        \caption{Oberseite und Vorderseite der Hülle}
     \end{subfigure}
 \label{fig:hülle_oben}
 \end{figure}
@@ -98,7 +98,7 @@
 \begin{figure}[H]
     \begin{center}
         \includegraphics[width=\textwidth]{fig/case/3D_Drucker.jpeg}
-        \caption{Der 3D Drucker Bambu Lab P1S}%
+        \caption{Der 3D-Drucker Bambu Lab P1S}%
         \label{fig:drucker}
     \end{center}
     
@@ -160,12 +160,12 @@ int switchLight(int sample, void * param) {
 }
 \end{lstlisting}
 
-\section{Code des einfachen Synthezisers}
+\section{Code des einfachen Synthesizers}
 \label{sec:simple_synth_code}
 
 \begin{lstlisting}[language=C++, 
                    frame=single, 
-                   caption={Code des einfachen Synthezisers},
+                   caption={Code des einfachen Synthesizers},
                    captionpos=b]
 
 #ifndef MINI_SYNTH_H
@@ -185,7 +185,7 @@ Sound sound6;
 Sound sound7;
 Sound sound8;
 
-// Arrays um auf die einzelnen Sounds mit eine Index zuzugreifen
+// Array, um ueber einen Index auf die einzelnen Sounds zuzugreifen
 Sound leads[8] = 
 {sound1, sound2, sound3, sound4,
  sound5, sound6, sound7, sound8};
@@ -218,17 +218,17 @@ void runMiniSynthTest() {
       for (int i = 0; i < 8; i++) {
         float b =(float)buttons.getState(buttonsPin[i])
         // Die Toene der einzelnen Tasten
-        // wie der Bass werden generiert.
+        // werden wie der Bass generiert.
         leads[i].fromSaw(note[i])  
                 .amplify(0.1f)     
                 .amplify(b);
-        // addiere die Toene der einzelnen Tasten zum Bass
+        // Addiere die Toene der einzelnen Tasten zum Bass
         bass.add(leads[i]);   
       }
-      // machhe nun alles leiser
+      // Mache nun alles leiser
       bass.amplify(0.3f);     
     }
-    // wenn der Buffer voll ist, sende ihn an den DAC
+    // Wenn der Buffer voll ist, sende ihn an den DAC
     dac.sendBuffer(bass.returnBuffer(),
                    SOUND_BUFFER_SIZE * sizeof(sample));
   }

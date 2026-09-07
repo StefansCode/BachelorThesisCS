@@ -1,4 +1,4 @@
-\section{Softwarearchitekture}
+\section{Softwarearchitektur}
 
 Die geplante Softwarearchitektur sollte nach dem Ports-and-Adapter Pattern 
 \cite{cockburn2005hexagonal} aufgebaut sein, allerdings wurden nur 
@@ -84,9 +84,9 @@ Stelle die berechneten Samples eintragen.
 
 \subsubsection{Button}
 Der Button-Adapter bietet zwei Methoden, um auf die Taster zu reagieren.
-Und nutzt intern die GPIO-API \cite{esp32S3gpio} der ESP-IDF.
+und nutzt intern die GPIO-API \cite{esp32S3gpio} der ESP-IDF.
 
-\lstinline|getState| wird eine GPIO-pinnummer übergeben und als 
+An \lstinline|getState| wird eine GPIO-Pinnummer übergeben. Als
 Rückgabe gibt es 1 zurück, wenn der Pin mit dieser Nummer LOW ist.
 Also, wenn der Taster an diesem Pin gedrückt wird. 
 \lstinline|getState| gibt 0 zurück, wenn der Taster nicht gedrückt ist.
@@ -106,7 +106,7 @@ Hierbei gibt es zwei Dinge zu beachten:
 zugehörigen Pins nicht einfach auf LOW. Sondern er springt ein paar mal 
 zwischen LOW und HIGH. Um ein mehrfaches Lesen des Tasters bei
 einmaligem Drücken zu verhindern wird zwischen 2 Eingaben 
-eine mindest Zeitabstand von 200ms festgelegt.
+eine Mindestzeitabstand von 200ms festgelegt.
 
 \item Thread-Sicherheit. Wenn zum Beispiel Taster 1 gedrückt wird und in 
 2 verschiedenen Tasks 
@@ -121,15 +121,15 @@ Dieser nutzt die Pulsecontrol-API.
 
 Der Encoder-Adapter hat eine Funktion \lstinline|getValue|, welche ein Wert 
 zurückgibt. Dieser Wert ist zu Begin 0 und erhöht sich um Eins, wenn der 
-Drehgeber um einen Schritt mit dem Uhrzeigersinn gedreht wurde. 
-Gegen den Uhrzeigersinn veringert sich der Wert.
+Drehgeber um einen Schritt im Uhrzeigersinn gedreht wurde. 
+Gegen den Uhrzeigersinn verringert sich der Wert.
 
 Mit \lstinline|resetValue| wird der Wert auf 0 zurückgesetzt.
 % Das ist nötig, wenn Encoder zum Ändern einer Variable genutzt wird,
 % aber zwichenzeitlich auch für etwas anderes.
 Um eine Variable zu ändern, kann in einer Schleife der aktuelle Wert mit
-dem Wert aus der vorherigen Itteration verglichen werden. 
-Jenachdem wie sich der Wert ändert, wir die Variable geändert. 
+dem Wert aus der vorherigen Iteration verglichen werden.
+Je nachdem, wie sich der Wert ändert, wird die Variable geändert.
 
 \begin{lstlisting}[language=C++, 
                    frame=single, 
@@ -160,11 +160,10 @@ Der Zugriff auf den OLED-Bildschirm erfolgt über eine Bibliothek
 von voidlooprobotech \cite{voidloop2026ssd1306}. Diese
 Bibliothek wurde verwendet, weil sie die für das eingesetzte SSD1306-Display
 benötigte Initialisierung und die grundlegenden Zeichenoperationen bereits
-bereitstellt. Dadurch bleibt der Screen-Adapter klein und die konkrete
-Display-Ansteuerung ist vom Kern getrennt.
+bereitstellt.
 
 Der Screen-Adapter kann mit Methoden mit dem Präfix \lstinline|draw| 
-Punkte, Strings, Zahlen oder Bitmaps auf dem Bidschirmdarstellen.
+Punkte, Strings, Zahlen oder Bitmaps auf dem Bildschirm darstellen.
 
 Bitmaps sind uint8\_t-Array, wobei hier jedes Bit ein Pixel darstellt.
 
