@@ -2,7 +2,7 @@
 
 
 Zunächst wird die Theorie der Signale und Systeme kurz erklärt, wie sie 
-in Grüningens Buch "Digitale Signalverarbeitung" \cite{grueningen2008dsv}
+in Grüningens Buch \glqq Digitale Signalverarbeitung\grqq \cite{grueningen2008dsv}
 beschrieben wird. In Kapitel 4 wird eine mögliche Implementierung vorgestellt.
 
 Anschließend wird erklärt, wie ein Ton digital als Signal dargestellt
@@ -67,7 +67,7 @@ kontinuierliches ($f_k$) und einmal als digitales Signal ($f_d$) dargestellt.
     \end{tikzpicture}
 \end{center}
 
-Meistens sind periodische Signale zwischen -1 und 1, wie zum Beispiel $f_k$ bzw $f_d$ 
+Meistens sind periodische Signale zwischen -1 und 1 wie zum Beispiel $f_k$ bzw $f_d$ 
 interessant.
 Eine wichtige Kenngröße von periodischen Signalen ist die Frequenz. 
 Das ist die Anzahl der Wiederholungen pro Einheit (in diesem Fall Sekunden).
@@ -241,12 +241,12 @@ welcher wiederum ein digitales Signal erhält.
 \subsubsection{Auflösung und Abtastrate}
 
 Nun ist also die Frage, was für ein Signal der DAC erwartet. Da gibt es viele
-verschiedene Möglichkeiten. Aber ein Standard für digitale Audio ist 
+verschiedene Möglichkeiten. Ein Standard für digitale Audio ist 
 I2S (Inter-IC Sound). Das ist ein Protokoll, welches Stereoaudio, also 2 
 Audiosignale, über 3 (manchmal 4) Leitungen überträgt.
 \begin{enumerate}
-    \item BCLK (Bit-Clock) manchmal auch Serial clock genannt, ist der Taktgeber.
-    \item LRCLK (Left-Right-Clock) manchmal auch Word select genannt, gibt an, ob gerade Links oder Rechts übertragen
+    \item BCLK (Bit-Clock), manchmal auch Serial clock genannt, ist der Taktgeber.
+    \item LRCLK (Left-Right-Clock), manchmal auch Word select genannt, gibt an, ob gerade Links oder Rechts übertragen
      wird.
     \item DIN/DOUT (Data in/Data out), manchmal auch Serial data genannt, überträgt die Audiodaten.
 \end{enumerate}

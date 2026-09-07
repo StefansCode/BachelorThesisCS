@@ -40,18 +40,19 @@ das Standardformat ist, welches der MAX98357A erwartet.
 Der Mono-Modus wird verwendet, da der MAX98357A ein Monoverstärker ist.
 Das heißt, dass nur ein Signal gesendet wird, anstatt jeweils eins für 
 Links und
-eins für Rechts. Das I2S Protokoll sendet zwar immer ein linkes und ein 
-rechtes Signal, aber die die I2S-API sendet im Mono-Modus für beide Seiten
-das gleiche Signal und es reicht der API ein Signal zu übergeben.
-Der MAX98357A erhält also immer ein linkes Signal $L$ und ein 
-rechtes Signal $R$ und gibt $(L+R)/2$ verstärkt heraus.
+eins für Rechts. 
+% Das I2S Protokoll sendet zwar immer ein linkes und ein 
+% rechtes Signal, aber die die I2S-API sendet im Mono-Modus für beide Seiten
+% das gleiche Signal und es reicht der API ein Signal zu übergeben.
+% Der MAX98357A erhält also immer ein linkes Signal $L$ und ein 
+%rechtes Signal $R$ und gibt $(L+R)/2$ verstärkt heraus.
 
 Abtastrate und Auflösung des Signals werden bei der Initialisierung des
 Adapters übergeben.
 
 Ein Nutzer des DAC-Adapters, beispielsweise der Synthesizer, ruft zum Senden
 eines Signals die Methode \lstinline|sendBuffer| auf. Der Adapter reicht den
-Buffer an die I2S-API weiter. Diese wartet, bis alle Werte übertragen wurden,
+Buffer an die I2S-API weiter. Diese wartet bis alle Werte übertragen wurden
 und stellt dadurch die konfigurierte Abtastrate sicher.
 
 \begin{lstlisting}[language=C++, 
@@ -83,30 +84,30 @@ fortlaufend erhöht; für ein hörbares Signal würde der Synthesizer an dieser
 Stelle die berechneten Samples eintragen.
 
 \subsubsection{Button}
-Der Button-Adapter bietet zwei Methoden, um auf die Taster zu reagieren.
+Der Button-Adapter bietet zwei Methoden, um auf die Taster zu reagieren
 und nutzt intern die GPIO-API \cite{esp32S3gpio} der ESP-IDF.
 
 An \lstinline|getState| wird eine GPIO-Pinnummer übergeben. Als
-Rückgabe gibt es 1 zurück, wenn der Pin mit dieser Nummer LOW ist.
-Also, wenn der Taster an diesem Pin gedrückt wird. 
-\lstinline|getState| gibt 0 zurück, wenn der Taster nicht gedrückt ist.
+Rückgabe gibt sie 1 zurück, wenn der Pin mit dieser Nummer LOW ist, 
+also wenn der Taster an diesem Pin gedrückt wird. 
+Ebenso gibt \lstinline|getState| 0 zurück, wenn der Taster nicht gedrückt ist.
 
 Diese Methode ist dafür geeignet um zu sehen, ob ein Taster über längere
 Zeit gedrückt wird. Um nur zu schauen, ob ein Taster kurz oder überhaupt
 gedrückt wurde, ist \lstinline|readQueue| die bessere Wahl.
 
 Bei jedem Drücken eines Tasteres, also bei jeden Fallen von HIGH 
-zu LOW an einem Pin mit einem Taster wird die Nummer des Pins 
+zu LOW an einem Pin mit einem Taster, wird die Nummer des Pins 
 in eine Queue gepackt.
 Die Queue kann mit \lstinline|readQueue| ausgelesen werden.
 Hierbei gibt es zwei Dinge zu beachten:
 
 \begin{enumerate}
 \item Entprellung. Wenn ein Taster gedrückt wird, geht der Pegel des 
-zugehörigen Pins nicht einfach auf LOW. Sondern er springt ein paar mal 
+zugehörigen Pins nicht einfach auf LOW, sondern springt ein paar mal 
 zwischen LOW und HIGH. Um ein mehrfaches Lesen des Tasters bei
 einmaligem Drücken zu verhindern wird zwischen 2 Eingaben 
-eine Mindestzeitabstand von 200ms festgelegt.
+ein Mindestzeitabstand von 200ms festgelegt.
 
 \item Thread-Sicherheit. Wenn zum Beispiel Taster 1 gedrückt wird und in 
 2 verschiedenen Tasks 
@@ -154,7 +155,7 @@ Schrittweite gibt. Die Schrittweite gibt an um wieviel die
 Variable erhöht wird.
 
 
-\subsubsection{OLED-Bildschirm}
+\subsubsection{Screen}
 
 Der Zugriff auf den OLED-Bildschirm erfolgt über eine Bibliothek
 von voidlooprobotech \cite{voidloop2026ssd1306}. Diese
@@ -168,15 +169,18 @@ Punkte, Strings, Zahlen oder Bitmaps auf dem Bildschirm darstellen.
 Bitmaps sind uint8\_t-Array, wobei hier jedes Bit ein Pixel darstellt.
 
 
-\subsubsection{Zeit- und Synchronisationsadapter}
+\subsubsection{Util und Timer}
 Zwei weitere Adapter sind Util und Timer.
 
 Util implementiert die von Arduino bekannten Funktionen \lstinline|millis|
-und \lstinline|delay| \cite{arduinoMillis,arduinoDelay}. Außerdem wirde die 
-Methode
+und \lstinline|delay| \cite{arduinoMillis,arduinoDelay}. Außerdem wird die 
+Methode micros() implementiert, welche die Anzahl der Mikrosekunden seit dem 
+Start des Programms zurückgibt. Diese Funktion wird in Kapitel 
+\ref{chap:Bewertung_der_Auflösung_und_Abtastrate} verwendet, um die Ausführzeit
+bestimmter Funktionen zu messen. 
 
 \lstinline|delay| hält eine Aufgabe für eine festgelegte Zeit an und
-kann etwa verwendet werden, um zwischen zwei nicht zeitkritischen
+kann beispielsweise verwendet werden, um zwischen zwei nicht zeitkritischen
 Display-Aktualisierungen zu warten.
 
 Timer ist ein Wert, der bei 0 startet und alle 16 ms inkrementiert wird.
