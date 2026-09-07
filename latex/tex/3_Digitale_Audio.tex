@@ -1,4 +1,4 @@
-\section{Entwicklung einer Darstellung eines Digitalen Tons}
+\section{Entwicklung einer Darstellung eines digitalen Tons}
 
 Wie oben erwähnt kann ein Ton als Signal dargestellt werden. Dazu
 werden zunächst als Auflösung 16Bit, also ein \lstinline|int16_t|,
@@ -435,7 +435,7 @@ add-Funktion der Signalklasse auf.
 
 Die Lautstärke eines Tons ist die Amplitude des Signals \cite{soundIntensety}.
 Wenn man die Lautstärke eines Tons verändern möchte, 
-muss die Amplitude des Signalsmit einem Faktor multipliziert werden.
+muss die Amplitude des Signals mit einem Faktor multipliziert werden.
 Die Multiplikation eines Tons ist in der Soundklasse als Funktion
 \lstinline{amplipfy(float factor)} implementiert, welche ebenfalls einfach
 die multiply-Funktion der Signalklasse aufruft.
@@ -546,7 +546,7 @@ die multiply-Funktion der Signalklasse aufruft.
 \end{figure}
 
 In den Abbildungen \ref{fig:addition_and_multiplication} sieht man die 
-Addition von 2 Sinuswellen und dieund die Addition von 2 gestauchten Sinuswellen.
+Addition von 2 Sinuswellen und die Addition von 2 gestauchten Sinuswellen.
 Eine wichtige Beobachtung ist, dass die Addition der nicht gestauchten Wellen
 zu einer Amplitude von 2 führt, während die Addition der gestauchten Wellen
 unter 1 bleibt. Das ist wichtig, da die Amplitude nicht größer als die Auflösung
@@ -565,7 +565,7 @@ an externe Systeme wie zum Beispiel einen DAC zu übergeben.
 
 Nun wurden einige Methoden implementiert anhand deren verschiedene 
 Abtastraten und Auflösungen getestet werden können. Dazu werden die 
-Abtastrate und die Auflösung gesetzt und dann wird die Zeit gemessen
+Abtastrate und die Auflösung gesetzt und anschließend wird die Zeit gemessen
 wie lange es dauert eine dieser Methoden $s$ mal auszuführen. Diese Zeit wird in
 Prozent einer Sekunde angegeben. Das ist die Zeit, die eine Methode maximal
 brauchen darf, um die Abtastrate einzuhalten. Natürlich sollte eine Methode viel 
@@ -573,7 +573,6 @@ weniger brauchen, um auch noch Zeit für andere Operationen zu haben.
 
 \begin{table}[h]
     \centering
-    \caption{name ausdenken.}
     \label{tab:Testergebnisse}
     \begin{tabular}{|c|c|c|c|c|c|}
         \hline
@@ -595,6 +594,7 @@ weniger brauchen, um auch noch Zeit für andere Operationen zu haben.
         16384 & 32Bit & 0,62 \% & 2,48 \% & 0,41 \% & 0,59 \% \\
         \hline
     \end{tabular}
+    \caption{Ausführungszeiten  in Abhängigkeit der Abtastrate und Auflösung.}
 \end{table}
 
 Wie zu erwarten nimmt die benötigte Rechenzeit mit deiner geringeren Abtastrate ab
@@ -605,7 +605,7 @@ und es fällt folgendes auf:
     \item Es macht nur bei der Berechnung des Sinus einen Unterschied, ob die Auflösung 16 Bit oder 32 Bit beträgt.
 \end{enumerate}
 
-Leider muss hier erwähnt werden das die Derechnung mit 32-Bit keinen Ton ausgibt.
+Leider muss hier erwähnt werden das die Durchführung mit 32-Bit keinen Ton ausgibt.
 Der Fehler wurde aus zeitlichen Gründen nicht gefunden.
 
 Seien im Folgenden die Abtastrate 32768Hz und die Auflösung 16 Bit.

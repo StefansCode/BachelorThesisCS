@@ -12,11 +12,11 @@ Zum Beispiel ist die Note mit dem Namen A4 ein Ton mit Frequenz 440 Hz.
 Wenn zwei Noten Frequenzen im Verhältnis 2:1 haben, sagt man, sie seien
 eine \textbf{Oktave} auseinander. Die Note, welche eine Oktave über A4 liegt,
 ist A5 und hat die Frequenz 880 Hz. Mit diesem Muster erhält man auch die
-Noten A4,A3,A6, etc.
+Noten A4, A3, A6, etc.
 
 Zwischen den Noten A4 und A5 liegen noch 11 weitere Noten, die jeweils eine 
 um einen Faktor $\sqrt[12]{2}$ erhöhte Frequenz haben.
-So haben 2 benachbarte Noten immer das gleiche Verhältnis der Frequenzen.Rundet man
+So haben 2 benachbarte Noten immer das gleiche Verhältnis der Frequenzen. Rundet man
 auf die nächste ganze Zahl,
 erhält man die folgenden Noten mit den dazugehörigen Frequenzen: 
 \begin{center}
@@ -132,7 +132,7 @@ dargestellt werden.
     \label{fig:synth_simple}
 \end{figure}
 
-Der Code zu diesem Synthesizer ist in Anhang \ref{sec:synth_code} zu finden. 
+Der Code zu diesem Synthesizer ist in Anhang \ref{sec:simple_synth_code} zu finden. 
 Dort sieht man das zusätzlich 
 die Signale mit amplify() leiser gemacht werden, damit die Lautstärke nicht zu hoch wird,
 aber auch wie in Kapitel \ref{chap:addition_and_multiplication} besprochen durch 
@@ -241,7 +241,7 @@ int noteFrequency = notes[g + scale[i]];
 Es gibt außerdem ein Array aller möglichen Tonleitern.
 So lassen sich die Grundnote und die Tonleiter einfach verändern und als Indizes 
 zwischen den Tasks übertragen.
-Die Wellenform wird als Ganzzahl gespeichert, und durch if-Abfragen wird
+Die Wellenform wird als Ganzzahl gespeichert und durch if-Abfragen wird
 entschieden welche from-Funktion aufgerufen wird.
 Zur besseren Lesbarkeit wurden folgende defines erstellt:
 
@@ -264,7 +264,7 @@ welche die 4 Parameter Attack, Decay, Sustain und Release enthält.
 Diese sind uint8\_t Variablen und haben somit einen Wertebereich von 0 bis 255.
 Für Attack, Decay und Release entspricht 1 Einheit $1/16$ Sekunden. 
 Demnach können Attack, Decay und Release maximal ca. 16 Sekunden betragen.
-Um die $1/16$ Sekundenschritte einzuhalter,wird der Timeradapter genutzt.
+Um die $1/16$ Sekundenschritte einzuhalter, wird der Timeradapter genutzt.
 
 Außerdem enthält sie eine Methode \lstinline{apply(int input)},
 welche den Eingabewert auf die Hüllkurve anwendet.
@@ -286,7 +286,7 @@ geändert wurde.
 \label{chap:menu}
 
 Die Parameter des Synthesizers sind als Blätter eines Baums organisiert und 
-können wie in Abbildung \ref{fig:menu_tree} dargestellt, werden. Es gibt außerdem
+können wie in Abbildung \ref{fig:menu_tree} dargestellt werden. Es gibt außerdem
 einige Knoten zu nicht implementierten Funktionen, welche in der Abbildung grau
 dargestellt sind.
 \begin{figure}[ht]
