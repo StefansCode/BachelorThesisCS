@@ -1,8 +1,6 @@
 \section{Pinbelegung}
 \begin{table}[H]
     \centering
-    \caption{Pinbelegung des ESP32-S3.}
-    \label{tab:pinout}
     \begin{tabular}{c|l|l|l}
         \textbf{Pin} & \textbf{Typ} & \textbf{Funktion} & \textbf{Bemerkung} \\
         \hline
@@ -31,7 +29,7 @@
         \hline
         22--34 & --     & nicht vorhanden & \\
         \hline
-        33--37 & --     & Flash/PSRAM     & abhängig von Flash/PSRAM-Konfiguration \\
+        35--37 & --     & Flash/PSRAM     & abhängig von Flash/PSRAM-Konfiguration \\
         38 & SPI       & SPI CS          & SD-Karte \\
         39 & SPI       & SPI MOSI        & SD-Karte\\
         40 & SPI       & SPI CLK         & SD-Karte\\
@@ -44,6 +42,8 @@
         47 & I\textsuperscript{2}C & I\textsuperscript{2}C SDA & \\
         48 & RMT       & BUILTIN\_RGB\_LED & Fehleranzeige \\
     \end{tabular}
+    \caption{Pinbelegung des ESP32-S3.}
+    \label{tab:pinout}
 \end{table}
 
 
@@ -193,8 +193,8 @@ Sound leads[8] =
 {sound1, sound2, sound3, sound4,
  sound5, sound6, sound7, sound8};
 unsigned int note[8] = 
-{440, 493, 554, 587, 
- 659, 739, 830, 880};
+{440, 494, 554, 587, 
+ 659, 740, 831, 880};
 int buttonsPin[8] = 
 {PIN_BTN_11, PIN_BTN_12, PIN_BTN_13, PIN_BTN_14, 
  PIN_BTN_21, PIN_BTN_22, PIN_BTN_23, PIN_BTN_24};
@@ -219,7 +219,7 @@ void runMiniSynthTest() {
           // mache den Bass aus wenn playBass == 0
           .amplify(playBass); 
       for (int i = 0; i < 8; i++) {
-        float b =(float)buttons.getState(buttonsPin[i])
+        float b = (float)buttons.getState(buttonsPin[i]);
         // Die Toene der einzelnen Tasten
         // werden wie der Bass generiert.
         leads[i].fromSaw(note[i])  

@@ -72,14 +72,14 @@ interessant.
 Eine wichtige Kenngröße von periodischen Signalen ist die Frequenz $f$. 
 Das ist die Anzahl der Wiederholungen pro Einheit (in diesem Fall Sekunden) und 
 als 
-$$f = \min\{\delta > 0 | f(x+\delta)=f(x) \forall x \in R\}$$ definiert.
+$$f = 1/\min\{\delta > 0 | f(x+\delta)=f(x) \forall x \in R\}$$ definiert.
 Sie wird in Hertz (Hz) angegeben. $f_k$ und $f_d$ haben eine Frequenz von 1 Hz.
 Die Amplitude $A$ ist die maximale Auslenkung des Signals. Sie ist als
 $$A = \max |f(x)| , x \in \mathbb{R}$$ definiert.
 $f_k$ und $f_d$ haben 
 eine Amplitude von 1 und $0.5*sin(x)$ hat eine Amplitude von 0.5.
 
-Zwei wichtige Kenngröße von digitalen Signalen sind die Abtastrate
+Zwei wichtige Kenngrößen von digitalen Signalen sind die Abtastrate
 und die Auflösung.
 
 Die \textbf{Abtastrate} ist ein Maß für die Feinheit der Unterteilung der X-Achse
@@ -245,7 +245,6 @@ welcher wiederum ein digitales Signal erhält.
     \label{fig:tonerzeugung}
 \end{figure}
 
-\subsubsection{Auflösung und Abtastrate}
 
 Nun ist also die Frage, was für ein Signal der DAC erwartet. Da gibt es viele
 verschiedene Möglichkeiten. Ein Standard für digitale Audio ist 
@@ -269,15 +268,15 @@ Audiosignale, über 3 (manchmal 4) Leitungen überträgt.
 
 
 PCM-Daten \cite{jita2023} sind ein unkomprimiertes 
-Audioformat bei dem Werte durch 8, 16, 24 oder 32 Bit unsigned Integern
+Audioformat bei dem Werte durch 8, 16, 24 oder 32 Bit signed Integern
 dargestellt werden. Somit ist die Auflösung 8, 16, 24 oder 32 Bit.
 
 
 Das menschliche Gehör kann in der Regel Frequenzen zwischen 20 und 20.000
 Hertz wahrnehmen \cite{purves2001neuroscience}. 
-Aus dem Abtasttheorem folgt, dass eine Abtastrate von
-mindestens 40.000 Hz nötig ist, um Töne digital darzustellen.
-Deshalb wurde 44100 als Abtastrate für CDs und 
+Aus dem Abtasttheorem folgt, dass eine Abtastrate über
+40.000 Hz nötig ist, um Töne digital darzustellen.
+Deshalb wurde 44100 Hz als Abtastrate für CDs und 
 infolge dessen auch für viele andere digitale Systeme gewählt. 
 Hochwertige Systeme verwenden auch bis zu über 100 kHz.
 

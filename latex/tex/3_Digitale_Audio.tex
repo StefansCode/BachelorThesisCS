@@ -11,7 +11,7 @@ gehört zu der Sound-Komponente.
                        frame=single, 
                        caption={Standardparameter eines Soundobjekts},
                        captionpos=b]
-#define STANDART_SAMPLE_RATE 32768
+#define STANDARD_SAMPLE_RATE 32768
 typedef int16_t sample;
 #define SOUND_BUFFER_SIZE 256
 \end{lstlisting}
@@ -24,10 +24,10 @@ Wie in Kapitel \ref{chap:signalbibliothek} erwähnt, hängt die Abtastrate davon
 wie oft pro Sekunde eine Inputfunktion aufgerufen wird.
 
 \subsection{Generierung von Audiosignalen}
-Anders als in der Signalklasse generieren hier die from-Funktionen 
-eigene Werte. Den from-Funktionen wird eine Frequenz übergeben, und es
+Anders als in der Signalklasse generieren hier die Inputfunktionen 
+eigene Werte. Den Inputfunktionen wird eine Frequenz übergeben, und es
 soll eine periodische Funktion mit dieser Frequenz und einer bestimmten
-Form generiert werden. Wie Grüningen \cite[Kapitel 7]{grueningen2008dsv} 
+Form generiert werden. Wie Grüningen \cite[7.1]{grueningen2008dsv} 
 erwähnt sind Sägezahn-, Rechteck und Dreieckgeneratoren leicht zu 
 implementieren. Da die Sinuswelle eine fundamentale Rolle für Signale
 jeder Art spielt, soll auch diese implementiert werden.
@@ -138,9 +138,9 @@ jeder Art spielt, soll auch diese implementiert werden.
 Wegen ihrer Einfachheit sind diese 4 Signale typische Formen in der 
 Klangsynthese \cite[3.3]{computerMusic}.
 
-Es gibt also vier from-Funktionen. Diese nehmen als Parameter eine Frequenz
+Es gibt also vier Inputfunktionen. Diese nehmen als Parameter eine Frequenz
 und greifen auf einen MemberVariable namens Time zu. Time wird bei jedem
-Aufruf einer Fromfunktion um Eins erhöht und ist der X-Wert der 
+Aufruf einer Inputfunktion um Eins erhöht und ist der X-Wert der 
 generierten Funktionen. Da nur ganzzahlige Frequenzen größer oder gleich null
 betrachtet werden sollen, ist jede mögliche Frequenz ein Vielfaches
 von Eins und somit ist auch jede generierte  1-periodisch (sie wiederholt
@@ -247,8 +247,11 @@ sich bei eins).
 
 Für die digitale Darstellung heißt das, wenn $s$ (samplerate) die Abtastrate ist
 kann time alle $s$ Aufrufe zurückgesetztwerden. 
-Zu Begin jeder from-Funktion wird also 
-\lstinline|time = (time + 1) % STANDART_SAMPLE_RATE| aufgerufen.
+Zu Begin jeder Inputfunktion wird also 
+\begin{lstlisting}
+    time = (time + 1) % STANDARD_SAMPLE_RATE; 
+\end{lstlisting}
+aufgerufen.
 
 \subsubsection{Generierung einer Sägezahnwelle}
 
@@ -381,9 +384,12 @@ Funktion zu implementieren.
                        caption={Generierung einer Sägezahnwelle im Code},
                        captionpos=b]
 sample Sound::calculateSaw(unsigned int frequency) {
-    unsigned int scaled = time * frequency * SAMPLE_RANGE;
-    scaled = scaled / STANDART_SAMPLE_RATE;
-    return (SAMPLE_MIN + (scaled % (SAMPLE_RANGE)));
+    int64_t phase = ((int64_t)(time) * frequency) 
+                    % STANDARD_SAMPLE_RATE;
+    int64_t value = (int64_t)(SAMPLE_MIN) 
+                    +(phase * SAMPLE_RANGE) 
+                    / STANDARD_SAMPLE_RATE;
+    return (sample)(value);
 }
 \end{lstlisting}
 
@@ -555,9 +561,9 @@ sein darf, da sonst ein Überlauf entsteht und der Ton verzerrt wird.
 
 Es wird also empfohlen mit gestauchten Tönen zu arbeiten.
 
-\subsection{return und apply Funktionen}
+\subsection{Ausgabefunktionen und applyFunktion}
 
-Auch die return und apply Funktionen der Signalklasse werden in der Soundklasse
+Auch die Ausfangsfunktionen und applyFunktion der Signalklasse werden in der Soundklasse
 implementiert. Diese sind wichtig, da sie es ermöglichen die Werte eines Tons 
 an externe Systeme wie zum Beispiel einen DAC zu übergeben.
 
@@ -574,7 +580,6 @@ weniger brauchen, um auch noch Zeit für andere Operationen zu haben.
 
 \begin{table}[h]
     \centering
-    \label{tab:Testergebnisse}
     \begin{tabular}{|c|c|c|c|c|c|}
         \hline
         Abtastrate & Auflösung & fromSaw & fromSine & add & amplify \\
@@ -606,8 +611,11 @@ und es fällt folgendes auf:
     \item Es macht nur bei der Berechnung des Sinus einen Unterschied, ob die Auflösung 16 Bit oder 32 Bit beträgt.
 \end{enumerate}
 
-Leider muss hier erwähnt werden das die Durchführung mit 32-Bit keinen Ton ausgibt.
-Der Fehler wurde aus zeitlichen Gründen nicht gefunden.
+Bei der Durchführung mit 32 Bit wurde kein Ton ausgegeben. Die Ursache konnte im
+ursprünglichen Stand der Implementierung nicht bestimmt werden. Die Berechnung
+wurde deshalb überarbeitet und verwendet nun 64-Bit-Zwischenwerte, damit die
+Berechnung des vollständigen 32-Bit-Samplebereichs nicht überläuft. Die
+32-Bit-Konfiguration muss auf der Zielhardware dennoch separat überprüft werden.
 
 Seien im Folgenden die Abtastrate 32768Hz und die Auflösung 16 Bit.
 Vermutung zu 2. Das langsame Laden von Sinuswerten könnte man darauf zurückführen,

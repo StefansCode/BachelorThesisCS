@@ -20,7 +20,7 @@ So haben 2 benachbarte Noten immer das gleiche Verhältnis der Frequenzen. Runde
 auf die nächste ganze Zahl,
 erhält man die folgenden Noten mit den dazugehörigen Frequenzen: 
 \begin{center}
-\hfill...\hfill A4 \hfill A\#4 \hfill B4 \hfill C5 \hfill C\#5 \hfill D5 \hfill D\#5 \hfill E5 \hfill F5 \hfill F\#5 \hfill G5 \hfill G\#5 \hfill A4 \hfill ... \hfill
+\hfill...\hfill A4 \hfill A\#4 \hfill B4 \hfill C5 \hfill C\#5 \hfill D5 \hfill D\#5 \hfill E5 \hfill F5 \hfill F\#5 \hfill G5 \hfill G\#5 \hfill A5 \hfill ... \hfill
 
 \hfill...\hfill 440 \hfill 466 \hfill 494 \hfill 523 \hfill 554 \hfill 587 \hfill 622 \hfill 659 \hfill 698 \hfill 740 \hfill 784 \hfill 831 \hfill 880 \hfill ... \hfill
 \end{center}
@@ -66,7 +66,7 @@ Tonleiter & Abstände \\
 Lydian     & 0,2,4,6,7,9,11 \\
 Ionian     & 0,2,4,5,7,9,11 \\
 Mixolydian & 0,2,4,5,7,9,10 \\
-Dorian     & 0,2,3,5,7,9,11 \\
+Dorian     & 0,2,3,5,7,9,10 \\
 Aeolian    & 0,2,3,5,7,8,10 \\
 Phrygian   & 0,1,3,5,7,8,10 \\
 Locrian    & 0,1,3,5,6,8,10 \\
@@ -242,7 +242,7 @@ Es gibt außerdem ein Array aller möglichen Tonleitern.
 So lassen sich die Grundnote und die Tonleiter einfach verändern und als Indizes 
 zwischen den Tasks übertragen.
 Die Wellenform wird als Ganzzahl gespeichert und durch if-Abfragen wird
-entschieden welche from-Funktion aufgerufen wird.
+entschieden welche Inputfunktion aufgerufen wird.
 Zur besseren Lesbarkeit wurden folgende defines erstellt:
 
 \begin{lstlisting}[language=C++,
@@ -264,7 +264,7 @@ welche die 4 Parameter Attack, Decay, Sustain und Release enthält.
 Diese sind uint8\_t Variablen und haben somit einen Wertebereich von 0 bis 255.
 Für Attack, Decay und Release entspricht 1 Einheit $1/16$ Sekunden. 
 Demnach können Attack, Decay und Release maximal ca. 16 Sekunden betragen.
-Um die $1/16$ Sekundenschritte einzuhalter, wird der Timeradapter genutzt.
+Um die $1/16$ Sekundenschritte einzuhalten, wird der Timeradapter genutzt.
 
 Außerdem enthält sie eine Methode \lstinline{apply(int input)},
 welche den Eingabewert auf die Hüllkurve anwendet.

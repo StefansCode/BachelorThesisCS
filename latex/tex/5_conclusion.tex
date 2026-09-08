@@ -2,35 +2,20 @@
 
 \subsection{Bewertung der Signal- und Soundklasse}
 
-
-Um die Ausführungsgeschwindigkeit der Sound Methoden zu bewerten, 
-werden die Multiplikation von einem Soundobjekt mit einer Variable und 
-die Multiplikation eines Arrays mit einer Variable verglichen. Dabei braucht das
-Soundobjekt wie oben gesehen 1,17 \%, aber die Arraymultiplikation nur 0,84 \%.
-Addieren hat einen ähnlichen Overhead.
-
-Einige Ideen zum Verbessern dieser Zeiten sind im Folgenden aufgelistet.
-\begin{enumerate}
-    \item Die Berechnung der Sägezahnwelle kann, laut Grüningen
-    [7.1.1]\cite{grueningen2008dsv}, schneller implementiert werden.
-    \item Da dem DAC immer ein Buffer übergeben wird, können Operationen auf dem ganzen
-    Buffer durchgeführt werden. Dadurch kann Gebrauch von der Hardwarebeschleunigung
-    gemacht werden. Mit Buffern zu arbeiten ist ein typisches Verfahren in der DSV.
-    Zum Beispiel nehmen Funktionen der ESP-DSV-Bibliothek \cite{ESPDSV} ganze Buffer an.
-    \item Nutze die ESP-DSV-Bibliothek. Wenn mit dem ganzen Buffer gearbeitet wird, 
-    dann sollte die ESP-DSV-Bibliothek genutzt werden, da diese für die Hardware des 
-    ESP32 und teilweise auch auf die Hardware des ESP32-S3 optimiert wurde.
-\end{enumerate}
-
+Die Signal- und Soundklasse wurden erfolgreich implementiert. Die Rückgabe von 
+einer Referenz auf das Objekt selbst ermöglicht es, mehrere Operationen 
+hintereinander auszuführen. Durch die strikte Trennung der Hardware und 
+der Signal- und Soundklasse ist es möglich, die Klassen auf anderen 
+Plattformen zu nutzen. 
 
 \subsection{Bewertung des Synthesizers}
 
-Trotz der Probleme, die in der Signalklasse bestehen konnte ein Synthesizer
-gebaut werden der musikalisch nutzbar ist. Durch die Fähigkeit mehrere 
+Es wurde ein musikalisch nutzbarer Synthesizer
+gebaut. Durch die Fähigkeit mehrere 
 Töne gleichzeitig zu spielen, eignet sich dieser Synthesizer gut um Akkordfolgen
 zu spielen. Auch Melodien sind mit dem Synthesizer gut zu spielen.
-Wegen der Hüllkurve und der auswahl an verschiedenen Wellenformen
+Wegen der Hüllkurve und der Auswahl an verschiedenen Wellenformen
 lassen sich auch verschiedene Klänge erzeugen. Die Vielfalt an Klängen 
-lässt sich durch erweiten der Soundklassen und durch weitere Parameter
+lässt sich durch Erweiten der Soundklassen und durch weitere Parameter
 in dem Synthesizer noch weiter erhöhen.
-Wegen der Implementierung der Soundklasse sollte das leicht möglich sein.
+Wegen der Implementierung der Soundklasse ist das leicht möglich sein.

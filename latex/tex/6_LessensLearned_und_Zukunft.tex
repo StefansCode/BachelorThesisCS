@@ -1,32 +1,42 @@
-\section{Hardware}
+\section{Lessons Learned und zukünftige Erweiterungen}
 
-Der MAX98357 hat den Vorteil, dass das Audiosignal direkt verstärkt wird und so
-direkt an einen kleinen Lautsprecher geschickt werden kann. Das ist während
-der Entwicklung sehr nützlich. Die meisten Anlagen nehmen jedoch keine Signale
-mit Line-Pegel an.
+\subsection{Hardware}
 
-SD-Karte
+Folgende Hardwareerweiterungen sind denkbar, um die Funktionalität des Synthesizers zu erweitern.
 
-ADC
+\begin{itemize}
+    \item Als mögliche Hardwareerweiterungen wäre ein Analog-Digital-Wandler (ADC) 
+        interessant um die Eingabe von Audiosignalen zu ermöglichen.
+    \item Die Audoiausgabe über einen DAC ohne Verstärker ist auch möglich, und 
+        erlaubt das Abspielen der Töne über externe Verstärker.
+    \item Eine speziell angefertigte Platine würde das Löten und 
+        die Herstellung einer Hülle vereinfachen.
+\end{itemize}
 
-Ein Protokoll für alles (außer I2C, I2S und SPI)
-
-
-PCB
-
-
-Größere Tasten
-
-Eingebauter Lautsprecher
 
 \subsection{Software}
 
-\subsection{FreeRTOS-Adapter}
+Um die Ausführungsgeschwindigkeit der Sound Methoden zu bewerten, 
+werden die Multiplikation von einem Soundobjekt mit einer Variable und 
+die Multiplikation eines Arrays mit einer Variable verglichen. Dabei braucht das
+Soundobjekt wie oben gesehen 1,17 \%, aber die Arraymultiplikation nur 0,84 \%.
+Addieren hat einen ähnlichen Overhead.
 
-FreeRTOS \cite{freeRTOS} ist ein Echtzeitbetriebssystem für Mikrocontroller
-und Bestandteil der ESP-IDF. In der aktuellen Implementierung werden die
-FreeRTOS-Funktionen direkt verwendet, um mehrere Tasks gleichzeitig
-auszuführen. Als zukünftige Erweiterung könnte ein Adapter diese Funktionen
-kapseln. Der Kern bliebe dadurch auch bei einem Wechsel des
-Betriebssystems unabhängig von FreeRTOS. Der Adapter müsste insbesondere
-die im Kern benötigte Funktion zum Erstellen und Starten von Tasks anbieten.
+Einige Ideen zum Verbessern dieser Zeiten sind im Folgenden aufgelistet.
+\begin{enumerate}
+    \item Die Berechnung der Sägezahnwelle kann, laut Grüningen
+    \cite[7.1.1]{grueningen2008dsv}, schneller implementiert werden.
+    \item Da dem DAC immer ein Buffer übergeben wird, können Operationen auf dem ganzen
+    Buffer durchgeführt werden. Dadurch kann Gebrauch von der Hardwarebeschleunigung
+    gemacht werden. Mit Buffern zu arbeiten ist ein typisches Verfahren in der DSV.
+    Zum Beispiel nehmen Funktionen der ESP-DSV-Bibliothek \cite{ESPDSV} ganze Buffer an.
+    \item Nutze die ESP-DSV-Bibliothek. Wenn mit dem ganzen Buffer gearbeitet wird, 
+    dann sollte die ESP-DSV-Bibliothek genutzt werden, da diese für die Hardware des 
+    ESP32 und teilweise auch auf die Hardware des ESP32-S3 optimiert wurde.
+\end{enumerate}
+
+Für die weitere Entwicklung sollten außerdem automatisierte Unit-Tests für
+Signaloperationen, Tests der Grenzwerte für 16- und 32-Bit-Samples sowie
+Hardwaretests für die DAC-Ausgabe ergänzt werden. Besonders wichtig sind dabei
+Tests für Addition, Verstärkung und die Wellenformberechnung, da diese
+Operationen bei großen Sampletypen überlaufen können.

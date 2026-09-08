@@ -7,6 +7,9 @@ nicht abschließenden Funktionen eine Referenz auf das Signalobjekt zurückgeben
 Dadurch können Methodenaufrufe verkettet werden, um komplexe Operationen auf 
 das Signal anzuwenden.
 
+Eine Funktion der Signalklasse stellt ein System dar, das sie ebenfalls
+ein Signal in ein anderes Signal umwandelt.
+
 Im Folgenden wird die Entwicklung der Signalklasse Schritt für Schritt
 beschrieben. Bei jedem Schritt wird der angegebene Codeblock erweitert,
 bis am Ende die Klasse vorliegt, wie sie zur Zeit der Arbeit vorliegt.
@@ -27,8 +30,9 @@ class Signal {
 }
 \end{lstlisting}
 
-Da Funktionen, wie das Mitteln über die letzten Werte, auf die vergangenen 
-Werte zugreifen, lohnt es sich diese ebenfalls zu speichern.
+Da oft auch die vorherigen Werte benötigt werden lohnt es sich diese ebenfalls 
+zu speichern. Das ist zum Beispiel nötig, weil dem DAC ein Buffer übergeben 
+wird.
 Dafür bietet sich ein RingBuffer (circular buffer) \cite{ringbuffer} an. 
 Ein Ringbuffer ist ein fest definierter
 Speicherblock (zum Beispiel ein Array) mit fester Größe. Das ist vor allem
@@ -68,7 +72,7 @@ template <typename T, unsigned int BUFFER_SIZE = 256>
 class Signal {
 private:
   T buffer[BUFFER_SIZE] = {0};
-  unsigned int index = Buffer_SIZE - 1;
+  unsigned int index = BUFFER_SIZE - 1;
 public:
   Signal& fromValue(T value) {
     index = (index + 1) % BUFFER_SIZE;
@@ -91,7 +95,7 @@ template <typename T, unsigned int BUFFER_SIZE = 256>
 class Signal {
 private:
   T buffer[BUFFER_SIZE] = {0};
-  unsigned int index = Buffer_SIZE - 1;
+  unsigned int index = BUFFER_SIZE - 1;
 public:
   ...
 
@@ -114,7 +118,7 @@ template <typename T, unsigned int BUFFER_SIZE = 256>
 class Signal {
 private:
   T buffer[BUFFER_SIZE] = {0};
-  unsigned int index = Buffer_SIZE - 1;
+  unsigned int index = BUFFER_SIZE - 1;
 public:
   ...
 
@@ -137,15 +141,17 @@ public:
 }
 \end{lstlisting}
 
-\subsection{Ein Problem bei der Weiterentwicklung}
+\subsection{Eine Anmerkung zur Weiterentwicklung}
 
-Wie erwähnt, könnte mit dem Buffer in der Signalklasse 
-ein digitales Filter implementiert werden. Ein simples Filter $F$ würde beispielsweise
-über die letzten 5 Einträge, die es erhält, mitteln \cite[6.2.1]{grueningen2008dsv}. 
+Soll ein System implementiert werden, das auf vorherige Werte zugreift, 
+muss folgendes beachtet werden.
+
+Sei $F$ ein System, das den aktuellen Wert auf den Mittelwert der letzten 
+5 Werte setzt.
 Wenn es noch keine 5 Werte gibt, so wird über die Anzahl der Werte gemittelt.
 
 Nehme also an $F$ ist in Signal implementiert und betrachte folgende Anwendung 
-von Signal, in der zuerst mit F gefiltert wird und dann mit 10 multipliziert wird.
+von Signal, in der zuerst $F$ angewendet wird und dann mit 10 multipliziert wird.
 
 Besteht nun das eingehende Signal nur aus den Werten 1, passiert Folgendes.
 
@@ -215,14 +221,14 @@ Besteht nun das eingehende Signal nur aus den Werten 1, passiert Folgendes.
 Bei der zweiten Iteration müsste $F$ eigentlich über zwei Einsen mitteln, aber
 die vorherige Eins wurde schon mit 10 multipliziert.
 
-Eine Lösung wäre es $F$ und jeder anderen Funktion, die einen Buffer brauchet,
+Eine Lösung wäre es $F$ und jeder anderen Funktion, die einen Buffer braucht,
 beim Aufruf einen zu übergeben. Denn es reicht auch nicht aus in der Signalklasse
-für Filter einen Buffer anzulegen. Wird Filter 2 Mal aufgerufen, so entsteht
+für $F$ einen Buffer anzulegen. Wird $F$ 2 Mal aufgerufen, so entsteht
 das gleiche Problem.
 
 
 
-\subsubsection{Anwendung}
+\subsection{Anwendung}
 % wohin soll das Example?
 Im Anhang sieht man eine Beispielanwendung in der ArduinoIDE. Hier werden ein
 lichtabhängiger Widerstand und ein Potentiometer eingelesen. Der Potentiometerwert
@@ -242,7 +248,7 @@ Ein Besseres und ausfürlicheres Beispiel liefert die Erweiterung von Signal zu
 Sound im nächsten Unterkapitel und die Anwendung der Soundklasse als Synthesizer
 im nächsetn Kapitel.
 
-\subsubsection{Anmerkungen}
+\subsection{Anmerkungen}
 Ein großer Unterschied zwischen der Signalklasse und Java Streams ist, dass 
 die Inputfunktionen der Signalklasse keine statischen Memberfunktionen sind.
 Das liegt daran, dass ein Signal im Normalfall in einer Endlosschleife 

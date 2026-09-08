@@ -53,7 +53,7 @@ welches entsprechend auf Ihrem System zur Verfügung stehen muss.
 
 ## Schwarzweißdruck
 
-Die Arbeit ist standartmäßig mit farbigem HHU-Logo und farbigen pgfplots
+Die Arbeit ist standardmäßig mit farbigem HHU-Logo und farbigen pgfplots
 konfiguriert.
 Da im Druck jede farbige Seite zusätzliche Kosten verursacht,
 können Sie sich auch für einen Schwarzweißdruck entscheiden.
@@ -74,7 +74,7 @@ Falls der Farbdruck gewählt wird,
 sind in der Dokumentklasse die Farben
 `hhublue`, `hhudarkblue`, `hhuiceblue`, `hhucyan`, `hhugreen`, `hhuorange`
 und `hhured` vordefiniert.
-Diese werden ebenfalls standartmäßig als Graphfarben genutzt,
+Diese werden ebenfalls standardmäßig als Graphfarben genutzt,
 weswegen es sich empfiehlt auf diese Farben aus Konsistenzgründen
 zurückzugreifen.
 

@@ -99,10 +99,12 @@ Diese Methode ist dafür geeignet um zu sehen, ob ein Taster über längere
 Zeit gedrückt wird. Um nur zu schauen, ob ein Taster kurz oder überhaupt
 gedrückt wurde, ist \lstinline|readQueue| die bessere Wahl.
 
-Bei jedem Drücken eines Tasteres, also bei jeden Fallen von HIGH 
+Bei jedem Drücken eines Tasters, also bei jedem Fallen von HIGH 
 zu LOW an einem Pin mit einem Taster, wird die Nummer des Pins 
 in eine Queue gepackt.
-Die Queue kann mit \lstinline|readQueue| ausgelesen werden.
+Die Queue kann mit \lstinline|readQueue| ausgelesen werden. Dies hat den 
+Vorteil, dass auch nach dem Loslassen des Tasters noch die Information vorliegt, 
+dass er gedrückt wurde.
 Hierbei gibt es zwei Dinge zu beachten:
 
 \begin{enumerate}
@@ -152,7 +154,7 @@ Je nachdem, wie sich der Wert ändert, wird die Variable geändert.
 \end{lstlisting}
 
 Dieses Pattern wird häufig mit einer oberen und unteren Grenze verwendet.
-Deshalb gibt es in Encoder eine Funktion changeExternalVariable,
+Deshalb gibt es in Encoder eine Funktion \lstinline|changeExternalValue|,
 welcher man eine Variable ein Minimum, ein Maximum und eine 
 Schrittweite gibt. Die Schrittweite gibt an um wieviel die 
 Variable erhöht wird.
@@ -186,7 +188,7 @@ bestimmter Funktionen zu messen.
 kann beispielsweise verwendet werden, um zwischen zwei nicht zeitkritischen
 Display-Aktualisierungen zu warten.
 
-Timer ist ein Wert, der bei 0 startet und alle 16 ms inkrementiert wird.
+Timer ist ein Wert, der bei 0 startet und alle $1/16$ Sekunden inkrementiert wird.
 Die Funktion getValue gibt diesen Wert zurück und setValue setzt den 
 Wert auf einen beliebigen Wert.
 Das Zeitintervall von 16 ms wird bei der Berechnung der Hüllkurve verwendet
