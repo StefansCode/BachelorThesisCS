@@ -1,4 +1,5 @@
 \section{Pinbelegung}
+\label{sec:pinout}
 \begin{table}[H]
     \centering
     \begin{tabular}{c|l|l|l}
@@ -49,6 +50,55 @@
 
 
 \section{Bilder zur Entwicklung der Hülle}
+
+\begin{figure}[h]
+    \begin{subfigure}{0.48\textwidth}
+    \begin{center}
+        \includegraphics[width=6cm]{fig/case/platine_front.png}
+    \end{center}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+    \begin{center}
+        \includegraphics[width=6cm]{fig/case/platine_back.png}
+    \end{center}
+    \end{subfigure}
+\caption{Lochplatine mit angelöteten Komponenten}
+\label{fig:platine}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{subfigure}{0.48\textwidth}
+    \begin{center}
+        \includegraphics[width=6cm]{fig/case/assembled_front.png}
+    \end{center}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+    \begin{center}
+        \includegraphics[width=6cm]{fig/case/assembled_back.png}
+    \end{center}
+    \end{subfigure}
+\caption{Ein Gehäuse für die Platine}
+\label{fig:hülle_außen}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{subfigure}{0.48\textwidth}
+    \begin{center}
+        \includegraphics[width=6cm]{fig/case/front_case_inside.png}
+    \end{center}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+    \begin{center}
+        \includegraphics[width=6cm]{fig/case/back_case_inside.png}
+    \end{center}
+    \end{subfigure}
+\caption{Innenseite der Hülle}
+\label{fig:hülle_innen}
+\end{figure}
+
 \begin{figure}[H]
     \begin{center}
         \includegraphics[height=2.5cm]{fig/case/buttons.png}
@@ -73,20 +123,12 @@
     \end{center}
 \end{figure}
 
-\begin{figure}[H]
-    \begin{subfigure}{0.48\textwidth}
+\begin{figure}[h]
     \begin{center}
-        \includegraphics[width=6cm]{fig/case/front_case_inside.png}
+        \includegraphics[width=\textwidth]{fig/case/hülle_in_fusion.jpeg}
+        \caption{Fusion360 mit dem Gehäuse und dem geladenem Bild der Platine.}%
+        \label{fig:fusion360}
     \end{center}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.48\textwidth}
-    \begin{center}
-        \includegraphics[width=6cm]{fig/case/back_case_inside.png}
-    \end{center}
-    \end{subfigure}
-\caption{Innenseite der Hülle}
-\label{fig:hülle_innen}
 \end{figure}
 
 \begin{figure}[H]
@@ -110,6 +152,7 @@
 
 
 \section{Beispielcode für die DSV-Bibliothek}
+\label{example:DSV}
 
 \begin{lstlisting}[language=C++, 
                    frame=single, 

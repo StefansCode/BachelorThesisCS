@@ -11,15 +11,15 @@ werden kann. Die Implementierung dazu steht in Kapitel \ref{chap:digitale_ton_da
 \subsection{Digitale Signale und Systeme}
 
 Ein (kontinuierliches) \textbf{Signal} ist eine Funktion 
-$f: \mathbb{R} \rightarrow \mathbb{R}$ und beschreibt einen sich
+$S: \mathbb{R} \rightarrow \mathbb{R}$ und beschreibt einen sich
 über die Zeit verändernden Wert.
 
 \textbf{Digitale Signale} hingegen sind Funktionen
-$f: 1/n\mathbb{Z} \rightarrow 1/m\mathbb{Z}$ mit $n,m \in \mathbb{N}$. 
+$S: 1/n\mathbb{Z} \rightarrow 1/m\mathbb{Z}$ mit $n,m \in \mathbb{N}$. 
 Sie sind den meisten Fällen eine digitale Darstellung eines kontinuierlichen Signals.
 
 Unten wird die Funktion $ t \rightarrow sin(2\pi t) $ einmal als 
-kontinuierliches ($f_k$) und einmal als digitales Signal ($f_d$) dargestellt.
+kontinuierliches ($S_k$) und einmal als digitales Signal ($S_d$) dargestellt.
 
 \begin{center}
     \begin{tikzpicture}
@@ -28,13 +28,13 @@ kontinuierliches ($f_k$) und einmal als digitales Signal ($f_d$) dargestellt.
         height=4cm,
         axis lines = middle,
         xlabel = $t$,
-        ylabel = {$f(t)$},
+        ylabel = {$S(t)$},
         domain = -2:2,
         samples = 100,
         grid = major,
         trig format plots=rad,
         xtick={-4,-3,-2,-1,0,1,2,3,4},               % Hauptbeschriftung (ganze Zahlen)
-        title={Kontinuierlich ($f_k: \mathbb{R} \rightarrow \mathbb{R}$)},
+        title={Kontinuierlich ($S_k: \mathbb{R} \rightarrow \mathbb{R}$)},
         ymin=-1.2, ymax=1.2 % Gleiche Skalierung wie rechts
     ]
         \addplot[blue, thick] {sin(x*2*pi)};
@@ -48,7 +48,7 @@ kontinuierliches ($f_k$) und einmal als digitales Signal ($f_d$) dargestellt.
         height=4cm,
         axis lines = middle,
         xlabel = $n$,
-        ylabel = {$f[n]$},
+        ylabel = {$S[n]$},
         domain = -2:2,
         samples = 41, 
         trig format plots=rad,
@@ -58,7 +58,7 @@ kontinuierliches ($f_k$) und einmal als digitales Signal ($f_d$) dargestellt.
         minor x tick num=9,                % Erzeugt 9 Zwischenstufen -> Schritte von 0.1
         grid = both,                       % Aktiviert Haupt- UND Nebengitter
         minor grid style={dashed=false, gray!15, ultra thin}, % Sehr feine, helle Linien für das 0.1-Raster
-        title={Digital / Diskret ($f_d: \mathbb{Z} \rightarrow \mathbb{Z}$)},
+        title={Digital / Diskret ($S_d: \mathbb{Z} \rightarrow \mathbb{Z}$)},
         ymin=-1.2, ymax=1.2
     ]
         %%\addplot[gray, thin, ycomb, mark=*] {sin(x*2*pi)};
@@ -67,24 +67,24 @@ kontinuierliches ($f_k$) und einmal als digitales Signal ($f_d$) dargestellt.
     \end{tikzpicture}
 \end{center}
 
-Meistens sind periodische Signale zwischen -1 und 1 wie zum Beispiel $f_k$ bzw $f_d$ 
+Meistens sind periodische Signale zwischen -1 und 1 wie zum Beispiel $S_k$ bzw $S_d$ 
 interessant.
 Eine wichtige Kenngröße von periodischen Signalen ist die Frequenz $f$. 
 Das ist die Anzahl der Wiederholungen pro Einheit (in diesem Fall Sekunden) und 
 als 
-$$f = 1/\min\{\delta > 0 | f(x+\delta)=f(x) \forall x \in R\}$$ definiert.
-Sie wird in Hertz (Hz) angegeben. $f_k$ und $f_d$ haben eine Frequenz von 1 Hz.
+$$f = 1/\min\{\delta > 0 | S(x+\delta)=S(x) \forall x \in R\}$$ definiert.
+Sie wird in Hertz (Hz) angegeben. $S_k$ und $S_d$ haben eine Frequenz von 1 Hz.
 Die Amplitude $A$ ist die maximale Auslenkung des Signals. Sie ist als
 $$A = \max |f(x)| , x \in \mathbb{R}$$ definiert.
-$f_k$ und $f_d$ haben 
-eine Amplitude von 1 und $0.5*sin(x)$ hat eine Amplitude von 0.5.
+$S_k$ und $S_d$ haben 
+eine Amplitude von 1 und $0.5*\sin(x)$ hat eine Amplitude von 0.5.
 
 Zwei wichtige Kenngrößen von digitalen Signalen sind die Abtastrate
 und die Auflösung.
 
 Die \textbf{Abtastrate} ist ein Maß für die Feinheit der Unterteilung der X-Achse
 bzw. der Zeit. Sie wird ebenfalls in Hertz gemessen. Nehmen wir an, dass
-das Signal $f_d$ in Sekunden angegeben ist, so ist seine Abtastrate 10Hz.
+das Signal $S_d$ in Sekunden angegeben ist, so ist seine Abtastrate 10Hz.
 
 % TODO bessert machen
 % \begin{center}
@@ -94,7 +94,7 @@ das Signal $f_d$ in Sekunden angegeben ist, so ist seine Abtastrate 10Hz.
 %         height=4cm,
 %         axis lines = middle,
 %         xlabel = $n$,
-%         ylabel = {$f_d[n]$},
+%         ylabel = {$S_d[n]$},
 %         domain = 0:10,
 %         samples = 11, 
 %         trig format plots=rad,
@@ -104,7 +104,7 @@ das Signal $f_d$ in Sekunden angegeben ist, so ist seine Abtastrate 10Hz.
 %         xticklabels={1,2,3,4,5,6,7,8,9,10},
 %         grid = both,                       % Aktiviert Haupt- UND Nebengitter
 %         minor grid style={dashed=false, gray!15, ultra thin}, % Sehr feine, helle Linien für das 0.1-Raster
-%         title={Digital / Diskret ($f_d: \mathbb{Z} \rightarrow \mathbb{Z}$)},
+%         title={Digital / Diskret ($S_d: \mathbb{Z} \rightarrow \mathbb{Z}$)},
 %         xmin=-0.5, xmax=9.5, ymin=-1.2, ymax=1.2,
 %         xticklabel style={
 %             yshift=-1.2cm % Schiebt die Zahlen 1 bis 11 unter den Graphen
@@ -126,7 +126,7 @@ Für die \textbf{Auflösung} muss ein maximaler und ein minimaler Wert festgeleg
 Dann ist die Auflösung die Anzahl der möglichen Werte zwischen dem
 Maximalwert und dem Minimalwert. Sie ist ein Maß für die Feinheit der Unterteilung
 der Y-Achse.
-Für $f_d$ mit Minimalwert -1 und Maximalwert 1
+Für $S_d$ mit Minimalwert -1 und Maximalwert 1
 wäre das 11.
 
 Jedes stückweise stetige periodische Signal $S$ lässt sich, mithilfe der Fouriereihe,
@@ -143,7 +143,9 @@ $f_{max} \cdot 2$ ist.
 In der Signaltheorie beschreibt ein System etwas, das ein Signal $f(t)$ in ein
 Signal $g(t)$ umwandelt. Ein digitales System schickt ein digitales Signal 
 $f(n)$ auf ein anderes digitales Signal $g(n)$. Ein Beispiel ist das System,
-das alle Werte eines Signals mit $0.5$ multipliziert.
+das alle Werte eines Signals mit $0.5$ multipliziert. 
+Abbildung \ref{fig:system_darstellung} zeigt die Darstellung eines Systems und
+Abbildung \ref{fig:system_beispiel} zeigt die Darstellung des Beispiels.
 
 \begin{figure}[ht]
     \centering
@@ -162,7 +164,7 @@ das alle Werte eines Signals mit $0.5$ multipliziert.
         }
     ]
 
-        \node[] (f) {$f(t)$};
+        \node[] (f) {$S(t)$};
         \node[system, right=1cm of f] (Sys) {System};
         \node[right=1cm of Sys] (g) {$g(t)$};
 
@@ -171,6 +173,7 @@ das alle Werte eines Signals mit $0.5$ multipliziert.
 
     \end{tikzpicture}
     \caption{Darstellung eines Systems}
+    \label{fig:system_darstellung}
 \end{figure}
 
 \begin{figure}[ht]
@@ -199,6 +202,7 @@ das alle Werte eines Signals mit $0.5$ multipliziert.
 
     \end{tikzpicture}
     \caption{Beispiel eines Systems}
+    \label{fig:system_beispiel}
 \end{figure}
 
 Weitere Eigenschaften von Systemen und Signalen sind in Grüningens Buch
@@ -208,8 +212,9 @@ digitale Signalverarbeitung \cite{grueningen2008dsv} zu finden.
 
 
 
-Wie kann man einen Ton erzeugen? Ein Ton beschreibt eine
-periodische Druckänderungen über die Zeit in der Luft. Solch eine
+Ein Ton beschreibt eine
+periodische Druckänderungen über die Zeit in der Luft \cite[17.1]{openStacksWaves}.
+Solch eine
 Druckänderung kann durch einen Lautsprecher erzeugt werden, in dem der
 Lautsprecher analoges (kontinuierliches) elektrisches Signal erhält. Diese 
 kann von einem DAC (Digital-zu-Analog-Konverter) erzeugt werden,
@@ -249,13 +254,17 @@ welcher wiederum ein digitales Signal erhält.
 Nun ist also die Frage, was für ein Signal der DAC erwartet. Da gibt es viele
 verschiedene Möglichkeiten. Ein Standard für digitale Audio ist 
 I2S (Inter-IC Sound). Das ist ein Protokoll, welches Stereoaudio, also 2 
-Audiosignale, über 3 (manchmal 4) Leitungen überträgt.
+Audiosignale, über 3 Leitungen überträgt \cite{esp32s3i2s}.
 \begin{enumerate}
     \item BCLK (Bit-Clock), manchmal auch Serial clock genannt, ist der Taktgeber.
     \item LRCLK (Left-Right-Clock), manchmal auch Word select genannt, gibt an, ob gerade Links oder Rechts übertragen
      wird.
     \item DIN/DOUT (Data in/Data out), manchmal auch Serial data genannt, überträgt die Audiodaten.
 \end{enumerate}
+
+Abbildung \ref{fig:I2S-leitungen} zeigt den zeitlichen Ablauf der 
+I2S-Kommunikation, wobei die DIN/DOUT-Leitung zwischen 0 und 1 springt
+, jenachdem was für Daten übergeben werden.
 
 \begin{figure}[h]
     \centering
@@ -268,7 +277,7 @@ Audiosignale, über 3 (manchmal 4) Leitungen überträgt.
 
 
 PCM-Daten \cite{jita2023} sind ein unkomprimiertes 
-Audioformat bei dem Werte durch 8, 16, 24 oder 32 Bit signed Integern
+Audioformat, bei dem Werte durch 8, 16, 24 oder 32 Bit signed Integern
 dargestellt werden. Somit ist die Auflösung 8, 16, 24 oder 32 Bit.
 
 
@@ -278,5 +287,4 @@ Aus dem Abtasttheorem folgt, dass eine Abtastrate über
 40.000 Hz nötig ist, um Töne digital darzustellen.
 Deshalb wurde 44100 Hz als Abtastrate für CDs und 
 infolge dessen auch für viele andere digitale Systeme gewählt. 
-Hochwertige Systeme verwenden auch bis zu über 100 kHz.
 

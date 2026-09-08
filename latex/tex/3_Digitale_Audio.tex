@@ -139,11 +139,12 @@ Wegen ihrer Einfachheit sind diese 4 Signale typische Formen in der
 Klangsynthese \cite[3.3]{computerMusic}.
 
 Es gibt also vier Inputfunktionen. Diese nehmen als Parameter eine Frequenz
-und greifen auf einen MemberVariable namens Time zu. Time wird bei jedem
+und greifen auf einen MemberVariable namens \lstinline|time| zu. 
+\lstinline|time| wird bei jedem
 Aufruf einer Inputfunktion um Eins erhöht und ist der X-Wert der 
-generierten Funktionen. Da nur ganzzahlige Frequenzen größer oder gleich null
+zu generierten Funktionen. Da nur ganzzahlige Frequenzen größer oder gleich null
 betrachtet werden sollen, ist jede mögliche Frequenz ein Vielfaches
-von Eins und somit ist auch jede generierte  1-periodisch (sie wiederholt
+von Eins und somit ist auch jede generierte Funktion 1-periodisch (sie wiederholt
 sich bei eins). 
 
 \begin{figure}[h]
@@ -256,13 +257,14 @@ aufgerufen.
 \subsubsection{Generierung einer Sägezahnwelle}
 
 Seien im Folgenden $s$ die Abtastrate, $a$ die Auflösung und $f$ 
-die Frequenz. Außerdem wird für time $x$ geschrieben und für das 
+die Frequenz. Außerdem wird für time $x$ geschrieben und für den 
 berechnete Wert $y$.
 Um eine Sägezahnwelle zu generieren, startet man mit der Identität
 $y=x$
 und passt diese mit den folgenden Schritten an.
 
 \begin{enumerate}
+    \item $y=x$ Die Identität wird als Ausgangspunkt genommen.
     \item $y=(-a/2)+(x*a/s)$ Die Funktion wird auf die Auflösung skaliert.
     \item $y=(-a/2)+((x*a/s) \bmod a)$ Die Funktion wird periodisch gemacht, indem mit der auflösung Modulo gerechnet wird.
     \item $y=(-a/2)+((x*f*a/s) \bmod a)$ Die Zeit $x$ wird mit der Frequenz $f$ multipliziert, um die gewünschte Frequenz zu erhalten.
@@ -393,27 +395,32 @@ sample Sound::calculateSaw(unsigned int frequency) {
 }
 \end{lstlisting}
 
+Zur bBerrechnung der Sägezahnwelle werden int64\_t genutzt, um einen Overflow zu vermeiden.
+SAMPLE\_MIN ist der kleinste Wert, den ein Sample annehmen kann und SAMPLE\_RANGE
+ist die Differenz zwischen dem größten und dem kleinsten Wert, den ein Wert 
+annehmen kann.
+
 \subsubsection{Generierung einer Rechteckwelle}
 
-Um eine Rechteckwelle $rect(t)$ zu generieren, wird die 
-Sägezahnwelle $saw(t)$ wie folgt genutzt: 
+Um eine Rechteckwelle $\text{rect}(t)$ zu generieren, wird die 
+Sägezahnwelle $\text{saw}(t)$ wie folgt genutzt: 
 
 \begin{equation}
-    rect(t) = \begin{cases}
-        -a/2, & \text{wenn } saw(t) < 0 \\
+    \text{rect}(t) = \begin{cases}
+        -a/2, & \text{wenn } \text{saw}(t) < 0 \\
         a/2, & \text{sonst}
     \end{cases}
 \end{equation}
 
 \subsubsection{Generierung einer Dreieckswelle}
 
-Auch für die Dreieckswelle $tri(t)$ wird die 
-Sägezahnwelle $saw(t)$ genutzt:
+Auch für die Dreieckswelle $\text{tri}(t)$ wird die 
+Sägezahnwelle $\text{saw}(t)$ genutzt:
 
 \begin{equation}
-    tri(t) = \begin{cases}
-        (a/2) + (2*saw(t)), & \text{wenn } saw(t) < 0 \\
-        (a/2) - (2*saw(t)), & \text{sonst}
+    \text{tri}(t) = \begin{cases}
+        (a/2) + (2*\text{saw}(t)), & \text{wenn } \text{saw}(t) < 0 \\
+        (a/2) - (2*\text{saw}(t)), & \text{sonst}
     \end{cases}
 \end{equation}
 
@@ -434,15 +441,15 @@ Sinuswelle.
 \label{chap:addition_and_multiplication}
 
 Wenn man zwei Töne gleichzeitig hört, dann hört man diese als
-einen neuen Ton, welche die Addition der beiden Töne ist \cite{waveInterference}.
+einen neuen Ton, welche die Addition der beiden Töne ist \cite[16.5]{openStacksWaves}.
 
 Die Addition von zwei Tönen ist in der Soundklasse als Funktion 
-\lstinline{add(Sound * other)} implementiert. Diese ruft einfach die 
+\lstinline{add(Sound * other)} implementiert. Diese ruft die 
 add-Funktion der Signalklasse auf. 
 
 Die Lautstärke eines Tons ist die Amplitude des Signals \cite{soundIntensety}.
 Wenn man die Lautstärke eines Tons verändern möchte, 
-muss die Amplitude des Signals mit einem Faktor multipliziert werden.
+muss das Signals mit einem Faktor multipliziert werden.
 Die Multiplikation eines Tons ist in der Soundklasse als Funktion
 \lstinline{amplipfy(float factor)} implementiert, welche ebenfalls einfach
 die multiply-Funktion der Signalklasse aufruft.
@@ -607,15 +614,9 @@ Wie zu erwarten nimmt die benötigte Rechenzeit mit deiner geringeren Abtastrate
 und es fällt folgendes auf:
 \begin{enumerate}
     \item Abtastraten welche Potenzen von 2 sind, sind nicht besser als andere Abtastraten.
-    \item Die Generierung das Sinus ist ab einer bestimmten größe des Lookuptables deutlich langsamer.
+    \item Die Generierung des Sinus ist ab einer bestimmten größe des Arraym mit den vordefinierten Werten langsamer.
     \item Es macht nur bei der Berechnung des Sinus einen Unterschied, ob die Auflösung 16 Bit oder 32 Bit beträgt.
 \end{enumerate}
-
-Bei der Durchführung mit 32 Bit wurde kein Ton ausgegeben. Die Ursache konnte im
-ursprünglichen Stand der Implementierung nicht bestimmt werden. Die Berechnung
-wurde deshalb überarbeitet und verwendet nun 64-Bit-Zwischenwerte, damit die
-Berechnung des vollständigen 32-Bit-Samplebereichs nicht überläuft. Die
-32-Bit-Konfiguration muss auf der Zielhardware dennoch separat überprüft werden.
 
 Seien im Folgenden die Abtastrate 32768Hz und die Auflösung 16 Bit.
 Vermutung zu 2. Das langsame Laden von Sinuswerten könnte man darauf zurückführen,

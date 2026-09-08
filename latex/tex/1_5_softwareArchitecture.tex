@@ -12,7 +12,7 @@ implementiert und der Klasse Sound, welche eine Erweiterung von Signal ist
 und ein Audiosignal darstellt.
 Außerdem liegen die Komponenten Synthesizer, Envelope und Menu im Kern.
 Diese nutzen die Hardware und 
-Sound nutzen, um einen digitalen Synthesizer zu implementieren. Die genaue 
+Sound, um einen digitalen Synthesizer zu implementieren. Die genaue 
 Funktionsweise wird in Kapitel \ref{chap:synth} beschrieben.
 
 Diese Architektur hat den Vorteil, dass Signal und Sound unabhängig von der
@@ -32,9 +32,8 @@ nicht auf die Adapter zugreifen.
 \subsection{Adapter}
 
 \subsubsection{Digital-to-Analog Converter}
-Der DAC-Adapter ist eine eigene Komponente dieser Arbeit. Seine öffentliche
-Schnittstelle stellt die Methode \lstinline|sendBuffer| bereit. Die Methode
-nimmt einen Buffer mit Audiosamples und dessen Länge entgegen. Intern nutzt
+Der DAC-Adapter stellt die Methode \lstinline|sendBuffer| bereit. Diese Methode
+nimmt einen Buffer mit Audiowerten und dessen Länge entgegen. Intern nutzt
 der Adapter dafür die I2S-API \cite{esp32s3i2s} der ESP-IDF.
 
 Die I2S-API ist im Standardmodus mit dem Philips-Format eingestellt, da dies
@@ -211,6 +210,6 @@ Der Kern der Anwendung besteht aus 3 Komponenten. Das sind
             Erweiterung dieser Klasse namens Sound, welche ein Audiosignal darstellt.
     \item Der Synthesizer, welche die Soundklasse nutzt, um mithilfe der 
         Hardware einen Synthesizer zu implementieren. 
-        Dazu gehören auch Envelope und Menu.
+        Dazu gehören auch die Klassen Envelope und Menu.
 \end{enumerate}
 Diese 3 Komponenten werden in den folgenden Kapiteln beschrieben.

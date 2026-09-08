@@ -7,7 +7,7 @@ nicht abschließenden Funktionen eine Referenz auf das Signalobjekt zurückgeben
 Dadurch können Methodenaufrufe verkettet werden, um komplexe Operationen auf 
 das Signal anzuwenden.
 
-Eine Funktion der Signalklasse stellt ein System dar, das sie ebenfalls
+Eine Funktion der Signalklasse stellt ein System dar, da sie ebenfalls
 ein Signal in ein anderes Signal umwandelt.
 
 Im Folgenden wird die Entwicklung der Signalklasse Schritt für Schritt
@@ -31,7 +31,7 @@ class Signal {
 \end{lstlisting}
 
 Da oft auch die vorherigen Werte benötigt werden lohnt es sich diese ebenfalls 
-zu speichern. Das ist zum Beispiel nötig, weil dem DAC ein Buffer übergeben 
+zu speichern. Das ist zum Beispiel hilfreich, weil dem DAC ein Buffer übergeben 
 wird.
 Dafür bietet sich ein RingBuffer (circular buffer) \cite{ringbuffer} an. 
 Ein Ringbuffer ist ein fest definierter
@@ -58,7 +58,7 @@ private:
 Wenn das Signal zu einem neuen Wert übergeht, muss der Index erhöht werden.
 Das passiert in einer Inputfunktion, welche mit dem Prefix \glqq from-\grqq\ 
 gekennzeichnet sind. Eine Inputfunktion gibt immer eine Referenz auf das 
-Signalobjekt zurück.
+Signalobjekt zurück und erhöht den Index.
 
 Beim Schreiben des ersten Wertes wird der Index bereits erhöht. Der erste Wert
 sollte jedoch an der ersten Stelle des Buffers gespeichert werden. Deshalb wird
@@ -106,7 +106,8 @@ public:
 \end{lstlisting}
 
 Alle anderen Funktionen sind Funktionen, welche eine Signalreferenz zurückgeben
-und im Gegensatz zu Inputfunktionen nicht den Index erhöhen. Das sind zum Beispiel
+und im Gegensatz zu Inputfunktionen nicht den Index erhöhen. Das sind zum Zeitpunkt
+der Arbeit die Funktionen
 add, multiply oder applyFunction. Letzteres erlaubt es dem Nutzer selbstdefinierte 
 Funktionen in die Verarbeitungskette einzufügen.
 
@@ -147,13 +148,14 @@ Soll ein System implementiert werden, das auf vorherige Werte zugreift,
 muss folgendes beachtet werden.
 
 Sei $F$ ein System, das den aktuellen Wert auf den Mittelwert der letzten 
-5 Werte setzt.
+5 Werte aus dem Buffer setzt.
 Wenn es noch keine 5 Werte gibt, so wird über die Anzahl der Werte gemittelt.
 
 Nehme also an $F$ ist in Signal implementiert und betrachte folgende Anwendung 
 von Signal, in der zuerst $F$ angewendet wird und dann mit 10 multipliziert wird.
 
-Besteht nun das eingehende Signal nur aus den Werten 1, passiert Folgendes.
+Besteht nun das eingehende Signal nur aus dem sich wiederholenden Wertem 1,
+passiert der in Abbildung \ref{fig:signal-buffer-problem} dargestellte Fehler.
 
 \begin{figure}[h]
     \centering
@@ -201,13 +203,13 @@ Besteht nun das eingehende Signal nur aus den Werten 1, passiert Folgendes.
         \node[
             red,
             align=center,
-            below=0.5cm of buf3
+            below=0.5cm of filter2
         ] (problem)
-        {Hier wurde der vorherige\\
-         Wert bereits mit $10$ multipliziert};
+        {Hier greift $F$ auf den mit \\
+        $10$ multiplizierten Wert zu.};
 
         \draw[->, red, thick]
-            (problem.north) -- (buf3.south);
+            (problem.north) -- (filter2.south);
 
         % Beschriftungen
         \node[left=0.5cm of in1] {\textbf{1. Iteration}};
@@ -219,34 +221,22 @@ Besteht nun das eingehende Signal nur aus den Werten 1, passiert Folgendes.
 \end{figure}
 
 Bei der zweiten Iteration müsste $F$ eigentlich über zwei Einsen mitteln, aber
-die vorherige Eins wurde schon mit 10 multipliziert.
+die vorherige Eins wurde schon in der ersten Iteration mit 10 multipliziert.
 
 Eine Lösung wäre es $F$ und jeder anderen Funktion, die einen Buffer braucht,
-beim Aufruf einen zu übergeben. Denn es reicht auch nicht aus in der Signalklasse
-für $F$ einen Buffer anzulegen. Wird $F$ 2 Mal aufgerufen, so entsteht
-das gleiche Problem.
+beim Aufruf einen zu übergeben. 
 
-
-
-\subsection{Anwendung}
+\subsection{Anwendungsbeispiel der Signalklasse}
 % wohin soll das Example?
-Im Anhang sieht man eine Beispielanwendung in der ArduinoIDE. Hier werden ein
+Im Anhang \ref{example:DSV} sieht man eine Beispielanwendung in der ArduinoIDE. 
+Hier werden ein
 lichtabhängiger Widerstand und ein Potentiometer eingelesen. Der Potentiometerwert
 wird dazu verwendet, um den aktuell stabilen Lichtwert zu kompensieren. Dann wird
-eine LED angeschaltet, wenn der kompensierte Lichtwert unter 0 sinkt. Hält man den
-lichtabhängigen Widerstand gegen eine Lichtquelle oder einen reflektierenden
-Hintergrund kann durch Blocken des Lichts eine Bewegung erkannt werden. 
-(Es gibt bessere Möglichkeiten dies umzusetzen, aber zu Demonstrationszwecken 
-sollte dieses Beispiel reichen).
+eine LED angeschaltet, wenn der kompensierte Lichtwert unter 0 sinkt.
 
-Der Code verkürzt sich hier nicht wirklich. Im Gegenteil er wird wegen der 
-zusätzlich definierten Funktionen erstmal komplexer. Sollen nun weitere 
-Funktionen wie zum Beispiel Filter in die Verarbeitungskette eingebracht werden,
-kann dies mit der Signalbibliothek einfacher und schöner umgesetzt werden.
-
-Ein Besseres und ausfürlicheres Beispiel liefert die Erweiterung von Signal zu 
-Sound im nächsten Unterkapitel und die Anwendung der Soundklasse als Synthesizer
-im nächsetn Kapitel.
+In diesem Beispiel ist es ersichtlich, dass die Signalklasse 
+leicht durch Funktionen wie einen Mittelwert oder eine Printfunktion erweitert
+werden kann.
 
 \subsection{Anmerkungen}
 Ein großer Unterschied zwischen der Signalklasse und Java Streams ist, dass 

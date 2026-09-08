@@ -21,7 +21,7 @@ leicht nachgebaut werden.
 
 Die zentrale Recheneinheit des Synthesizers ist ein ESP-S3 von 
 Espressif Systems.
-Ein ESP32-S3 ist ein Microcontroller mit einer 
+Ein ESP32-S3 ist ein Mikrocontroller mit einer 
 32-Bit-Dual-Core-CPU, die mit 240MHz betrieben werden kann\cite[4.1.1.1]{espDatashet}.
 Bei einer Abtastrate von 44100 lässt sich theoretisch jeder Wert 
 mit ca. 
@@ -141,7 +141,7 @@ verbunden werden.
 
 Mit 10 Tastern und einem Drehgeber ist es möglich,
 während der Laufzeit verschiedene Variablen zu bearbeiten.
-Die genaue Funktion der Taster wird in Kapitel \ref{chap:synth} beschrieben.
+Die genaue Funktion dieser Komponenten wird in Kapitel \ref{chap:synth} beschrieben.
 
 \subsection{OLED-Bildschirm}
 
@@ -169,8 +169,9 @@ I2C-Protokoll.
 \subsection{Pinbelegung und Löten}
 
 Nun müssen alle Komponenten mit dem ESP32-S3 verbunden werden.
-Der ESP32-S3 hat intern eine GPIO-Matrix\cite{esp32S3gpio}, welche es ermöglicht fast
-jeden internen Peripheriecontroller mit fast jedem Pin zu verbinden.
+Der ESP32-S3 hat intern eine GPIO-Matrix, welche es ermöglicht fast
+jeden internen Peripheriecontroller mit fast jedem Pin zu verbinden 
+\cite{esp32S3gpio}.
 
 Zusätzlich zu den oben aufgezählten Komponenten wurden ein SD-Karten-Anschluss
 über die SPI-Schnittstelle als mögliche Erweiterung verbunden. 
@@ -188,24 +189,10 @@ Es ist zwar möglich die folgenden Ausnahmen zu benutzen, aber nicht empfohlen.
     Entwicklungsboard verbunden.
 \end{itemize}
 
-Mit diesen Einschränkungen wurde die Pinbelegung aus Anhang A gewählt.
-Anschließend wurde alles auf eine Lochplatine gelötet.
-
-\begin{figure}[h]
-    \begin{subfigure}{0.48\textwidth}
-    \begin{center}
-        \includegraphics[width=6cm]{fig/case/platine_front.png}
-    \end{center}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.48\textwidth}
-    \begin{center}
-        \includegraphics[width=6cm]{fig/case/platine_back.png}
-    \end{center}
-    \end{subfigure}
-\caption{Lochplatine mit angelöteten Komponenten}
-\label{fig:platine}
-\end{figure}
+Mit diesen Einschränkungen wurde die Pinbelegung aus Anhang \ref{sec:pinout} 
+gewählt.
+Anschließend wurde alles auf eine Lochplatine gelötet. 
+Diese ist in Abbildung \ref{fig:platine} zu sehen.
 
 
 \subsection{Design und Drucken eines Gehäuses}
@@ -213,38 +200,12 @@ Anschließend wurde alles auf eine Lochplatine gelötet.
 Als Abschluss der Hardware wurde das Gehäuse aus Abbildung \ref{fig:hülle_außen} 
 3D-gedruckt. Dieses
 ist natürlich hauptsächlich für die Optik, es sorgt aber auch für ein 
-besseres Handgefühl und schützt die Platine vor Beschädigungen. Außerdem
-werden so die elektrischen Verbindungen nicht durch Berühren beeinflusst.
-
-\begin{figure}[h]
-    \begin{subfigure}{0.48\textwidth}
-    \begin{center}
-        \includegraphics[width=6cm]{fig/case/assembled_front.png}
-    \end{center}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{0.48\textwidth}
-    \begin{center}
-        \includegraphics[width=6cm]{fig/case/assembled_back.png}
-    \end{center}
-    \end{subfigure}
-\caption{Ein Gehäuse für die Platine}
-\label{fig:hülle_außen}
-\end{figure}
+besseres Handgefühl und schützt die Platine vor Beschädigungen.
 
 Zum Erstellen des 3D-Objektes wurde Fusion360\cite{fusion360} verwendet.
 In Fusion360 ist es möglich ein Bild als Referenz zu laden. 
 Das hat sich als schneller und genauer herausgestellt, als die Maße von der 
 Platine zu nehmen.
-
-\begin{figure}[h]
-    \begin{center}
-        \includegraphics[width=\textwidth]{fig/case/hülle_in_fusion.jpeg}
-        \caption{Fusion360 mit dem Gehäuse und dem geladenem Bild der Platine.}%
-        \label{fig:fusion360}
-    \end{center}
-    
-\end{figure}
 
 % In Fusion360 wird das erstellte 3D-Objekt als stl-Datei exportiert und dann
 % in dem Bambu Lab Studio Slicer \cite{bambulabStudio} zu einer gcode-Datei konvertiert.
@@ -257,13 +218,13 @@ Platine zu nehmen.
 % Der gcode wird dann an den 3D-Drucker Bambu Lab P1S \cite{bambulabP1S}
 % geschickt, der das Gehäuse Schicht für Schicht druckt.
 
-Zunächst wurde ein dünner Prototyp der Vorderseite gedruckt, da diese die 
-meisten Öffnungen hat. Nach ein paar kleinen Anpassungen wurden die 
-Seitenwände mit einer kleinen Einkerbung am Ende erstellt. Nach Maßen
-wurden Löcher für die USB-, Aux- und SD-Karten-Anschlüsse hinzugefügt.
+% Zunächst wurde ein dünner Prototyp der Vorderseite gedruckt, da diese die 
+% meisten Öffnungen hat. Nach ein paar kleinen Anpassungen wurden die 
+% Seitenwände mit einer kleinen Einkerbung am Ende erstellt. Nach Maßen
+% wurden Löcher für die USB-, Aux- und SD-Karten-Anschlüsse hinzugefügt.
 
-Es wurden 10 Knöpfe für die Taster gedruckt. Die Aufschriften der Knöpfe sind 
-A, B, 1, 2, 3, 4, 5, 6, 7 und 8. Deren Funktionen werden in Kapitel \ref{chap:synth} beschrieben.
+% Es wurden 10 Knöpfe für die Taster gedruckt. Die Aufschriften der Knöpfe sind 
+% A, B, 1, 2, 3, 4, 5, 6, 7 und 8. Deren Funktionen werden in Kapitel \ref{chap:synth} beschrieben.
 
 
 % In die Löcher für die Taster kommen kleine Knöpfe, die genau in die 
@@ -271,9 +232,9 @@ A, B, 1, 2, 3, 4, 5, 6, 7 und 8. Deren Funktionen werden in Kapitel \ref{chap:sy
 % Für den Boot- und Resetknopf auf dem ESP32-S3 gibt es Auch jeweils einen Knopf.
 % Die sind allerdings kleiner. 
 
-Die Platine wird durch 2 Säulen und 4 kleine Blöcke in dem Gehäuse gehalten. 
-In die Spitze der Säulen wurden Einschmelzgewinde eingeschmolzen, 
-um die Rückwand des Gehäuses mit Schrauben zu befestigen.
+% Die Platine wird durch 2 Säulen und 4 kleine Blöcke in dem Gehäuse gehalten. 
+% In die Spitze der Säulen wurden Einschmelzgewinde eingeschmolzen, 
+% um die Rückwand des Gehäuses mit Schrauben zu befestigen.
 
 Zum Drucken wurde der 3D-Drucker Bambu Lab P1S \cite{bambulabP1S} verwendet.
 Auf der Githubseite zu dieser Arbeit sind die STL-Datei und eine STEP-Datei

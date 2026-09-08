@@ -51,7 +51,7 @@ aussehen könnte.
 
 Neben der DSV-Bibliothek soll es außerdem eine Audiobibliothek geben, welche
 auf Audiosignale spezialisiert ist. Der größte Unterschied
-zwischen diesen liegt darin, dass die Audio-Bibliothek das Signal selber erzeugt
+zwischen diesen liegt darin, dass die Audiobibliothek das Signal selber erzeugt
 und der DSV-Bibliothek ein Signal übergeben wird.
 
 Wegen der Popularität und des günstigen Preis-Leistungs-Verhältnisses des ESP32-S3-
@@ -81,14 +81,14 @@ Dafür werden die nötige Hardware aufgebaut und die zugehörige Software implem
 \subsection{Verwandte Arbeiten}
 
 Die ESP-DSP-Bibliothek \cite{ESPDSV} ist eine DSV-Bibliothek, welche von 
-Espressif entwickelt wurde. Sie ist auf die Nutzung der Hardware des ESP32 
+Espressif Systems entwickelt wurde. Sie ist auf die Nutzung der Hardware des ESP32 
 optimiert und erwartet Signale in der Form eines Arrays. Der Vorteil der 
-zu entwickelnden DSV-Bibliothek ist, dass ein Signal als eine Klasse Fluent API
+zu entwickelnden DSV-Bibliothek ist, dass ein Signal als eine Fluent API
 implementiert wird, was zu leserlicherem Code führt.
 
 Die Mozzi-Bibliothek \cite{Mozzi} ist eine Bibliothek für Tonausgabe und für 
 Audiosynthese auf Mikrocontroller. Allerdings wird die Funktionalität der Bibliothek hinter 
 Funktionen wie \lstinline|startMozzi| und \lstinline|audioHook| versteckt
-\cite{MozziSimpleSketch}. Die zu entwickelnde Audiobibliothek werden 
+\cite{MozziSimpleSketch}. Mit der zu entwickelnde Audiobibliothek werden 
 die Funktionen der Bibliothek sequentiell aufrufen und die Funktionsweise
 der Bibliothek ist dadurch für den Nutzer besser nachvollziehbar. 
