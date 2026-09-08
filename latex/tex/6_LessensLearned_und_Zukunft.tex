@@ -36,7 +36,11 @@ Einige Ideen zum Verbessern dieser Zeiten sind im Folgenden aufgelistet.
 \end{enumerate}
 
 Für die weitere Entwicklung sollten außerdem automatisierte Unit-Tests für
-Signaloperationen, Tests der Grenzwerte für 16- und 32-Bit-Samples sowie
-Hardwaretests für die DAC-Ausgabe ergänzt werden. Besonders wichtig sind dabei
-Tests für Addition, Verstärkung und die Wellenformberechnung, da diese
-Operationen bei großen Sampletypen überlaufen können.
+Signaloperationen geschrieben werden, dies ist möglich da die SignalKlasse
+unabhängig von der verwendeten Hardware ist.
+
+Es ist auch möglich weitere Funktionen in der Signalbibliothek und der 
+Audiobiliothek zu implementieren. Dazu empfiehlt es sich das Buch
+von Grüningen \cite{grueningen2008dsv} zu lesen, um über digitale Filter zu 
+lernen und das Buch von Zölzer \cite{DAFX} zu lesen, um über digitale Audioeffekte zu 
+lernen.
