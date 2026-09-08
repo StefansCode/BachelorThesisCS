@@ -19,13 +19,13 @@ Sound sound;
 
 sample printOneSignal(sample data, void *param) {
   const char *name = (const char *)param;
-  printf(">%s:%d\r\n", name, data);
+  printf(">%s:%ld\r\n", name, data);
   return data;
 }
 
 sample printSignal(sample data, void *param) {
   const char *name = (const char *)param;
-  printf("%s:%d ", name, data);
+  printf("%s:%ld ", name, data);
   return data;
 }
 
@@ -181,11 +181,11 @@ void runSoundInputTest_calulationSpeeds() {
       printf("SampleRate: %d, Bitdepth: %d, fromSaw: %f %%,  fromSine: %f %%, average fromSine : %f %%, add: %f %%, amplify: %f %%, return: %f %%, simpleMult: %f %%\r\n", STANDART_SAMPLE_RATE, BITS_PER_SAMPLE, t2 - t1, t3 - t2, average, t4 - t3, t5 - t4, t6 - t5, t7 - t6 );
       vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
-    printf("%d", saw.returnValue());
-    printf("%d", sine.returnValue());
+    printf("%ld", saw.returnValue());
+    printf("%ld", sine.returnValue());
     for (int i = 0; i < 10; i++) {
-      printf("%d", x[i]);
-      printf("%d", y[i]);
+      printf("%ld", x[i]);
+      printf("%ld", y[i]);
     }
   } 
 }

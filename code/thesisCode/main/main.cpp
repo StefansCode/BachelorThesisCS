@@ -28,7 +28,7 @@ extern "C" void app_main(void) {
   // runSoundInputTest_switchWaveforms();
   // runSoundInputTest_overflow();
   // runSoundInputTest_waveformCalulationSpeed();
-  // runSoundInputTest_calulationSpeeds();
+  runSoundInputTest_calulationSpeeds();
 
   // runSoundOutputTest();
   // runSoundOutputTest_unsigned();

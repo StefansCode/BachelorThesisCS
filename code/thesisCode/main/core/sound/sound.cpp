@@ -1,7 +1,10 @@
 #include "sound.h"
 
 sample Sound::calculateSaw(unsigned int frequency) {
-  return (SAMPLE_MIN + (((time * frequency * SAMPLE_RANGE)/STANDART_SAMPLE_RATE) % (SAMPLE_RANGE)));
+  const int64_t phase = (static_cast<int64_t>(time) * frequency) % STANDART_SAMPLE_RATE;
+  const int64_t value = static_cast<int64_t>(SAMPLE_MIN) +
+                        (phase * SAMPLE_RANGE) / STANDART_SAMPLE_RATE;
+  return static_cast<sample>(value);
   // return (sample)(SAMPLE_MIN + time*frequency*2);
 }
 
