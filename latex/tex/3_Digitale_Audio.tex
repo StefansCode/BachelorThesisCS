@@ -1,4 +1,5 @@
 \section{Entwicklung einer Darstellung eines digitalen Tons}
+\label{chap:digitale_ton_darstellung}
 
 Wie oben erwähnt kann ein Ton als Signal dargestellt werden. Dazu
 werden zunächst als Auflösung 16Bit, also ein \lstinline|int16_t|,
@@ -19,8 +20,8 @@ In der Soundklasse, gibt es ein Signalobjekt, welchem der Sampletyp
 und die Auflösung übergeben wurden. Die Abtastrate und Auflösung werden
 dem DAC übergeben.
 
-Nur durch die blockierende Funktion \lstinline|sendBuffer| des DACs 
-hält die SoundKlasse die Abtastrate ein.
+Wie in Kapitel \ref{chap:signalbibliothek} erwähnt, hängt die Abtastrate davon ab,
+wie oft pro Sekunde eine Inputfunktion aufgerufen wird.
 
 \subsection{Generierung von Audiosignalen}
 Anders als in der Signalklasse generieren hier die from-Funktionen 
@@ -540,7 +541,7 @@ die multiply-Funktion der Signalklasse aufruft.
 
     \end{tikzpicture}
 
-    \caption{Eine Sinuskurve mit verschiedenen Frequenzen.}
+    \caption{Addieren von zwei Sinuswellen.}
     \label{fig:addition_and_multiplication}
 
 \end{figure}

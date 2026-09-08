@@ -1,12 +1,12 @@
-\section{Grundwissen}
+\section{Grundlagen}
 
 
 Zunächst wird die Theorie der Signale und Systeme kurz erklärt, wie sie 
 in Grüningens Buch \glqq Digitale Signalverarbeitung\grqq \cite{grueningen2008dsv}
-beschrieben wird. In Kapitel 4 wird eine mögliche Implementierung vorgestellt.
+beschrieben wird. In Kapitel \ref{chap:signalbibliothek} wird eine mögliche Implementierung vorgestellt.
 
 Anschließend wird erklärt, wie ein Ton digital als Signal dargestellt
-werden kann. Die Implementierung dazu steht in Kapitel 5.
+werden kann. Die Implementierung dazu steht in Kapitel \ref{chap:digitale_ton_darstellung}.
 
 \subsection{Digitale Signale und Systeme}
 
@@ -15,8 +15,8 @@ $f: \mathbb{R} \rightarrow \mathbb{R}$ und beschreibt einen sich
 über die Zeit verändernden Wert.
 
 \textbf{Digitale Signale} hingegen sind Funktionen
-$f: \mathbb{Z} \rightarrow \mathbb{Z}$. Sie stellen in den meisten Fällen ein 
-kontinuierliches Signal dar.
+$f: 1/n\mathbb{Z} \rightarrow 1/m\mathbb{Z}$ mit $n,m \in \mathbb{N}$. 
+Sie sind den meisten Fällen eine digitale Darstellung eines kontinuierlichen Signals.
 
 Unten wird die Funktion $ t \rightarrow sin(2\pi t) $ einmal als 
 kontinuierliches ($f_k$) und einmal als digitales Signal ($f_d$) dargestellt.
@@ -69,10 +69,14 @@ kontinuierliches ($f_k$) und einmal als digitales Signal ($f_d$) dargestellt.
 
 Meistens sind periodische Signale zwischen -1 und 1 wie zum Beispiel $f_k$ bzw $f_d$ 
 interessant.
-Eine wichtige Kenngröße von periodischen Signalen ist die Frequenz. 
-Das ist die Anzahl der Wiederholungen pro Einheit (in diesem Fall Sekunden).
+Eine wichtige Kenngröße von periodischen Signalen ist die Frequenz $f$. 
+Das ist die Anzahl der Wiederholungen pro Einheit (in diesem Fall Sekunden) und 
+als 
+$$f = \min\{\delta > 0 | f(x+\delta)=f(x) \forall x \in R\}$$ definiert.
 Sie wird in Hertz (Hz) angegeben. $f_k$ und $f_d$ haben eine Frequenz von 1 Hz.
-Die Amplitude ist die maximale Auslenkung des Signals. $f_k$ und $f_d$ haben 
+Die Amplitude $A$ ist die maximale Auslenkung des Signals. Sie ist als
+$$A = \max |f(x)| , x \in \mathbb{R}$$ definiert.
+$f_k$ und $f_d$ haben 
 eine Amplitude von 1 und $0.5*sin(x)$ hat eine Amplitude von 0.5.
 
 Zwei wichtige Kenngröße von digitalen Signalen sind die Abtastrate
@@ -120,18 +124,21 @@ das Signal $f_d$ in Sekunden angegeben ist, so ist seine Abtastrate 10Hz.
 
 Für die \textbf{Auflösung} muss ein maximaler und ein minimaler Wert festgelegt werden.
 Dann ist die Auflösung die Anzahl der möglichen Werte zwischen dem
-Maximalwert und dem Minimalwert. Für $f_d$ mit Minimalwert -1 und Maximalwert 1
+Maximalwert und dem Minimalwert. Sie ist ein Maß für die Feinheit der Unterteilung
+der Y-Achse.
+Für $f_d$ mit Minimalwert -1 und Maximalwert 1
 wäre das 11.
 
 Jedes stückweise stetige periodische Signal $S$ lässt sich, mithilfe der Fouriereihe,
 als Summe von Sinus- und Cosinuskurven mit verschiedenen Frequenzen schreiben
 \cite[2.2.1]{grueningen2008dsv}
 
-Sei ein Signal $f_{max}$ die höchste dieser Frequenzen.
-Das \textbf{Abtasttheorem} \cite{grueningen2008dsv} besagt, dass das
+Sei $S$ ein Signal und $f_{max}$ die höchste Frequenz einer 
+Sinus- oder Cosinuskurven aus der Fouriereihe von $S$.
+Das \textbf{Abtasttheorem} \cite[6.2]{grueningen2008dsv} besagt, dass das
 Signal $S$ wieder aus seiner Darstellung als digitales Signal $S_d$
-rekonstruiert werden kann, wenn die Abtastrate von $S_d$ mindestens 
-doppelt so groß ist wie $f_{max}$.
+rekonstruiert werden kann, wenn die Abtastrate von $S_d$ größer als 
+$f_{max} \cdot 2$ ist.
 
 In der Signaltheorie beschreibt ein System etwas, das ein Signal $f(t)$ in ein
 Signal $g(t)$ umwandelt. Ein digitales System schickt ein digitales Signal 
@@ -195,7 +202,7 @@ das alle Werte eines Signals mit $0.5$ multipliziert.
 \end{figure}
 
 Weitere Eigenschaften von Systemen und Signalen sind in Grüningens Buch
-digitale Signalverarbeitung \cite{grueningen2008dsv}.
+digitale Signalverarbeitung \cite{grueningen2008dsv} zu finden.
 
 \subsection{Darstellung  digitaler Audio}
 

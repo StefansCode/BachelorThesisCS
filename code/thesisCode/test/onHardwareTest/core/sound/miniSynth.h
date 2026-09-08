@@ -22,7 +22,7 @@ int buttonsPin[8] = {PIN_BTN_11, PIN_BTN_12, PIN_BTN_13, PIN_BTN_14, PIN_BTN_21,
 
 void runMiniSynthTest() {
 
-  float playBass = false;
+  float playBass = 0;
 
   while (1) {
     if (buttons.readQueue() == PIN_BTN_B) {

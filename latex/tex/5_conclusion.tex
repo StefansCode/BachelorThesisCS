@@ -2,7 +2,6 @@
 
 \subsection{Bewertung der Signal- und Soundklasse}
 
-\subsubsection{Bewertung der Ausführungszeit}
 
 Um die Ausführungsgeschwindigkeit der Sound Methoden zu bewerten, 
 werden die Multiplikation von einem Soundobjekt mit einer Variable und 
@@ -23,88 +22,6 @@ Einige Ideen zum Verbessern dieser Zeiten sind im Folgenden aufgelistet.
     ESP32 und teilweise auch auf die Hardware des ESP32-S3 optimiert wurde.
 \end{enumerate}
 
-\subsubsection{Ein Problem bei der Weiterentwicklung}
-
-Wie in \ref{chap:signalklasse} erwähnt, könnte mit dem Buffer in der Signalklasse 
-ein digitales Filter implementiert werden. Ein simples Filter $F$ würde beispielsweise
-über die letzten 5 Einträge, die es erhält, mitteln \cite[6.2.1]{grueningen2008dsv}. 
-Wenn es noch keine 5 Werte gibt, so wird über die Anzahl der Werte gemittelt.
-
-Nehme also an $F$ ist in Signal implementiert und betrachte folgende Anwendung 
-von Signal, in der zuerst mit F gefiltert wird und dann mit 10 multipliziert wird.
-
-Besteht nun das eingehende Signal nur aus den Werten 1, passiert Folgendes.
-
-\begin{figure}[h]
-    \centering
-    \begin{tikzpicture}[
-        >=stealth,
-        node distance=0.7cm,
-        every node/.style={font=\small},
-        box/.style={
-            draw,
-            rounded corners,
-            minimum height=0.8cm,
-            minimum width=1.2cm,
-            align=center
-        }
-    ]
-
-        % 1. Iteration
-        \node (in1) {$1$};
-        \node[right=of in1] (buf1) {$[1,0,0,0,0]$};
-        \node[box, right=of buf1] (filter1) {$F$};
-        \node[right=of filter1] (buf2) {$[1,0,0,0,0]$};
-        \node[box, right=of buf2] (mul1) {$\times 10$};
-        \node[right=of mul1] (out1) {$[10,0,0,0,0]$};
-
-        \draw[->] (in1) -- (buf1);
-        \draw[->] (buf1) -- (filter1);
-        \draw[->] (filter1) -- (buf2);
-        \draw[->] (buf2) -- (mul1);
-        \draw[->] (mul1) -- (out1);
-
-        % 2. Iteration
-        \node[below=1.5cm of in1] (in2) {$1$};
-        \node[right=of in2] (buf3) {$[10,1,0,0,0]$};
-        \node[box, right=of buf3] (filter2) {$F$};
-        \node[right=of filter2] (buf4) {$[10,5.5,0,0,0]$};
-        \node[box, right=of buf4] (mul2) {$\times 10$};
-        \node[right=of mul2] (out2) {$[10,55,0,0,0]$};
-
-        \draw[->] (in2) -- (buf3);
-        \draw[->] (buf3) -- (filter2);
-        \draw[->] (filter2) -- (buf4);
-        \draw[->] (buf4) -- (mul2);
-        \draw[->] (mul2) -- (out2);
-
-        \node[
-            red,
-            align=center,
-            below=0.5cm of buf3
-        ] (problem)
-        {Hier wurde der vorherige\\
-         Wert bereits mit $10$ multipliziert};
-
-        \draw[->, red, thick]
-            (problem.north) -- (buf3.south);
-
-        % Beschriftungen
-        \node[left=0.5cm of in1] {\textbf{1. Iteration}};
-        \node[left=0.5cm of in2] {\textbf{2. Iteration}};
-
-    \end{tikzpicture}
-    \caption{Problem bei der Verwendung eines gemeinsamen Buffers.}
-    \label{fig:signal-buffer-problem}
-\end{figure}
-
-Bei der zweiten Iteration müsste $F$ eigentlich über zwei Einsen mitteln, aber
-die vorherige Eins wurde schon mit 10 multipliziert.
-
-Eine Lösung wäre es $F$ und jeder anderen Funktion, die einen Buffer brauchet,
-beim Aufruf einen zu übergeben. Denn es reicht auch nicht aus in der Signalklasse
-für Filter einen Buffer anzulegen. Wird Filter 2 Mal aufgerufen, so entsteht
-das gleiche Problem.
 
 \subsection{Bewertung des Synthesizers}
 

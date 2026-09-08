@@ -37,15 +37,17 @@ aussehen könnte.
       captionpos=b]
       Signal.fromInput(ADC)
         .multiply(2)
-        .filter(20,5000)
+        .add(otherSignal)
         .applyFunction(coolFkt)
-        .toOutput(DAC);
+        .returnBuffer();
     \end{lstlisting}
   \end{minipage}
   \caption{Vergleich einer Beispielanwendung von Java Streams und
             der zu entwickelnden Signalbibliothek}
   \label{Vergleich_Streams_Signal}
 \end{figure}
+
+
 
 Neben der DSV-Bibliothek soll es außerdem eine Audiobibliothek geben, welche
 auf Audiosignale spezialisiert ist. Der größte Unterschied
@@ -75,3 +77,18 @@ Dafür werden die nötige Hardware aufgebaut und die zugehörige Software implem
 % Googletest(für Unit test), OnHardwareTests
 
 % ich denke das mache ich nicht mehr
+
+\subsection{Verwante Arbeiten}
+
+Die ESP-DSP-Bibliothek \cite{ESPDSV} ist eine DSV-Bibliothek, welche von 
+Espressif entwickelt wurde. Sie ist auf die Nutzung der Hardware des ESP32 
+optimiert und erwartet Signale in der Form eines Arrays. Der Vorteil der 
+zu entwickelnden DSV-Bibliothek ist, dass ein Signal als eine Klasse Fluent API
+implementiert wird, was zu leserlicherem Code führt.
+
+Die Mozzi-Bibliothek \cite{Mozzi} ist eine Bibliothek für Tonausgabe und für 
+Audiosynthese auf Mikrocontroller. Allerdings wird die Funktionalität der Bibliothek hinter 
+Funktionen wie \lstinline|startMozzi| und \lstinline|audioHook| versteckt
+\cite{MozziSimpleSketch}. Die zu entwickelnde Audiobibliothek werden 
+die Funktionen der Bibliothek sequentiell aufrufen und die Funktionsweise
+der Bibliothek ist dadurch für den Nutzer besser nachvollziehbar. 

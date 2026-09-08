@@ -2,20 +2,23 @@
 
 Die geplante Softwarearchitektur sollte nach dem Ports-and-Adapter Pattern 
 \cite{cockburn2005hexagonal} aufgebaut sein, allerdings wurden nur 
-Adapter implementiert. Die aktuelle Softwarearchitektur ist in Abbildung 
-\ref{fig:software_architecture} dargestellt. Ein Pfeil wie bei 
+Adapter implementiert. 
+Die aktuelle Softwarearchitektur ist in Abbildung 
+\ref{fig:software_architecture} dargestellt, wobei Pfeil wie bei 
 Sound $\rightarrow$ Signal bedeutet, dass Sound Signal nutzt.
 
-Signal ist die Klasse, welche die DSV-Bibliothek implementiert und Sound ist 
-eine Erweiterung dieser Klasse, welche ein Audiosignal darstellt.
-
-Diese Architektur hat den Vorteil, dass Sound und Signal unabhängig von der
-Hardware sind. Das wird dadurch gewährleistet, dass die 
-Zugriffe auf die Hardware nur über Adapter erfolgen.
-
-Synthesizer, Envelope und Menu sind die Komponenten, welche die Hardware und 
+Der Kern besteht aus der Klasse Signal, welche die DSV-Bibliothek 
+implementiert und der Klasse Sound, welche eine Erweiterung von Signal ist 
+und ein Audiosignal darstellt.
+Außerdem liegen die Komponenten Synthesizer, Envelope und Menu im Kern.
+Diese nutzen die Hardware und 
 Sound nutzen, um einen digitalen Synthesizer zu implementieren. Die genaue 
 Funktionsweise wird in Kapitel \ref{chap:synth} beschrieben.
+
+Diese Architektur hat den Vorteil, dass Signal und Sound unabhängig von der
+Hardware sind. Das wird dadurch gewährleistet, dass die 
+Zugriffe auf die Hardware nur über Adapter erfolgen und Signal und Sound
+nicht auf die Adapter zugreifen. 
 
 \begin{figure}[h]
     \begin{center}
